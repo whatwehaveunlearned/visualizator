@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>D3 - Data Driven Documents</title>
+  <script src="cars.json"></script>
+  <script src="d3.js" charset="utf-8"></script>
+  <style type="text/css">
+
+    body {
+      padding-top: 50px;
+      padding-left: 100px;
+    }
+
+    #chartArea {
+      width: 500px;
+      height: 200px;
+      background-color: #CCC;
+    }
+
+    .bar {
+      display: inline-block;
+      width: 20px;
+      height: 75px; /* Gets overriden by D3-assigned height below */
+      margin-right: 2px;
+      fill: teal;
+    }
+
+  </style>
+</head>
+<body>
+<div id="chartArea"></div>
+<script type="text/javascript">
+
+  var dataset = [[5, 20], [480, 90], [250, 50], [100, 33], [330, 95], [410, 12], [475, 44], [25, 67], [85, 21], [220, 88]];
+
+  //width and height
+  var w = 500;
+  var h = 200;
+  var barPadding=1;
+
+  //Create svg element
+  var svg = d3.select("#chartArea")
+              .append("svg")
+              .attr("width",w)
+              .attr("height",h);
+  svg.selectAll("circle")
+     .data(dataset)
+     .enter()
+     .append("circle")
+     .attr({
+        cx: function(d,i){ return d[0]; },
+        cy: function(d) { return d[1]},
+        r: 5,
+        height: function (d) {return d*4;},
+        fill: function(d) { return "rgb(0,0,"+(d*10)+")";}
+      });
+
+  svg.selectAll("text")
+     .data(dataset)
+     .enter()
+     .append("text")
+     .text(function(d){
+        return d;
+     }) 
+     .attr({
+        x: function(d,i){ return i*(w/dataset.length) + (w/dataset.length - barPadding)/2; },
+        y: function(d) { return +14 + h - (d*4)}, 
+        "font-family": "sans-serif",
+        "font-size": 11,
+        fill: "white",
+        "text-anchor":"middle"
+      });          
+
+
+</script>
+</body>
+</html>
