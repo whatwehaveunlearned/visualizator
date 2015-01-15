@@ -3,12 +3,30 @@
 
 <html>
 	<head>
+		<!-- Stylesheet -->
 		<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+		<!-- Jquery Lybrary -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+		<!-- Bootstrap -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+		<!-- D3 Code -->
 		<script src="d3.js" charset="utf-8"></script>
+		<!-- Data File -->
 		<script src="cars.json"></script>
 	</head>
 	<body>
-		<div id="chartArea"></div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-3" id="sideBar"></div>
+					<!-- The different Attributes from db appear here -->
+				<div class="col-md-9" id="applicationArea">
+					<!-- The different chartAreas are created here -->
+				</div>
+			</div>
+		</div>
+		<!-- Application Code -->
 		<script src="draw.js"></script>
 	</body>
 </html>

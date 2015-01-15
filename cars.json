@@ -6,7 +6,7 @@ var db = [
     "horsepower":130,
     "weight":3504,
     "acceleration":12,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"chevrolet chevelle malibu"
   },
@@ -17,7 +17,7 @@ var db = [
     "horsepower":165,
     "weight":3693,
     "acceleration":11.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"buick skylark 320"
   },
@@ -28,7 +28,7 @@ var db = [
     "horsepower":150,
     "weight":3436,
     "acceleration":11,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"plymouth satellite"
   },
@@ -39,7 +39,7 @@ var db = [
     "horsepower":150,
     "weight":3433,
     "acceleration":12,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"amc rebel sst"
   },
@@ -50,7 +50,7 @@ var db = [
     "horsepower":140,
     "weight":3449,
     "acceleration":10.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"ford torino"
   },
@@ -61,7 +61,7 @@ var db = [
     "horsepower":198,
     "weight":4341,
     "acceleration":10,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"ford galaxie 500"
   },
@@ -72,7 +72,7 @@ var db = [
     "horsepower":220,
     "weight":4354,
     "acceleration":9,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"chevrolet impala"
   },
@@ -83,7 +83,7 @@ var db = [
     "horsepower":215,
     "weight":4312,
     "acceleration":8.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"plymouth fury iii"
   },
@@ -94,7 +94,7 @@ var db = [
     "horsepower":225,
     "weight":4425,
     "acceleration":10,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"pontiac catalina"
   },
@@ -105,7 +105,7 @@ var db = [
     "horsepower":190,
     "weight":3850,
     "acceleration":8.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"amc ambassador dpl"
   },
@@ -116,7 +116,7 @@ var db = [
     "horsepower":170,
     "weight":3563,
     "acceleration":10,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"dodge challenger se"
   },
@@ -127,7 +127,7 @@ var db = [
     "horsepower":160,
     "weight":3609,
     "acceleration":8,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"plymouth 'cuda 340"
   },
@@ -138,7 +138,7 @@ var db = [
     "horsepower":150,
     "weight":3761,
     "acceleration":9.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"chevrolet monte carlo"
   },
@@ -149,7 +149,7 @@ var db = [
     "horsepower":225,
     "weight":3086,
     "acceleration":10,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"buick estate wagon (sw)"
   },
@@ -160,7 +160,7 @@ var db = [
     "horsepower":95,
     "weight":2372,
     "acceleration":15,
-    "model year":70,
+    "year":70,
     "origin":3,
     "carName":"toyota corona mark ii"
   },
@@ -171,7 +171,7 @@ var db = [
     "horsepower":95,
     "weight":2833,
     "acceleration":15.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"plymouth duster"
   },
@@ -182,7 +182,7 @@ var db = [
     "horsepower":97,
     "weight":2774,
     "acceleration":15.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"amc hornet"
   },
@@ -193,7 +193,7 @@ var db = [
     "horsepower":85,
     "weight":2587,
     "acceleration":16,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"ford maverick"
   },
@@ -204,7 +204,7 @@ var db = [
     "horsepower":88,
     "weight":2130,
     "acceleration":14.5,
-    "model year":70,
+    "year":70,
     "origin":3,
     "carName":"datsun pl510"
   },
@@ -215,7 +215,7 @@ var db = [
     "horsepower":46,
     "weight":1835,
     "acceleration":20.5,
-    "model year":70,
+    "year":70,
     "origin":2,
     "carName":"volkswagen 1131 deluxe sedan"
   },
@@ -226,7 +226,7 @@ var db = [
     "horsepower":87,
     "weight":2672,
     "acceleration":17.5,
-    "model year":70,
+    "year":70,
     "origin":2,
     "carName":"peugeot 504"
   },
@@ -237,7 +237,7 @@ var db = [
     "horsepower":90,
     "weight":2430,
     "acceleration":14.5,
-    "model year":70,
+    "year":70,
     "origin":2,
     "carName":"audi 100 ls"
   },
@@ -248,7 +248,7 @@ var db = [
     "horsepower":95,
     "weight":2375,
     "acceleration":17.5,
-    "model year":70,
+    "year":70,
     "origin":2,
     "carName":"saab 99e"
   },
@@ -259,7 +259,7 @@ var db = [
     "horsepower":113,
     "weight":2234,
     "acceleration":12.5,
-    "model year":70,
+    "year":70,
     "origin":2,
     "carName":"bmw 2002"
   },
@@ -270,7 +270,7 @@ var db = [
     "horsepower":90,
     "weight":2648,
     "acceleration":15,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"amc gremlin"
   },
@@ -281,7 +281,7 @@ var db = [
     "horsepower":215,
     "weight":4615,
     "acceleration":14,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"ford f250"
   },
@@ -292,7 +292,7 @@ var db = [
     "horsepower":200,
     "weight":4376,
     "acceleration":15,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"chevy c20"
   },
@@ -303,7 +303,7 @@ var db = [
     "horsepower":210,
     "weight":4382,
     "acceleration":13.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"dodge d200"
   },
@@ -314,7 +314,7 @@ var db = [
     "horsepower":193,
     "weight":4732,
     "acceleration":18.5,
-    "model year":70,
+    "year":70,
     "origin":1,
     "carName":"hi 1200d"
   },
@@ -325,7 +325,7 @@ var db = [
     "horsepower":88,
     "weight":2130,
     "acceleration":14.5,
-    "model year":71,
+    "year":71,
     "origin":3,
     "carName":"datsun pl510"
   },
@@ -336,7 +336,7 @@ var db = [
     "horsepower":90,
     "weight":2264,
     "acceleration":15.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"chevrolet vega 2300"
   },
@@ -347,7 +347,7 @@ var db = [
     "horsepower":95,
     "weight":2228,
     "acceleration":14,
-    "model year":71,
+    "year":71,
     "origin":3,
     "carName":"toyota corona"
   },
@@ -358,7 +358,7 @@ var db = [
     "horsepower":0,
     "weight":2046,
     "acceleration":19,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"ford pinto"
   },
@@ -369,7 +369,7 @@ var db = [
     "horsepower":100,
     "weight":2634,
     "acceleration":13,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"amc gremlin"
   },
@@ -380,7 +380,7 @@ var db = [
     "horsepower":105,
     "weight":3439,
     "acceleration":15.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"plymouth satellite custom"
   },
@@ -391,7 +391,7 @@ var db = [
     "horsepower":100,
     "weight":3329,
     "acceleration":15.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"chevrolet chevelle malibu"
   },
@@ -402,7 +402,7 @@ var db = [
     "horsepower":88,
     "weight":3302,
     "acceleration":15.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"ford torino 500"
   },
@@ -413,7 +413,7 @@ var db = [
     "horsepower":100,
     "weight":3288,
     "acceleration":15.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"amc matador"
   },
@@ -424,7 +424,7 @@ var db = [
     "horsepower":165,
     "weight":4209,
     "acceleration":12,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"chevrolet impala"
   },
@@ -435,7 +435,7 @@ var db = [
     "horsepower":175,
     "weight":4464,
     "acceleration":11.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"pontiac catalina brougham"
   },
@@ -446,7 +446,7 @@ var db = [
     "horsepower":153,
     "weight":4154,
     "acceleration":13.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"ford galaxie 500"
   },
@@ -457,7 +457,7 @@ var db = [
     "horsepower":150,
     "weight":4096,
     "acceleration":13,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"plymouth fury iii"
   },
@@ -468,7 +468,7 @@ var db = [
     "horsepower":180,
     "weight":4955,
     "acceleration":11.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"dodge monaco (sw)"
   },
@@ -479,7 +479,7 @@ var db = [
     "horsepower":170,
     "weight":4746,
     "acceleration":12,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"ford country squire (sw)"
   },
@@ -490,7 +490,7 @@ var db = [
     "horsepower":175,
     "weight":5140,
     "acceleration":12,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"pontiac safari (sw)"
   },
@@ -501,7 +501,7 @@ var db = [
     "horsepower":110,
     "weight":2962,
     "acceleration":13.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"amc hornet sportabout (sw)"
   },
@@ -512,7 +512,7 @@ var db = [
     "horsepower":72,
     "weight":2408,
     "acceleration":19,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"chevrolet vega (sw)"
   },
@@ -523,7 +523,7 @@ var db = [
     "horsepower":100,
     "weight":3282,
     "acceleration":15,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"pontiac firebird"
   },
@@ -534,7 +534,7 @@ var db = [
     "horsepower":88,
     "weight":3139,
     "acceleration":14.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"ford mustang"
   },
@@ -545,7 +545,7 @@ var db = [
     "horsepower":86,
     "weight":2220,
     "acceleration":14,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"mercury capri 2000"
   },
@@ -556,7 +556,7 @@ var db = [
     "horsepower":90,
     "weight":2123,
     "acceleration":14,
-    "model year":71,
+    "year":71,
     "origin":2,
     "carName":"opel 1900"
   },
@@ -567,7 +567,7 @@ var db = [
     "horsepower":70,
     "weight":2074,
     "acceleration":19.5,
-    "model year":71,
+    "year":71,
     "origin":2,
     "carName":"peugeot 304"
   },
@@ -578,7 +578,7 @@ var db = [
     "horsepower":76,
     "weight":2065,
     "acceleration":14.5,
-    "model year":71,
+    "year":71,
     "origin":2,
     "carName":"fiat 124b"
   },
@@ -589,7 +589,7 @@ var db = [
     "horsepower":65,
     "weight":1773,
     "acceleration":19,
-    "model year":71,
+    "year":71,
     "origin":3,
     "carName":"toyota corolla 1200"
   },
@@ -600,7 +600,7 @@ var db = [
     "horsepower":69,
     "weight":1613,
     "acceleration":18,
-    "model year":71,
+    "year":71,
     "origin":3,
     "carName":"datsun 1200"
   },
@@ -611,9 +611,9 @@ var db = [
     "horsepower":60,
     "weight":1834,
     "acceleration":19,
-    "model year":71,
+    "year":71,
     "origin":2,
-    "carName":"volkswagen model 111"
+    "carName":"volkswagen 111"
   },
   {
     "mpg":26,
@@ -622,7 +622,7 @@ var db = [
     "horsepower":70,
     "weight":1955,
     "acceleration":20.5,
-    "model year":71,
+    "year":71,
     "origin":1,
     "carName":"plymouth cricket"
   },
@@ -633,7 +633,7 @@ var db = [
     "horsepower":95,
     "weight":2278,
     "acceleration":15.5,
-    "model year":72,
+    "year":72,
     "origin":3,
     "carName":"toyota corona hardtop"
   },
@@ -644,7 +644,7 @@ var db = [
     "horsepower":80,
     "weight":2126,
     "acceleration":17,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"dodge colt hardtop"
   },
@@ -655,7 +655,7 @@ var db = [
     "horsepower":54,
     "weight":2254,
     "acceleration":23.5,
-    "model year":72,
+    "year":72,
     "origin":2,
     "carName":"volkswagen type 3"
   },
@@ -666,7 +666,7 @@ var db = [
     "horsepower":90,
     "weight":2408,
     "acceleration":19.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"chevrolet vega"
   },
@@ -677,7 +677,7 @@ var db = [
     "horsepower":86,
     "weight":2226,
     "acceleration":16.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"ford pinto runabout"
   },
@@ -688,7 +688,7 @@ var db = [
     "horsepower":165,
     "weight":4274,
     "acceleration":12,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"chevrolet impala"
   },
@@ -699,7 +699,7 @@ var db = [
     "horsepower":175,
     "weight":4385,
     "acceleration":12,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"pontiac catalina"
   },
@@ -710,7 +710,7 @@ var db = [
     "horsepower":150,
     "weight":4135,
     "acceleration":13.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"plymouth fury iii"
   },
@@ -721,7 +721,7 @@ var db = [
     "horsepower":153,
     "weight":4129,
     "acceleration":13,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"ford galaxie 500"
   },
@@ -732,7 +732,7 @@ var db = [
     "horsepower":150,
     "weight":3672,
     "acceleration":11.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"amc ambassador sst"
   },
@@ -743,7 +743,7 @@ var db = [
     "horsepower":208,
     "weight":4633,
     "acceleration":11,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"mercury marquis"
   },
@@ -754,7 +754,7 @@ var db = [
     "horsepower":155,
     "weight":4502,
     "acceleration":13.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"buick lesabre custom"
   },
@@ -765,7 +765,7 @@ var db = [
     "horsepower":160,
     "weight":4456,
     "acceleration":13.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"oldsmobile delta 88 royale"
   },
@@ -776,7 +776,7 @@ var db = [
     "horsepower":190,
     "weight":4422,
     "acceleration":12.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"chrysler newport royal"
   },
@@ -787,7 +787,7 @@ var db = [
     "horsepower":97,
     "weight":2330,
     "acceleration":13.5,
-    "model year":72,
+    "year":72,
     "origin":3,
     "carName":"mazda rx2 coupe"
   },
@@ -798,7 +798,7 @@ var db = [
     "horsepower":150,
     "weight":3892,
     "acceleration":12.5,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"amc matador (sw)"
   },
@@ -809,7 +809,7 @@ var db = [
     "horsepower":130,
     "weight":4098,
     "acceleration":14,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"chevrolet chevelle concours (sw)"
   },
@@ -820,7 +820,7 @@ var db = [
     "horsepower":140,
     "weight":4294,
     "acceleration":16,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"ford gran torino (sw)"
   },
@@ -831,7 +831,7 @@ var db = [
     "horsepower":150,
     "weight":4077,
     "acceleration":14,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"plymouth satellite custom (sw)"
   },
@@ -842,7 +842,7 @@ var db = [
     "horsepower":112,
     "weight":2933,
     "acceleration":14.5,
-    "model year":72,
+    "year":72,
     "origin":2,
     "carName":"volvo 145e (sw)"
   },
@@ -853,7 +853,7 @@ var db = [
     "horsepower":76,
     "weight":2511,
     "acceleration":18,
-    "model year":72,
+    "year":72,
     "origin":2,
     "carName":"volkswagen 411 (sw)"
   },
@@ -864,7 +864,7 @@ var db = [
     "horsepower":87,
     "weight":2979,
     "acceleration":19.5,
-    "model year":72,
+    "year":72,
     "origin":2,
     "carName":"peugeot 504 (sw)"
   },
@@ -875,7 +875,7 @@ var db = [
     "horsepower":69,
     "weight":2189,
     "acceleration":18,
-    "model year":72,
+    "year":72,
     "origin":2,
     "carName":"renault 12 (sw)"
   },
@@ -886,7 +886,7 @@ var db = [
     "horsepower":86,
     "weight":2395,
     "acceleration":16,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"ford pinto (sw)"
   },
@@ -897,7 +897,7 @@ var db = [
     "horsepower":92,
     "weight":2288,
     "acceleration":17,
-    "model year":72,
+    "year":72,
     "origin":3,
     "carName":"datsun 510 (sw)"
   },
@@ -908,7 +908,7 @@ var db = [
     "horsepower":97,
     "weight":2506,
     "acceleration":14.5,
-    "model year":72,
+    "year":72,
     "origin":3,
     "carName":"toyouta corona mark ii (sw)"
   },
@@ -919,7 +919,7 @@ var db = [
     "horsepower":80,
     "weight":2164,
     "acceleration":15,
-    "model year":72,
+    "year":72,
     "origin":1,
     "carName":"dodge colt (sw)"
   },
@@ -930,7 +930,7 @@ var db = [
     "horsepower":88,
     "weight":2100,
     "acceleration":16.5,
-    "model year":72,
+    "year":72,
     "origin":3,
     "carName":"toyota corolla 1600 (sw)"
   },
@@ -941,7 +941,7 @@ var db = [
     "horsepower":175,
     "weight":4100,
     "acceleration":13,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"buick century 350"
   },
@@ -952,7 +952,7 @@ var db = [
     "horsepower":150,
     "weight":3672,
     "acceleration":11.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"amc matador"
   },
@@ -963,7 +963,7 @@ var db = [
     "horsepower":145,
     "weight":3988,
     "acceleration":13,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"chevrolet malibu"
   },
@@ -974,7 +974,7 @@ var db = [
     "horsepower":137,
     "weight":4042,
     "acceleration":14.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"ford gran torino"
   },
@@ -985,7 +985,7 @@ var db = [
     "horsepower":150,
     "weight":3777,
     "acceleration":12.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"dodge coronet custom"
   },
@@ -996,7 +996,7 @@ var db = [
     "horsepower":198,
     "weight":4952,
     "acceleration":11.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"mercury marquis brougham"
   },
@@ -1007,7 +1007,7 @@ var db = [
     "horsepower":150,
     "weight":4464,
     "acceleration":12,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"chevrolet caprice classic"
   },
@@ -1018,7 +1018,7 @@ var db = [
     "horsepower":158,
     "weight":4363,
     "acceleration":13,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"ford ltd"
   },
@@ -1029,7 +1029,7 @@ var db = [
     "horsepower":150,
     "weight":4237,
     "acceleration":14.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"plymouth fury gran sedan"
   },
@@ -1040,7 +1040,7 @@ var db = [
     "horsepower":215,
     "weight":4735,
     "acceleration":11,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"chrysler new yorker brougham"
   },
@@ -1051,7 +1051,7 @@ var db = [
     "horsepower":225,
     "weight":4951,
     "acceleration":11,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"buick electra 225 custom"
   },
@@ -1062,7 +1062,7 @@ var db = [
     "horsepower":175,
     "weight":3821,
     "acceleration":11,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"amc ambassador brougham"
   },
@@ -1073,7 +1073,7 @@ var db = [
     "horsepower":105,
     "weight":3121,
     "acceleration":16.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"plymouth valiant"
   },
@@ -1084,7 +1084,7 @@ var db = [
     "horsepower":100,
     "weight":3278,
     "acceleration":18,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"chevrolet nova custom"
   },
@@ -1095,7 +1095,7 @@ var db = [
     "horsepower":100,
     "weight":2945,
     "acceleration":16,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"amc hornet"
   },
@@ -1106,7 +1106,7 @@ var db = [
     "horsepower":88,
     "weight":3021,
     "acceleration":16.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"ford maverick"
   },
@@ -1117,7 +1117,7 @@ var db = [
     "horsepower":95,
     "weight":2904,
     "acceleration":16,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"plymouth duster"
   },
@@ -1128,7 +1128,7 @@ var db = [
     "horsepower":46,
     "weight":1950,
     "acceleration":21,
-    "model year":73,
+    "year":73,
     "origin":2,
     "carName":"volkswagen super beetle"
   },
@@ -1139,7 +1139,7 @@ var db = [
     "horsepower":150,
     "weight":4997,
     "acceleration":14,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"chevrolet impala"
   },
@@ -1150,7 +1150,7 @@ var db = [
     "horsepower":167,
     "weight":4906,
     "acceleration":12.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"ford country"
   },
@@ -1161,7 +1161,7 @@ var db = [
     "horsepower":170,
     "weight":4654,
     "acceleration":13,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"plymouth custom suburb"
   },
@@ -1172,7 +1172,7 @@ var db = [
     "horsepower":180,
     "weight":4499,
     "acceleration":12.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"oldsmobile vista cruiser"
   },
@@ -1183,7 +1183,7 @@ var db = [
     "horsepower":100,
     "weight":2789,
     "acceleration":15,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"amc gremlin"
   },
@@ -1194,7 +1194,7 @@ var db = [
     "horsepower":88,
     "weight":2279,
     "acceleration":19,
-    "model year":73,
+    "year":73,
     "origin":3,
     "carName":"toyota carina"
   },
@@ -1205,7 +1205,7 @@ var db = [
     "horsepower":72,
     "weight":2401,
     "acceleration":19.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"chevrolet vega"
   },
@@ -1216,7 +1216,7 @@ var db = [
     "horsepower":94,
     "weight":2379,
     "acceleration":16.5,
-    "model year":73,
+    "year":73,
     "origin":3,
     "carName":"datsun 610"
   },
@@ -1227,7 +1227,7 @@ var db = [
     "horsepower":90,
     "weight":2124,
     "acceleration":13.5,
-    "model year":73,
+    "year":73,
     "origin":3,
     "carName":"maxda rx3"
   },
@@ -1238,7 +1238,7 @@ var db = [
     "horsepower":85,
     "weight":2310,
     "acceleration":18.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"ford pinto"
   },
@@ -1249,7 +1249,7 @@ var db = [
     "horsepower":107,
     "weight":2472,
     "acceleration":14,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"mercury capri v6"
   },
@@ -1260,7 +1260,7 @@ var db = [
     "horsepower":90,
     "weight":2265,
     "acceleration":15.5,
-    "model year":73,
+    "year":73,
     "origin":2,
     "carName":"fiat 124 sport coupe"
   },
@@ -1271,7 +1271,7 @@ var db = [
     "horsepower":145,
     "weight":4082,
     "acceleration":13,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"chevrolet monte carlo s"
   },
@@ -1282,7 +1282,7 @@ var db = [
     "horsepower":230,
     "weight":4278,
     "acceleration":9.5,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"pontiac grand prix"
   },
@@ -1293,7 +1293,7 @@ var db = [
     "horsepower":49,
     "weight":1867,
     "acceleration":19.5,
-    "model year":73,
+    "year":73,
     "origin":2,
     "carName":"fiat 128"
   },
@@ -1304,7 +1304,7 @@ var db = [
     "horsepower":75,
     "weight":2158,
     "acceleration":15.5,
-    "model year":73,
+    "year":73,
     "origin":2,
     "carName":"opel manta"
   },
@@ -1315,7 +1315,7 @@ var db = [
     "horsepower":91,
     "weight":2582,
     "acceleration":14,
-    "model year":73,
+    "year":73,
     "origin":2,
     "carName":"audi 100ls"
   },
@@ -1326,7 +1326,7 @@ var db = [
     "horsepower":112,
     "weight":2868,
     "acceleration":15.5,
-    "model year":73,
+    "year":73,
     "origin":2,
     "carName":"volvo 144ea"
   },
@@ -1337,7 +1337,7 @@ var db = [
     "horsepower":150,
     "weight":3399,
     "acceleration":11,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"dodge dart custom"
   },
@@ -1348,7 +1348,7 @@ var db = [
     "horsepower":110,
     "weight":2660,
     "acceleration":14,
-    "model year":73,
+    "year":73,
     "origin":2,
     "carName":"saab 99le"
   },
@@ -1359,7 +1359,7 @@ var db = [
     "horsepower":122,
     "weight":2807,
     "acceleration":13.5,
-    "model year":73,
+    "year":73,
     "origin":3,
     "carName":"toyota mark ii"
   },
@@ -1370,7 +1370,7 @@ var db = [
     "horsepower":180,
     "weight":3664,
     "acceleration":11,
-    "model year":73,
+    "year":73,
     "origin":1,
     "carName":"oldsmobile omega"
   },
@@ -1381,7 +1381,7 @@ var db = [
     "horsepower":95,
     "weight":3102,
     "acceleration":16.5,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"plymouth duster"
   },
@@ -1392,7 +1392,7 @@ var db = [
     "horsepower":0,
     "weight":2875,
     "acceleration":17,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"ford maverick"
   },
@@ -1403,7 +1403,7 @@ var db = [
     "horsepower":100,
     "weight":2901,
     "acceleration":16,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"amc hornet"
   },
@@ -1414,7 +1414,7 @@ var db = [
     "horsepower":100,
     "weight":3336,
     "acceleration":17,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"chevrolet nova"
   },
@@ -1425,7 +1425,7 @@ var db = [
     "horsepower":67,
     "weight":1950,
     "acceleration":19,
-    "model year":74,
+    "year":74,
     "origin":3,
     "carName":"datsun b210"
   },
@@ -1436,7 +1436,7 @@ var db = [
     "horsepower":80,
     "weight":2451,
     "acceleration":16.5,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"ford pinto"
   },
@@ -1447,7 +1447,7 @@ var db = [
     "horsepower":65,
     "weight":1836,
     "acceleration":21,
-    "model year":74,
+    "year":74,
     "origin":3,
     "carName":"toyota corolla 1200"
   },
@@ -1458,7 +1458,7 @@ var db = [
     "horsepower":75,
     "weight":2542,
     "acceleration":17,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"chevrolet vega"
   },
@@ -1469,7 +1469,7 @@ var db = [
     "horsepower":100,
     "weight":3781,
     "acceleration":17,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"chevrolet chevelle malibu classic"
   },
@@ -1480,7 +1480,7 @@ var db = [
     "horsepower":110,
     "weight":3632,
     "acceleration":18,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"amc matador"
   },
@@ -1491,7 +1491,7 @@ var db = [
     "horsepower":105,
     "weight":3613,
     "acceleration":16.5,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"plymouth satellite sebring"
   },
@@ -1502,7 +1502,7 @@ var db = [
     "horsepower":140,
     "weight":4141,
     "acceleration":14,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"ford gran torino"
   },
@@ -1513,7 +1513,7 @@ var db = [
     "horsepower":150,
     "weight":4699,
     "acceleration":14.5,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"buick century luxus (sw)"
   },
@@ -1524,7 +1524,7 @@ var db = [
     "horsepower":150,
     "weight":4457,
     "acceleration":13.5,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"dodge coronet custom (sw)"
   },
@@ -1535,7 +1535,7 @@ var db = [
     "horsepower":140,
     "weight":4638,
     "acceleration":16,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"ford gran torino (sw)"
   },
@@ -1546,7 +1546,7 @@ var db = [
     "horsepower":150,
     "weight":4257,
     "acceleration":15.5,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"amc matador (sw)"
   },
@@ -1557,7 +1557,7 @@ var db = [
     "horsepower":83,
     "weight":2219,
     "acceleration":16.5,
-    "model year":74,
+    "year":74,
     "origin":2,
     "carName":"audi fox"
   },
@@ -1568,7 +1568,7 @@ var db = [
     "horsepower":67,
     "weight":1963,
     "acceleration":15.5,
-    "model year":74,
+    "year":74,
     "origin":2,
     "carName":"volkswagen dasher"
   },
@@ -1579,7 +1579,7 @@ var db = [
     "horsepower":78,
     "weight":2300,
     "acceleration":14.5,
-    "model year":74,
+    "year":74,
     "origin":2,
     "carName":"opel manta"
   },
@@ -1590,7 +1590,7 @@ var db = [
     "horsepower":52,
     "weight":1649,
     "acceleration":16.5,
-    "model year":74,
+    "year":74,
     "origin":3,
     "carName":"toyota corona"
   },
@@ -1601,7 +1601,7 @@ var db = [
     "horsepower":61,
     "weight":2003,
     "acceleration":19,
-    "model year":74,
+    "year":74,
     "origin":3,
     "carName":"datsun 710"
   },
@@ -1612,7 +1612,7 @@ var db = [
     "horsepower":75,
     "weight":2125,
     "acceleration":14.5,
-    "model year":74,
+    "year":74,
     "origin":1,
     "carName":"dodge colt"
   },
@@ -1623,7 +1623,7 @@ var db = [
     "horsepower":75,
     "weight":2108,
     "acceleration":15.5,
-    "model year":74,
+    "year":74,
     "origin":2,
     "carName":"fiat 128"
   },
@@ -1634,7 +1634,7 @@ var db = [
     "horsepower":75,
     "weight":2246,
     "acceleration":14,
-    "model year":74,
+    "year":74,
     "origin":2,
     "carName":"fiat 124 tc"
   },
@@ -1645,7 +1645,7 @@ var db = [
     "horsepower":97,
     "weight":2489,
     "acceleration":15,
-    "model year":74,
+    "year":74,
     "origin":3,
     "carName":"honda civic"
   },
@@ -1656,7 +1656,7 @@ var db = [
     "horsepower":93,
     "weight":2391,
     "acceleration":15.5,
-    "model year":74,
+    "year":74,
     "origin":3,
     "carName":"subaru"
   },
@@ -1667,7 +1667,7 @@ var db = [
     "horsepower":67,
     "weight":2000,
     "acceleration":16,
-    "model year":74,
+    "year":74,
     "origin":2,
     "carName":"fiat x1.9"
   },
@@ -1678,7 +1678,7 @@ var db = [
     "horsepower":95,
     "weight":3264,
     "acceleration":16,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"plymouth valiant custom"
   },
@@ -1689,7 +1689,7 @@ var db = [
     "horsepower":105,
     "weight":3459,
     "acceleration":16,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"chevrolet nova"
   },
@@ -1700,7 +1700,7 @@ var db = [
     "horsepower":72,
     "weight":3432,
     "acceleration":21,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"mercury monarch"
   },
@@ -1711,7 +1711,7 @@ var db = [
     "horsepower":72,
     "weight":3158,
     "acceleration":19.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"ford maverick"
   },
@@ -1722,7 +1722,7 @@ var db = [
     "horsepower":170,
     "weight":4668,
     "acceleration":11.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"pontiac catalina"
   },
@@ -1733,7 +1733,7 @@ var db = [
     "horsepower":145,
     "weight":4440,
     "acceleration":14,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"chevrolet bel air"
   },
@@ -1744,7 +1744,7 @@ var db = [
     "horsepower":150,
     "weight":4498,
     "acceleration":14.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"plymouth grand fury"
   },
@@ -1755,7 +1755,7 @@ var db = [
     "horsepower":148,
     "weight":4657,
     "acceleration":13.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"ford ltd"
   },
@@ -1766,7 +1766,7 @@ var db = [
     "horsepower":110,
     "weight":3907,
     "acceleration":21,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"buick century"
   },
@@ -1777,7 +1777,7 @@ var db = [
     "horsepower":105,
     "weight":3897,
     "acceleration":18.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"chevroelt chevelle malibu"
   },
@@ -1788,7 +1788,7 @@ var db = [
     "horsepower":110,
     "weight":3730,
     "acceleration":19,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"amc matador"
   },
@@ -1799,7 +1799,7 @@ var db = [
     "horsepower":95,
     "weight":3785,
     "acceleration":19,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"plymouth fury"
   },
@@ -1810,7 +1810,7 @@ var db = [
     "horsepower":110,
     "weight":3039,
     "acceleration":15,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"buick skyhawk"
   },
@@ -1821,7 +1821,7 @@ var db = [
     "horsepower":110,
     "weight":3221,
     "acceleration":13.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"chevrolet monza 2+2"
   },
@@ -1832,7 +1832,7 @@ var db = [
     "horsepower":129,
     "weight":3169,
     "acceleration":12,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"ford mustang ii"
   },
@@ -1843,7 +1843,7 @@ var db = [
     "horsepower":75,
     "weight":2171,
     "acceleration":16,
-    "model year":75,
+    "year":75,
     "origin":3,
     "carName":"toyota corolla"
   },
@@ -1854,7 +1854,7 @@ var db = [
     "horsepower":83,
     "weight":2639,
     "acceleration":17,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"ford pinto"
   },
@@ -1865,7 +1865,7 @@ var db = [
     "horsepower":100,
     "weight":2914,
     "acceleration":16,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"amc gremlin"
   },
@@ -1876,7 +1876,7 @@ var db = [
     "horsepower":78,
     "weight":2592,
     "acceleration":18.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"pontiac astro"
   },
@@ -1887,7 +1887,7 @@ var db = [
     "horsepower":96,
     "weight":2702,
     "acceleration":13.5,
-    "model year":75,
+    "year":75,
     "origin":3,
     "carName":"toyota corona"
   },
@@ -1898,7 +1898,7 @@ var db = [
     "horsepower":71,
     "weight":2223,
     "acceleration":16.5,
-    "model year":75,
+    "year":75,
     "origin":2,
     "carName":"volkswagen dasher"
   },
@@ -1909,7 +1909,7 @@ var db = [
     "horsepower":97,
     "weight":2545,
     "acceleration":17,
-    "model year":75,
+    "year":75,
     "origin":3,
     "carName":"datsun 710"
   },
@@ -1920,7 +1920,7 @@ var db = [
     "horsepower":97,
     "weight":2984,
     "acceleration":14.5,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"ford pinto"
   },
@@ -1931,7 +1931,7 @@ var db = [
     "horsepower":70,
     "weight":1937,
     "acceleration":14,
-    "model year":75,
+    "year":75,
     "origin":2,
     "carName":"volkswagen rabbit"
   },
@@ -1942,7 +1942,7 @@ var db = [
     "horsepower":90,
     "weight":3211,
     "acceleration":17,
-    "model year":75,
+    "year":75,
     "origin":1,
     "carName":"amc pacer"
   },
@@ -1953,7 +1953,7 @@ var db = [
     "horsepower":95,
     "weight":2694,
     "acceleration":15,
-    "model year":75,
+    "year":75,
     "origin":2,
     "carName":"audi 100ls"
   },
@@ -1964,7 +1964,7 @@ var db = [
     "horsepower":88,
     "weight":2957,
     "acceleration":17,
-    "model year":75,
+    "year":75,
     "origin":2,
     "carName":"peugeot 504"
   },
@@ -1975,7 +1975,7 @@ var db = [
     "horsepower":98,
     "weight":2945,
     "acceleration":14.5,
-    "model year":75,
+    "year":75,
     "origin":2,
     "carName":"volvo 244dl"
   },
@@ -1986,7 +1986,7 @@ var db = [
     "horsepower":115,
     "weight":2671,
     "acceleration":13.5,
-    "model year":75,
+    "year":75,
     "origin":2,
     "carName":"saab 99le"
   },
@@ -1997,7 +1997,7 @@ var db = [
     "horsepower":53,
     "weight":1795,
     "acceleration":17.5,
-    "model year":75,
+    "year":75,
     "origin":3,
     "carName":"honda civic cvcc"
   },
@@ -2008,7 +2008,7 @@ var db = [
     "horsepower":86,
     "weight":2464,
     "acceleration":15.5,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"fiat 131"
   },
@@ -2019,7 +2019,7 @@ var db = [
     "horsepower":81,
     "weight":2220,
     "acceleration":16.9,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"opel 1900"
   },
@@ -2030,7 +2030,7 @@ var db = [
     "horsepower":92,
     "weight":2572,
     "acceleration":14.9,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"capri ii"
   },
@@ -2041,7 +2041,7 @@ var db = [
     "horsepower":79,
     "weight":2255,
     "acceleration":17.7,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"dodge colt"
   },
@@ -2052,7 +2052,7 @@ var db = [
     "horsepower":83,
     "weight":2202,
     "acceleration":15.3,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"renault 12tl"
   },
@@ -2063,7 +2063,7 @@ var db = [
     "horsepower":140,
     "weight":4215,
     "acceleration":13,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"chevrolet chevelle malibu classic"
   },
@@ -2074,7 +2074,7 @@ var db = [
     "horsepower":150,
     "weight":4190,
     "acceleration":13,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"dodge coronet brougham"
   },
@@ -2085,7 +2085,7 @@ var db = [
     "horsepower":120,
     "weight":3962,
     "acceleration":13.9,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"amc matador"
   },
@@ -2096,7 +2096,7 @@ var db = [
     "horsepower":152,
     "weight":4215,
     "acceleration":12.8,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"ford gran torino"
   },
@@ -2107,7 +2107,7 @@ var db = [
     "horsepower":100,
     "weight":3233,
     "acceleration":15.4,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"plymouth valiant"
   },
@@ -2118,7 +2118,7 @@ var db = [
     "horsepower":105,
     "weight":3353,
     "acceleration":14.5,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"chevrolet nova"
   },
@@ -2129,7 +2129,7 @@ var db = [
     "horsepower":81,
     "weight":3012,
     "acceleration":17.6,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"ford maverick"
   },
@@ -2140,7 +2140,7 @@ var db = [
     "horsepower":90,
     "weight":3085,
     "acceleration":17.6,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"amc hornet"
   },
@@ -2151,7 +2151,7 @@ var db = [
     "horsepower":52,
     "weight":2035,
     "acceleration":22.2,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"chevrolet chevette"
   },
@@ -2162,7 +2162,7 @@ var db = [
     "horsepower":60,
     "weight":2164,
     "acceleration":22.1,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"chevrolet woody"
   },
@@ -2173,7 +2173,7 @@ var db = [
     "horsepower":70,
     "weight":1937,
     "acceleration":14.2,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"vw rabbit"
   },
@@ -2184,7 +2184,7 @@ var db = [
     "horsepower":53,
     "weight":1795,
     "acceleration":17.4,
-    "model year":76,
+    "year":76,
     "origin":3,
     "carName":"honda civic"
   },
@@ -2195,7 +2195,7 @@ var db = [
     "horsepower":100,
     "weight":3651,
     "acceleration":17.7,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"dodge aspen se"
   },
@@ -2206,7 +2206,7 @@ var db = [
     "horsepower":78,
     "weight":3574,
     "acceleration":21,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"ford granada ghia"
   },
@@ -2217,7 +2217,7 @@ var db = [
     "horsepower":110,
     "weight":3645,
     "acceleration":16.2,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"pontiac ventura sj"
   },
@@ -2228,7 +2228,7 @@ var db = [
     "horsepower":95,
     "weight":3193,
     "acceleration":17.8,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"amc pacer d/l"
   },
@@ -2239,7 +2239,7 @@ var db = [
     "horsepower":71,
     "weight":1825,
     "acceleration":12.2,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"volkswagen rabbit"
   },
@@ -2250,7 +2250,7 @@ var db = [
     "horsepower":70,
     "weight":1990,
     "acceleration":17,
-    "model year":76,
+    "year":76,
     "origin":3,
     "carName":"datsun b-210"
   },
@@ -2261,7 +2261,7 @@ var db = [
     "horsepower":75,
     "weight":2155,
     "acceleration":16.4,
-    "model year":76,
+    "year":76,
     "origin":3,
     "carName":"toyota corolla"
   },
@@ -2272,7 +2272,7 @@ var db = [
     "horsepower":72,
     "weight":2565,
     "acceleration":13.6,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"ford pinto"
   },
@@ -2283,7 +2283,7 @@ var db = [
     "horsepower":102,
     "weight":3150,
     "acceleration":15.7,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"volvo 245"
   },
@@ -2294,7 +2294,7 @@ var db = [
     "horsepower":150,
     "weight":3940,
     "acceleration":13.2,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"plymouth volare premier v8"
   },
@@ -2305,7 +2305,7 @@ var db = [
     "horsepower":88,
     "weight":3270,
     "acceleration":21.9,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"peugeot 504"
   },
@@ -2316,7 +2316,7 @@ var db = [
     "horsepower":108,
     "weight":2930,
     "acceleration":15.5,
-    "model year":76,
+    "year":76,
     "origin":3,
     "carName":"toyota mark ii"
   },
@@ -2327,7 +2327,7 @@ var db = [
     "horsepower":120,
     "weight":3820,
     "acceleration":16.7,
-    "model year":76,
+    "year":76,
     "origin":2,
     "carName":"mercedes-benz 280s"
   },
@@ -2338,7 +2338,7 @@ var db = [
     "horsepower":180,
     "weight":4380,
     "acceleration":12.1,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"cadillac seville"
   },
@@ -2349,7 +2349,7 @@ var db = [
     "horsepower":145,
     "weight":4055,
     "acceleration":12,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"chevy c10"
   },
@@ -2360,7 +2360,7 @@ var db = [
     "horsepower":130,
     "weight":3870,
     "acceleration":15,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"ford f108"
   },
@@ -2371,7 +2371,7 @@ var db = [
     "horsepower":150,
     "weight":3755,
     "acceleration":14,
-    "model year":76,
+    "year":76,
     "origin":1,
     "carName":"dodge d100"
   },
@@ -2382,7 +2382,7 @@ var db = [
     "horsepower":68,
     "weight":2045,
     "acceleration":18.5,
-    "model year":77,
+    "year":77,
     "origin":3,
     "carName":"honda accord cvcc"
   },
@@ -2393,7 +2393,7 @@ var db = [
     "horsepower":80,
     "weight":2155,
     "acceleration":14.8,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"buick opel isuzu deluxe"
   },
@@ -2404,7 +2404,7 @@ var db = [
     "horsepower":58,
     "weight":1825,
     "acceleration":18.6,
-    "model year":77,
+    "year":77,
     "origin":2,
     "carName":"renault 5 gtl"
   },
@@ -2415,7 +2415,7 @@ var db = [
     "horsepower":96,
     "weight":2300,
     "acceleration":15.5,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"plymouth arrow gs"
   },
@@ -2426,7 +2426,7 @@ var db = [
     "horsepower":70,
     "weight":1945,
     "acceleration":16.8,
-    "model year":77,
+    "year":77,
     "origin":3,
     "carName":"datsun f-10 hatchback"
   },
@@ -2437,7 +2437,7 @@ var db = [
     "horsepower":145,
     "weight":3880,
     "acceleration":12.5,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"chevrolet caprice classic"
   },
@@ -2448,7 +2448,7 @@ var db = [
     "horsepower":110,
     "weight":4060,
     "acceleration":19,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"oldsmobile cutlass supreme"
   },
@@ -2459,7 +2459,7 @@ var db = [
     "horsepower":145,
     "weight":4140,
     "acceleration":13.7,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"dodge monaco brougham"
   },
@@ -2470,7 +2470,7 @@ var db = [
     "horsepower":130,
     "weight":4295,
     "acceleration":14.9,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"mercury cougar brougham"
   },
@@ -2481,7 +2481,7 @@ var db = [
     "horsepower":110,
     "weight":3520,
     "acceleration":16.4,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"chevrolet concours"
   },
@@ -2492,7 +2492,7 @@ var db = [
     "horsepower":105,
     "weight":3425,
     "acceleration":16.9,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"buick skylark"
   },
@@ -2503,7 +2503,7 @@ var db = [
     "horsepower":100,
     "weight":3630,
     "acceleration":17.7,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"plymouth volare custom"
   },
@@ -2514,7 +2514,7 @@ var db = [
     "horsepower":98,
     "weight":3525,
     "acceleration":19,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"ford granada"
   },
@@ -2525,7 +2525,7 @@ var db = [
     "horsepower":180,
     "weight":4220,
     "acceleration":11.1,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"pontiac grand prix lj"
   },
@@ -2536,7 +2536,7 @@ var db = [
     "horsepower":170,
     "weight":4165,
     "acceleration":11.4,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"chevrolet monte carlo landau"
   },
@@ -2547,7 +2547,7 @@ var db = [
     "horsepower":190,
     "weight":4325,
     "acceleration":12.2,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"chrysler cordoba"
   },
@@ -2558,7 +2558,7 @@ var db = [
     "horsepower":149,
     "weight":4335,
     "acceleration":14.5,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"ford thunderbird"
   },
@@ -2569,7 +2569,7 @@ var db = [
     "horsepower":78,
     "weight":1940,
     "acceleration":14.5,
-    "model year":77,
+    "year":77,
     "origin":2,
     "carName":"volkswagen rabbit custom"
   },
@@ -2580,7 +2580,7 @@ var db = [
     "horsepower":88,
     "weight":2740,
     "acceleration":16,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"pontiac sunbird coupe"
   },
@@ -2591,7 +2591,7 @@ var db = [
     "horsepower":75,
     "weight":2265,
     "acceleration":18.2,
-    "model year":77,
+    "year":77,
     "origin":3,
     "carName":"toyota corolla liftback"
   },
@@ -2602,7 +2602,7 @@ var db = [
     "horsepower":89,
     "weight":2755,
     "acceleration":15.8,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"ford mustang ii 2+2"
   },
@@ -2613,7 +2613,7 @@ var db = [
     "horsepower":63,
     "weight":2051,
     "acceleration":17,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"chevrolet chevette"
   },
@@ -2624,7 +2624,7 @@ var db = [
     "horsepower":83,
     "weight":2075,
     "acceleration":15.9,
-    "model year":77,
+    "year":77,
     "origin":1,
     "carName":"dodge colt m/m"
   },
@@ -2635,7 +2635,7 @@ var db = [
     "horsepower":67,
     "weight":1985,
     "acceleration":16.4,
-    "model year":77,
+    "year":77,
     "origin":3,
     "carName":"subaru dl"
   },
@@ -2646,7 +2646,7 @@ var db = [
     "horsepower":78,
     "weight":2190,
     "acceleration":14.1,
-    "model year":77,
+    "year":77,
     "origin":2,
     "carName":"volkswagen dasher"
   },
@@ -2657,7 +2657,7 @@ var db = [
     "horsepower":97,
     "weight":2815,
     "acceleration":14.5,
-    "model year":77,
+    "year":77,
     "origin":3,
     "carName":"datsun 810"
   },
@@ -2668,7 +2668,7 @@ var db = [
     "horsepower":110,
     "weight":2600,
     "acceleration":12.8,
-    "model year":77,
+    "year":77,
     "origin":2,
     "carName":"bmw 320i"
   },
@@ -2679,7 +2679,7 @@ var db = [
     "horsepower":110,
     "weight":2720,
     "acceleration":13.5,
-    "model year":77,
+    "year":77,
     "origin":3,
     "carName":"mazda rx-4"
   },
@@ -2690,7 +2690,7 @@ var db = [
     "horsepower":48,
     "weight":1985,
     "acceleration":21.5,
-    "model year":78,
+    "year":78,
     "origin":2,
     "carName":"volkswagen rabbit custom diesel"
   },
@@ -2701,7 +2701,7 @@ var db = [
     "horsepower":66,
     "weight":1800,
     "acceleration":14.4,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"ford fiesta"
   },
@@ -2712,7 +2712,7 @@ var db = [
     "horsepower":52,
     "weight":1985,
     "acceleration":19.4,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"mazda glc deluxe"
   },
@@ -2723,7 +2723,7 @@ var db = [
     "horsepower":70,
     "weight":2070,
     "acceleration":18.6,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"datsun b210 gx"
   },
@@ -2734,7 +2734,7 @@ var db = [
     "horsepower":60,
     "weight":1800,
     "acceleration":16.4,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"honda civic cvcc"
   },
@@ -2745,7 +2745,7 @@ var db = [
     "horsepower":110,
     "weight":3365,
     "acceleration":15.5,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"oldsmobile cutlass salon brougham"
   },
@@ -2756,7 +2756,7 @@ var db = [
     "horsepower":140,
     "weight":3735,
     "acceleration":13.2,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"dodge diplomat"
   },
@@ -2767,7 +2767,7 @@ var db = [
     "horsepower":139,
     "weight":3570,
     "acceleration":12.8,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"mercury monarch ghia"
   },
@@ -2778,7 +2778,7 @@ var db = [
     "horsepower":105,
     "weight":3535,
     "acceleration":19.2,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"pontiac phoenix lj"
   },
@@ -2789,7 +2789,7 @@ var db = [
     "horsepower":95,
     "weight":3155,
     "acceleration":18.2,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"chevrolet malibu"
   },
@@ -2800,7 +2800,7 @@ var db = [
     "horsepower":85,
     "weight":2965,
     "acceleration":15.8,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"ford fairmont (auto)"
   },
@@ -2811,7 +2811,7 @@ var db = [
     "horsepower":88,
     "weight":2720,
     "acceleration":15.4,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"ford fairmont (man)"
   },
@@ -2822,7 +2822,7 @@ var db = [
     "horsepower":100,
     "weight":3430,
     "acceleration":17.2,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"plymouth volare"
   },
@@ -2833,7 +2833,7 @@ var db = [
     "horsepower":90,
     "weight":3210,
     "acceleration":17.2,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"amc concord"
   },
@@ -2844,7 +2844,7 @@ var db = [
     "horsepower":105,
     "weight":3380,
     "acceleration":15.8,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"buick century special"
   },
@@ -2855,7 +2855,7 @@ var db = [
     "horsepower":85,
     "weight":3070,
     "acceleration":16.7,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"mercury zephyr"
   },
@@ -2866,7 +2866,7 @@ var db = [
     "horsepower":110,
     "weight":3620,
     "acceleration":18.7,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"dodge aspen"
   },
@@ -2877,7 +2877,7 @@ var db = [
     "horsepower":120,
     "weight":3410,
     "acceleration":15.1,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"amc concord d/l"
   },
@@ -2888,7 +2888,7 @@ var db = [
     "horsepower":145,
     "weight":3425,
     "acceleration":13.2,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"chevrolet monte carlo landau"
   },
@@ -2899,7 +2899,7 @@ var db = [
     "horsepower":165,
     "weight":3445,
     "acceleration":13.4,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"buick regal sport coupe (turbo)"
   },
@@ -2910,7 +2910,7 @@ var db = [
     "horsepower":139,
     "weight":3205,
     "acceleration":11.2,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"ford futura"
   },
@@ -2921,7 +2921,7 @@ var db = [
     "horsepower":140,
     "weight":4080,
     "acceleration":13.7,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"dodge magnum xe"
   },
@@ -2932,7 +2932,7 @@ var db = [
     "horsepower":68,
     "weight":2155,
     "acceleration":16.5,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"chevrolet chevette"
   },
@@ -2943,7 +2943,7 @@ var db = [
     "horsepower":95,
     "weight":2560,
     "acceleration":14.2,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"toyota corona"
   },
@@ -2954,7 +2954,7 @@ var db = [
     "horsepower":97,
     "weight":2300,
     "acceleration":14.7,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"datsun 510"
   },
@@ -2965,7 +2965,7 @@ var db = [
     "horsepower":75,
     "weight":2230,
     "acceleration":14.5,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"dodge omni"
   },
@@ -2976,7 +2976,7 @@ var db = [
     "horsepower":95,
     "weight":2515,
     "acceleration":14.8,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"toyota celica gt liftback"
   },
@@ -2987,7 +2987,7 @@ var db = [
     "horsepower":105,
     "weight":2745,
     "acceleration":16.7,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"plymouth sapporo"
   },
@@ -2998,7 +2998,7 @@ var db = [
     "horsepower":85,
     "weight":2855,
     "acceleration":17.6,
-    "model year":78,
+    "year":78,
     "origin":1,
     "carName":"oldsmobile starfire sx"
   },
@@ -3009,7 +3009,7 @@ var db = [
     "horsepower":97,
     "weight":2405,
     "acceleration":14.9,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"datsun 200-sx"
   },
@@ -3020,7 +3020,7 @@ var db = [
     "horsepower":103,
     "weight":2830,
     "acceleration":15.9,
-    "model year":78,
+    "year":78,
     "origin":2,
     "carName":"audi 5000"
   },
@@ -3031,7 +3031,7 @@ var db = [
     "horsepower":125,
     "weight":3140,
     "acceleration":13.6,
-    "model year":78,
+    "year":78,
     "origin":2,
     "carName":"volvo 264gl"
   },
@@ -3042,7 +3042,7 @@ var db = [
     "horsepower":115,
     "weight":2795,
     "acceleration":15.7,
-    "model year":78,
+    "year":78,
     "origin":2,
     "carName":"saab 99gle"
   },
@@ -3053,7 +3053,7 @@ var db = [
     "horsepower":133,
     "weight":3410,
     "acceleration":15.8,
-    "model year":78,
+    "year":78,
     "origin":2,
     "carName":"peugeot 604sl"
   },
@@ -3064,7 +3064,7 @@ var db = [
     "horsepower":71,
     "weight":1990,
     "acceleration":14.9,
-    "model year":78,
+    "year":78,
     "origin":2,
     "carName":"volkswagen scirocco"
   },
@@ -3075,7 +3075,7 @@ var db = [
     "horsepower":68,
     "weight":2135,
     "acceleration":16.6,
-    "model year":78,
+    "year":78,
     "origin":3,
     "carName":"honda accord lx"
   },
@@ -3086,7 +3086,7 @@ var db = [
     "horsepower":115,
     "weight":3245,
     "acceleration":15.4,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"pontiac lemans v6"
   },
@@ -3097,7 +3097,7 @@ var db = [
     "horsepower":85,
     "weight":2990,
     "acceleration":18.2,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"mercury zephyr 6"
   },
@@ -3108,7 +3108,7 @@ var db = [
     "horsepower":88,
     "weight":2890,
     "acceleration":17.3,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"ford fairmont 4"
   },
@@ -3119,7 +3119,7 @@ var db = [
     "horsepower":90,
     "weight":3265,
     "acceleration":18.2,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"amc concord dl 6"
   },
@@ -3130,7 +3130,7 @@ var db = [
     "horsepower":110,
     "weight":3360,
     "acceleration":16.6,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"dodge aspen 6"
   },
@@ -3141,7 +3141,7 @@ var db = [
     "horsepower":130,
     "weight":3840,
     "acceleration":15.4,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"chevrolet caprice classic"
   },
@@ -3152,7 +3152,7 @@ var db = [
     "horsepower":129,
     "weight":3725,
     "acceleration":13.4,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"ford ltd landau"
   },
@@ -3163,7 +3163,7 @@ var db = [
     "horsepower":138,
     "weight":3955,
     "acceleration":13.2,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"mercury grand marquis"
   },
@@ -3174,7 +3174,7 @@ var db = [
     "horsepower":135,
     "weight":3830,
     "acceleration":15.2,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"dodge st. regis"
   },
@@ -3185,7 +3185,7 @@ var db = [
     "horsepower":155,
     "weight":4360,
     "acceleration":14.9,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"buick estate wagon (sw)"
   },
@@ -3196,7 +3196,7 @@ var db = [
     "horsepower":142,
     "weight":4054,
     "acceleration":14.3,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"ford country squire (sw)"
   },
@@ -3207,7 +3207,7 @@ var db = [
     "horsepower":125,
     "weight":3605,
     "acceleration":15,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"chevrolet malibu classic (sw)"
   },
@@ -3218,7 +3218,7 @@ var db = [
     "horsepower":150,
     "weight":3940,
     "acceleration":13,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"chrysler lebaron town @ country (sw)"
   },
@@ -3229,7 +3229,7 @@ var db = [
     "horsepower":71,
     "weight":1925,
     "acceleration":14,
-    "model year":79,
+    "year":79,
     "origin":2,
     "carName":"vw rabbit custom"
   },
@@ -3240,7 +3240,7 @@ var db = [
     "horsepower":65,
     "weight":1975,
     "acceleration":15.2,
-    "model year":79,
+    "year":79,
     "origin":3,
     "carName":"maxda glc deluxe"
   },
@@ -3251,7 +3251,7 @@ var db = [
     "horsepower":80,
     "weight":1915,
     "acceleration":14.4,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"dodge colt hatchback custom"
   },
@@ -3262,7 +3262,7 @@ var db = [
     "horsepower":80,
     "weight":2670,
     "acceleration":15,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"amc spirit dl"
   },
@@ -3273,7 +3273,7 @@ var db = [
     "horsepower":77,
     "weight":3530,
     "acceleration":20.1,
-    "model year":79,
+    "year":79,
     "origin":2,
     "carName":"mercedes benz 300d"
   },
@@ -3284,7 +3284,7 @@ var db = [
     "horsepower":125,
     "weight":3900,
     "acceleration":17.4,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"cadillac eldorado"
   },
@@ -3295,7 +3295,7 @@ var db = [
     "horsepower":71,
     "weight":3190,
     "acceleration":24.8,
-    "model year":79,
+    "year":79,
     "origin":2,
     "carName":"peugeot 504"
   },
@@ -3306,7 +3306,7 @@ var db = [
     "horsepower":90,
     "weight":3420,
     "acceleration":22.2,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"oldsmobile cutlass salon brougham"
   },
@@ -3317,7 +3317,7 @@ var db = [
     "horsepower":70,
     "weight":2200,
     "acceleration":13.2,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"plymouth horizon"
   },
@@ -3328,7 +3328,7 @@ var db = [
     "horsepower":70,
     "weight":2150,
     "acceleration":14.9,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"plymouth horizon tc3"
   },
@@ -3339,7 +3339,7 @@ var db = [
     "horsepower":65,
     "weight":2020,
     "acceleration":19.2,
-    "model year":79,
+    "year":79,
     "origin":3,
     "carName":"datsun 210"
   },
@@ -3350,7 +3350,7 @@ var db = [
     "horsepower":69,
     "weight":2130,
     "acceleration":14.7,
-    "model year":79,
+    "year":79,
     "origin":2,
     "carName":"fiat strada custom"
   },
@@ -3361,7 +3361,7 @@ var db = [
     "horsepower":90,
     "weight":2670,
     "acceleration":16,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"buick skylark limited"
   },
@@ -3372,7 +3372,7 @@ var db = [
     "horsepower":115,
     "weight":2595,
     "acceleration":11.3,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"chevrolet citation"
   },
@@ -3383,7 +3383,7 @@ var db = [
     "horsepower":115,
     "weight":2700,
     "acceleration":12.9,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"oldsmobile omega brougham"
   },
@@ -3394,7 +3394,7 @@ var db = [
     "horsepower":90,
     "weight":2556,
     "acceleration":13.2,
-    "model year":79,
+    "year":79,
     "origin":1,
     "carName":"pontiac phoenix"
   },
@@ -3405,7 +3405,7 @@ var db = [
     "horsepower":76,
     "weight":2144,
     "acceleration":14.7,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"vw rabbit"
   },
@@ -3416,7 +3416,7 @@ var db = [
     "horsepower":60,
     "weight":1968,
     "acceleration":18.8,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"toyota corolla tercel"
   },
@@ -3427,7 +3427,7 @@ var db = [
     "horsepower":70,
     "weight":2120,
     "acceleration":15.5,
-    "model year":80,
+    "year":80,
     "origin":1,
     "carName":"chevrolet chevette"
   },
@@ -3438,7 +3438,7 @@ var db = [
     "horsepower":65,
     "weight":2019,
     "acceleration":16.4,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"datsun 310"
   },
@@ -3449,7 +3449,7 @@ var db = [
     "horsepower":90,
     "weight":2678,
     "acceleration":16.5,
-    "model year":80,
+    "year":80,
     "origin":1,
     "carName":"chevrolet citation"
   },
@@ -3460,7 +3460,7 @@ var db = [
     "horsepower":88,
     "weight":2870,
     "acceleration":18.1,
-    "model year":80,
+    "year":80,
     "origin":1,
     "carName":"ford fairmont"
   },
@@ -3471,7 +3471,7 @@ var db = [
     "horsepower":90,
     "weight":3003,
     "acceleration":20.1,
-    "model year":80,
+    "year":80,
     "origin":1,
     "carName":"amc concord"
   },
@@ -3482,7 +3482,7 @@ var db = [
     "horsepower":90,
     "weight":3381,
     "acceleration":18.7,
-    "model year":80,
+    "year":80,
     "origin":1,
     "carName":"dodge aspen"
   },
@@ -3493,7 +3493,7 @@ var db = [
     "horsepower":78,
     "weight":2188,
     "acceleration":15.8,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"audi 4000"
   },
@@ -3504,7 +3504,7 @@ var db = [
     "horsepower":90,
     "weight":2711,
     "acceleration":15.5,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"toyota corona liftback"
   },
@@ -3515,7 +3515,7 @@ var db = [
     "horsepower":75,
     "weight":2542,
     "acceleration":17.5,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"mazda 626"
   },
@@ -3526,7 +3526,7 @@ var db = [
     "horsepower":92,
     "weight":2434,
     "acceleration":15,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"datsun 510 hatchback"
   },
@@ -3537,7 +3537,7 @@ var db = [
     "horsepower":75,
     "weight":2265,
     "acceleration":15.2,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"toyota corolla"
   },
@@ -3548,7 +3548,7 @@ var db = [
     "horsepower":65,
     "weight":2110,
     "acceleration":17.9,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"mazda glc"
   },
@@ -3559,7 +3559,7 @@ var db = [
     "horsepower":105,
     "weight":2800,
     "acceleration":14.4,
-    "model year":80,
+    "year":80,
     "origin":1,
     "carName":"dodge colt"
   },
@@ -3570,7 +3570,7 @@ var db = [
     "horsepower":65,
     "weight":2110,
     "acceleration":19.2,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"datsun 210"
   },
@@ -3581,7 +3581,7 @@ var db = [
     "horsepower":48,
     "weight":2085,
     "acceleration":21.7,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"vw rabbit c (diesel)"
   },
@@ -3592,7 +3592,7 @@ var db = [
     "horsepower":48,
     "weight":2335,
     "acceleration":23.7,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"vw dasher (diesel)"
   },
@@ -3603,7 +3603,7 @@ var db = [
     "horsepower":67,
     "weight":2950,
     "acceleration":19.9,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"audi 5000s (diesel)"
   },
@@ -3614,7 +3614,7 @@ var db = [
     "horsepower":67,
     "weight":3250,
     "acceleration":21.8,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"mercedes-benz 240d"
   },
@@ -3625,7 +3625,7 @@ var db = [
     "horsepower":67,
     "weight":1850,
     "acceleration":13.8,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"honda civic 1500 gl"
   },
@@ -3636,7 +3636,7 @@ var db = [
     "horsepower":0,
     "weight":1835,
     "acceleration":17.3,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"renault lecar deluxe"
   },
@@ -3647,7 +3647,7 @@ var db = [
     "horsepower":67,
     "weight":2145,
     "acceleration":18,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"subaru dl"
   },
@@ -3658,7 +3658,7 @@ var db = [
     "horsepower":62,
     "weight":1845,
     "acceleration":15.3,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"vokswagen rabbit"
   },
@@ -3669,7 +3669,7 @@ var db = [
     "horsepower":132,
     "weight":2910,
     "acceleration":11.4,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"datsun 280-zx"
   },
@@ -3680,7 +3680,7 @@ var db = [
     "horsepower":100,
     "weight":2420,
     "acceleration":12.5,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"mazda rx-7 gs"
   },
@@ -3691,7 +3691,7 @@ var db = [
     "horsepower":88,
     "weight":2500,
     "acceleration":15.1,
-    "model year":80,
+    "year":80,
     "origin":2,
     "carName":"triumph tr7 coupe"
   },
@@ -3702,7 +3702,7 @@ var db = [
     "horsepower":0,
     "weight":2905,
     "acceleration":14.3,
-    "model year":80,
+    "year":80,
     "origin":1,
     "carName":"ford mustang cobra"
   },
@@ -3713,7 +3713,7 @@ var db = [
     "horsepower":72,
     "weight":2290,
     "acceleration":17,
-    "model year":80,
+    "year":80,
     "origin":3,
     "carName":"honda accord"
   },
@@ -3724,7 +3724,7 @@ var db = [
     "horsepower":84,
     "weight":2490,
     "acceleration":15.7,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"plymouth reliant"
   },
@@ -3735,7 +3735,7 @@ var db = [
     "horsepower":84,
     "weight":2635,
     "acceleration":16.4,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"buick skylark"
   },
@@ -3746,7 +3746,7 @@ var db = [
     "horsepower":92,
     "weight":2620,
     "acceleration":14.4,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"dodge aries wagon (sw)"
   },
@@ -3757,7 +3757,7 @@ var db = [
     "horsepower":110,
     "weight":2725,
     "acceleration":12.6,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"chevrolet citation"
   },
@@ -3768,7 +3768,7 @@ var db = [
     "horsepower":84,
     "weight":2385,
     "acceleration":12.9,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"plymouth reliant"
   },
@@ -3779,7 +3779,7 @@ var db = [
     "horsepower":58,
     "weight":1755,
     "acceleration":16.9,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"toyota starlet"
   },
@@ -3790,7 +3790,7 @@ var db = [
     "horsepower":64,
     "weight":1875,
     "acceleration":16.4,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"plymouth champ"
   },
@@ -3801,7 +3801,7 @@ var db = [
     "horsepower":60,
     "weight":1760,
     "acceleration":16.1,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"honda civic 1300"
   },
@@ -3812,7 +3812,7 @@ var db = [
     "horsepower":67,
     "weight":2065,
     "acceleration":17.8,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"subaru"
   },
@@ -3823,7 +3823,7 @@ var db = [
     "horsepower":65,
     "weight":1975,
     "acceleration":19.4,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"datsun 210 mpg"
   },
@@ -3834,7 +3834,7 @@ var db = [
     "horsepower":62,
     "weight":2050,
     "acceleration":17.3,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"toyota tercel"
   },
@@ -3845,7 +3845,7 @@ var db = [
     "horsepower":68,
     "weight":1985,
     "acceleration":16,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"mazda glc 4"
   },
@@ -3856,7 +3856,7 @@ var db = [
     "horsepower":63,
     "weight":2215,
     "acceleration":14.9,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"plymouth horizon 4"
   },
@@ -3867,7 +3867,7 @@ var db = [
     "horsepower":65,
     "weight":2045,
     "acceleration":16.2,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"ford escort 4w"
   },
@@ -3878,7 +3878,7 @@ var db = [
     "horsepower":65,
     "weight":2380,
     "acceleration":20.7,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"ford escort 2h"
   },
@@ -3889,7 +3889,7 @@ var db = [
     "horsepower":74,
     "weight":2190,
     "acceleration":14.2,
-    "model year":81,
+    "year":81,
     "origin":2,
     "carName":"volkswagen jetta"
   },
@@ -3900,7 +3900,7 @@ var db = [
     "horsepower":0,
     "weight":2320,
     "acceleration":15.8,
-    "model year":81,
+    "year":81,
     "origin":2,
     "carName":"renault 18i"
   },
@@ -3911,7 +3911,7 @@ var db = [
     "horsepower":75,
     "weight":2210,
     "acceleration":14.4,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"honda prelude"
   },
@@ -3922,7 +3922,7 @@ var db = [
     "horsepower":75,
     "weight":2350,
     "acceleration":16.8,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"toyota corolla"
   },
@@ -3933,7 +3933,7 @@ var db = [
     "horsepower":100,
     "weight":2615,
     "acceleration":14.8,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"datsun 200sx"
   },
@@ -3944,7 +3944,7 @@ var db = [
     "horsepower":74,
     "weight":2635,
     "acceleration":18.3,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"mazda 626"
   },
@@ -3955,7 +3955,7 @@ var db = [
     "horsepower":80,
     "weight":3230,
     "acceleration":20.4,
-    "model year":81,
+    "year":81,
     "origin":2,
     "carName":"peugeot 505s turbo diesel"
   },
@@ -3966,7 +3966,7 @@ var db = [
     "horsepower":76,
     "weight":3160,
     "acceleration":19.6,
-    "model year":81,
+    "year":81,
     "origin":2,
     "carName":"volvo diesel"
   },
@@ -3977,7 +3977,7 @@ var db = [
     "horsepower":116,
     "weight":2900,
     "acceleration":12.6,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"toyota cressida"
   },
@@ -3988,7 +3988,7 @@ var db = [
     "horsepower":120,
     "weight":2930,
     "acceleration":13.8,
-    "model year":81,
+    "year":81,
     "origin":3,
     "carName":"datsun 810 maxima"
   },
@@ -3999,7 +3999,7 @@ var db = [
     "horsepower":110,
     "weight":3415,
     "acceleration":15.8,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"buick century"
   },
@@ -4010,7 +4010,7 @@ var db = [
     "horsepower":105,
     "weight":3725,
     "acceleration":19,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"oldsmobile cutlass ls"
   },
@@ -4021,7 +4021,7 @@ var db = [
     "horsepower":88,
     "weight":3060,
     "acceleration":17.1,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"ford granada gl"
   },
@@ -4032,7 +4032,7 @@ var db = [
     "horsepower":85,
     "weight":3465,
     "acceleration":16.6,
-    "model year":81,
+    "year":81,
     "origin":1,
     "carName":"chrysler lebaron salon"
   },
@@ -4043,7 +4043,7 @@ var db = [
     "horsepower":88,
     "weight":2605,
     "acceleration":19.6,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"chevrolet cavalier"
   },
@@ -4054,7 +4054,7 @@ var db = [
     "horsepower":88,
     "weight":2640,
     "acceleration":18.6,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"chevrolet cavalier wagon"
   },
@@ -4065,7 +4065,7 @@ var db = [
     "horsepower":88,
     "weight":2395,
     "acceleration":18,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"chevrolet cavalier 2-door"
   },
@@ -4076,7 +4076,7 @@ var db = [
     "horsepower":85,
     "weight":2575,
     "acceleration":16.2,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"pontiac j2000 se hatchback"
   },
@@ -4087,7 +4087,7 @@ var db = [
     "horsepower":84,
     "weight":2525,
     "acceleration":16,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"dodge aries se"
   },
@@ -4098,7 +4098,7 @@ var db = [
     "horsepower":90,
     "weight":2735,
     "acceleration":18,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"pontiac phoenix"
   },
@@ -4109,7 +4109,7 @@ var db = [
     "horsepower":92,
     "weight":2865,
     "acceleration":16.4,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"ford fairmont futura"
   },
@@ -4120,7 +4120,7 @@ var db = [
     "horsepower":0,
     "weight":3035,
     "acceleration":20.5,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"amc concord dl"
   },
@@ -4131,7 +4131,7 @@ var db = [
     "horsepower":74,
     "weight":1980,
     "acceleration":15.3,
-    "model year":82,
+    "year":82,
     "origin":2,
     "carName":"volkswagen rabbit l"
   },
@@ -4142,7 +4142,7 @@ var db = [
     "horsepower":68,
     "weight":2025,
     "acceleration":18.2,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"mazda glc custom l"
   },
@@ -4153,7 +4153,7 @@ var db = [
     "horsepower":68,
     "weight":1970,
     "acceleration":17.6,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"mazda glc custom"
   },
@@ -4164,7 +4164,7 @@ var db = [
     "horsepower":63,
     "weight":2125,
     "acceleration":14.7,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"plymouth horizon miser"
   },
@@ -4175,7 +4175,7 @@ var db = [
     "horsepower":70,
     "weight":2125,
     "acceleration":17.3,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"mercury lynx l"
   },
@@ -4186,7 +4186,7 @@ var db = [
     "horsepower":88,
     "weight":2160,
     "acceleration":14.5,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"nissan stanza xe"
   },
@@ -4197,7 +4197,7 @@ var db = [
     "horsepower":75,
     "weight":2205,
     "acceleration":14.5,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"honda accord"
   },
@@ -4208,7 +4208,7 @@ var db = [
     "horsepower":70,
     "weight":2245,
     "acceleration":16.9,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"toyota corolla"
   },
@@ -4219,7 +4219,7 @@ var db = [
     "horsepower":67,
     "weight":1965,
     "acceleration":15,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"honda civic"
   },
@@ -4230,7 +4230,7 @@ var db = [
     "horsepower":67,
     "weight":1965,
     "acceleration":15.7,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"honda civic (auto)"
   },
@@ -4241,7 +4241,7 @@ var db = [
     "horsepower":67,
     "weight":1995,
     "acceleration":16.2,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"datsun 310 gx"
   },
@@ -4252,7 +4252,7 @@ var db = [
     "horsepower":110,
     "weight":2945,
     "acceleration":16.4,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"buick century limited"
   },
@@ -4263,7 +4263,7 @@ var db = [
     "horsepower":85,
     "weight":3015,
     "acceleration":17,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"oldsmobile cutlass ciera (diesel)"
   },
@@ -4274,7 +4274,7 @@ var db = [
     "horsepower":92,
     "weight":2585,
     "acceleration":14.5,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"chrysler lebaron medallion"
   },
@@ -4285,7 +4285,7 @@ var db = [
     "horsepower":112,
     "weight":2835,
     "acceleration":14.7,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"ford granada l"
   },
@@ -4296,7 +4296,7 @@ var db = [
     "horsepower":96,
     "weight":2665,
     "acceleration":13.9,
-    "model year":82,
+    "year":82,
     "origin":3,
     "carName":"toyota celica gt"
   },
@@ -4307,7 +4307,7 @@ var db = [
     "horsepower":84,
     "weight":2370,
     "acceleration":13,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"dodge charger 2.2"
   },
@@ -4318,7 +4318,7 @@ var db = [
     "horsepower":90,
     "weight":2950,
     "acceleration":17.3,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"chevrolet camaro"
   },
@@ -4329,7 +4329,7 @@ var db = [
     "horsepower":86,
     "weight":2790,
     "acceleration":15.6,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"ford mustang gl"
   },
@@ -4340,7 +4340,7 @@ var db = [
     "horsepower":52,
     "weight":2130,
     "acceleration":24.6,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"vw pickup"
   },
@@ -4351,7 +4351,7 @@ var db = [
     "horsepower":84,
     "weight":2295,
     "acceleration":11.6,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"dodge rampage"
   },
@@ -4362,7 +4362,7 @@ var db = [
     "horsepower":79,
     "weight":2625,
     "acceleration":18.6,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"ford ranger"
   },
@@ -4373,7 +4373,7 @@ var db = [
     "horsepower":82,
     "weight":2720,
     "acceleration":19.4,
-    "model year":82,
+    "year":82,
     "origin":1,
     "carName":"chevy s-10"
   }

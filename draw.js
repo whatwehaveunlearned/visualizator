@@ -11,8 +11,7 @@ for (var i=0;i<Size;i++){
 	var newNumber = Math.round(Math.random() * 30);
 	dataset.push(newNumber);
 }
-//var dataset = [[5, 20], [480, 90], [250, 50], [100, 33], [330, 95], [410, 12], [475, 44], [25, 67], [85, 21], [220, 88]];
-//var dataset = [5,10,20,25,4,15,24,23,30,32,32,32,12,31,34];
+
 //Define margins, width and height of container
 var margin = {
     top: 20,
@@ -22,6 +21,16 @@ var margin = {
 };
 var w = 500 - margin.left - margin.right;
 var h = 350 - margin.top - margin.bottom;
+
+var chartAreaGlobalCounter = 0;
+/*var chartArea = {
+	width:"420px",
+	height:"310px",
+	borderStyle:"double",
+	borderWidth:"5px",
+	backgroundColor:"#CCC"
+
+}*/
 
 //##########################  END GLOBAL VARIABLES DECLARATION ########################################################
 
@@ -33,40 +42,79 @@ main();
 //Main Function
 function main (){
 
-	simpleCol();
+	$( "#applicationArea" ).dblclick(function() {
+  		areaCreator("chartArea"+chartAreaGlobalCounter);
+	});
+	//var chartCounter = areaCreator("chartArea"+chartAreaGlobalCounter,chartAreaGlobalCounter);
+	simpleCol([0],"chartArea0");
+	grabAttr();
+
+	//************************ Side Functions *************************************
 	
-	//************************* Viz Types Functions **********************************//
+	//Attr Bar
+	function grabAttr (){
+		var attrBox = d3.select("#sideBar").append("div")
+						.attr({
+							class:"btn-group-vertical",
+							"role":"group"
+						});
+		for (attr in db[0]){
+			attrBox.append("p")
+				   .attr({
+				   	class:"attr",
+				   	id:attr
+				   })
+				   .text(attr);
+		}
+		$( ".attr" ).draggable({revert: "valid"});
+	}
+
+	//Area Creator
+	function areaCreator (Areaname,counter){
+		d3.select("#applicationArea").append("div")
+							.attr({
+								class:"chartArea",
+								"id":Areaname
+							})
+		//To move chartArea
+		$("#"+Areaname).draggable();
+		counter = counter + 1;
+		return(counter); 
+	}
+
+
+	//************************* Viz Types Functions **********************************
 	
 	//simpleCol Viz
-	function simpleCol (){
+	function simpleCol (attr1,chartArea){
 		//Function Variables
 		var barPadding=1;
 		var padding = 20;
 
 		//Scale
 	  	var xScale = d3.scale.ordinal()
-	  					.domain(d3.range(dataset.length))
+	  					.domain(d3.range(attr1.length))
 	  					.rangeRoundBands([padding,w-padding],0.05);
 	  	var yScale = d3.scale.linear()
-	  				 .domain([0, d3.max(dataset)])
+	  				 .domain([0, d3.max(attr1)])
 	  				 .range([h-padding,0]);
 	  	//Axis
 	  	var xAxis = d3.svg.axis()
 	  					.scale(xScale)
-	  					.orient("bottom")
-	  					.ticks(10);
+	  					//.ticks(10)
+	  					.orient("bottom");
 	  	var yAxis = d3.svg.axis()
 	  					.scale(yScale)
-	  					.orient("left")
-	  					.ticks(10);
+	  					//.ticks(10)
+	  					.orient("left");
 
 	  	//Create svg element
-	  	var svg = d3.select("div")
+	  	var svg = d3.select("#chartArea0")
 	              .append("svg")
 	              .attr("width",w)
 	              .attr("height",h);
 	  	svg.selectAll("rect")
-	     .data(dataset)
+	     .data(attr1)
 	     .enter()
 	     .append("rect")
 	     .attr({
@@ -79,7 +127,7 @@ function main (){
 
 	    //Draw Text
 	  	svg.selectAll("text")
-	     .data(dataset)
+	     .data(attr1)
 	     .enter()
 	     .append("text")
 	     .text(function(d){
@@ -87,9 +135,9 @@ function main (){
 	     }) 
 	     .attr({
 	        x: function(d,i){ return xScale(i) + xScale.rangeBand()/2; },
-	        y: function(d) { return  yScale(d) + 250/dataset.length}, 
+	        y: function(d) { return  yScale(d) + 250/attr1.length}, 
 	        "font-family": "sans-serif",
-	        "font-size": 250/dataset.length,
+	        "font-size": 250/attr1.length,
 	        fill: "white",
 	        "text-anchor":"middle"
 	      });
@@ -106,7 +154,24 @@ function main (){
 	   	  		class: "axis",
 	   	  		"transform": "translate(" + (padding) + ",0)"
 	   	  	})
-	   	  	.call(yAxis);          
+	   	  	.call(yAxis);  
+
+	   	$(".chartArea").droppable({
+			drop: function (event,ui){
+				var dataset = [];
+				//Get attr to represent
+				a = "db[i]." + ui.draggable.text();
+				//Remove svg
+				svg.remove();
+				for (i=0;i<30;i++){
+					dataset.push(eval(a));
+				}
+
+				simpleCol(dataset,chartArea);
+			}
+		});
+		//To move chartArea
+		$(".chartArea").draggable();        
 
 	}
 
