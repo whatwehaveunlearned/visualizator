@@ -42,3 +42,60 @@ svg{
   width: 100px;
   height: 100px;
 }
+
+
+body {
+  font: 10px sans-serif;
+}
+
+/*From Scatterplotwithlasso*/
+#menu{
+  width: 100px;
+  border-style:solid;
+  border-width:5px;
+  padding: 2px 0px 2px 0px;
+}
+
+.attr {
+  padding: 5px 10px 2px 5px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+}
+
+.lasso path {
+  stroke: rgb(80,80,80);
+  stroke-width:2px;
+}
+
+.lasso .drawn {
+  fill-opacity:.05 ;
+}
+
+.lasso .loop_close {
+  fill:none;
+  stroke-dasharray: 4,4;
+}
+
+.lasso .origin {
+  fill:#3399FF;
+  fill-opacity:.5;
+}
+
+.not_possible {
+  fill:rgb(200,200,200);
+}
+
+.possible {
+  fill:#EC888C;
+}
+
+/*END From Scatterplotwithlasso*/
