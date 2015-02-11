@@ -1,23 +1,43 @@
 //Area Creator
-  function areaCreator (counter){
-    d3.select("#applicationArea").append("div")
-              .attr({
-                class:"chartArea",
-                "id":"graphArea"+counter
-              })
-  }
+function areaCreator (counter){
+  d3.select("#applicationArea").append("div")
+            .attr({
+              class:"chartArea",
+              "id":"graphArea"+counter
+            })
+}
 
-  function removeDuplicates(objectVector){
-    var arr = {};
+function title(svg){
+  svg.append("text")
+                 .text(plot.title)
+                 .attr({
+                   x: 500,
+                   y: 50, 
+                   "font-family": "sans-serif",
+                   "font-size": 50,
+                   fill: "black",
+                   "text-anchor":"middle"
+                })
+                .on("mouseover",function(d,i){
+                  $(this.parentElement.parentElement).draggable();
+                  $(this.parentElement.parentElement).draggable("enable");
+                })
+                .on("mouseout",function(d,i){
+                  $(this.parentElement.parentElement).draggable("disable");
+                });
+}
 
-    for ( var i=0; i < objectVector.length; i++ )
-      arr[objectVector[i]['carName']] = objectVector[i];
+function removeDuplicates(objectVector){
+  var arr = {};
 
-    tempArray = new Array();
-    for ( var key in arr )
-      tempArray.push(arr[key]);
-    selectedItems=tempArray;
-  }
+  for ( var i=0; i < objectVector.length; i++ )
+    arr[objectVector[i]['carName']] = objectVector[i];
+
+  tempArray = new Array();
+  for ( var key in arr )
+    tempArray.push(arr[key]);
+  selectedItems=tempArray;
+}
 
 function scatterPlot(){
 
@@ -174,21 +194,64 @@ function scatterPlot(){
         .style("text-anchor", "end")
         .text(function(d) { return d; });
 
-    var title = svg.append("text")
-                   .text(plot.title)
-                   .attr({
-                     x: 500,
-                     y: 50, 
-                     "font-family": "sans-serif",
-                     "font-size": 50,
-                     fill: "black",
-                     "text-anchor":"middle"
-                  })
-                  .on("mouseover",function(d,i){
-                    $(this.parentElement.parentElement).draggable();
-                    $(this.parentElement.parentElement).draggable("enable");
-                  })
-                  .on("mouseout",function(d,i){
-                    $(this.parentElement.parentElement).draggable("disable");
-                  });
+    title(svg);
+}
+
+function barChart(){
+  graphCounter = graphCounter +1;
+  areaCreator(graphCounter);
+  
+  var margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+  var x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
+
+  var y = d3.scale.linear()
+      .range([height, 0]);
+
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
+
+  x.domain(d3.range(dataset.length))
+  y.domain([0, d3.max(dataset, function(d) { return d[1]; })]).nice();
+
+  var svg = d3.select("#graphArea"+graphCounter).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+      .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text(plot.yAxis);
+
+    svg.selectAll(".bar")
+        .data(dataset)
+      .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d,i) { 
+          return x(i); })
+        .attr("width", x.rangeBand())
+        .attr("y", function(d) { return y(d[1]); })
+        .attr("height", function(d) { return height - y(d[1]); });
+
+    title(svg);
 }

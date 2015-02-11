@@ -28,7 +28,10 @@ function menu(position,svg){
                 .on("click",function(d,i){
                   if(this.id=="Add"){
                     add();
-                  }else if(this.id=="Other Attrs"){
+                  }else if(this.id=="Change Graph Type"){
+                    changeType();
+                  }
+                  else if(this.id=="Other Attrs"){
                      fillmenu(db[0],position,true,"attr");
                   }
                 });
