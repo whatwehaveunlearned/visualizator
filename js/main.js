@@ -14,6 +14,9 @@ var selectedItems=[];
 var graphCounter=0;
 
 var dataset = [];
+
+//lasso Array
+var lassoArray;
 //Plot Model
 var plot =  {
               title:"first",
