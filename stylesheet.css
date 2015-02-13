@@ -67,10 +67,6 @@ body {
   shape-rendering: crispEdges;
 }
 
-.dot {
-  stroke: #000;
-}
-
 .lasso path {
   stroke: rgb(80,80,80);
   stroke-width:2px;
@@ -108,20 +104,4 @@ body {
 .bar:hover {
   fill: brown;
 }
-
-.axis {
-  font: 10px sans-serif;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-
-.x.axis path {
-  display: none;
-}
-
 /*End of Bar Chart*/

@@ -9,11 +9,14 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var selectedItems=[];
-
+//Used to dynamically name the areas
 var graphCounter=0;
+//Used to Hold area objects with its information
+var areas = [];
 
-var dataset = [];
+//Used to manage Selections
+var dataset = []; //I dont need this to be global?
+var selectedItems=[];
 
 //lasso Array
 var lassoArray;
@@ -40,5 +43,4 @@ for (i=0;i<db.length;i++){
         plot.xAxis="mpg";
         plot.yAxis="weight";
 
-scatterPlot();
-//barChart();
+areaCreator (plot.title,plot.xAxis,plot.yAxis,dataset,"scatterPlot");

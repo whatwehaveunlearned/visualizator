@@ -51,12 +51,9 @@ function menu(position,svg){
                       for (item in selectedItems){
                         dataset.push([eval("selectedItems[item]." + selected[0]),eval("selectedItems[item]." + selected[1])]);
                       }
-                      plot.title=selected[0]+"/"+selected[1];
-                      plot.xAxis=selected[0];
-                      plot.yAxis=selected[1];
-                      d3.select("#attrMenu").remove();
-                      scatterPlot();
+                      changeAttr(selected);
                       selected=[];
+                      d3.select("#attrMenu").remove();
                     }
                   });
           }
