@@ -1,29 +1,28 @@
 //Area Creator.
 //Creates a visual Area. Creates a model of the view. Launches the proper graph.
 function areaCreator (title,xAxisName,yAxisName,data,type){
-  d3.select("#applicationArea").append("div")
+  var parentList=[];
+  var childrenList=[];
+  var area = d3.select("#applicationArea").append("div")
             .attr({
               class:"chartArea",
               "id":"graphArea"+graphCounter
             });
+  //Fix this to make areas resizable
+  //$( ".chartArea" ).resizable();
   var plot =  {
               name: "graphArea"+graphCounter,
               title:title,
               xAxis:xAxisName,
               yAxis:yAxisName,
+              database:"default",
               data: data,
-              type: type
-        /*      children:{ //maybe I only need to save the conecting objects
-                          number:0,
-                          conecting_elements:"",
-                       },
-              parent:{
-                number:0,
-                conecting_elements:"",
-              }, */
+              type: type,
+              parent: parentList,
+              children: childrenList
             }
   areas.push(plot);
-  eval(type+"()");
+  eval(type+"(area)");
   graphCounter = graphCounter +1;
 }
 
@@ -58,7 +57,7 @@ function addTitle(svg){
     });
 }
 
-function scatterPlot(){
+function scatterPlot(area){
 
   var x = d3.scale.linear()
       .range([0, width]);
@@ -83,7 +82,7 @@ function scatterPlot(){
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   //Call lasso function
-  var lasso = lassoFunction(svg,color);
+  var lasso = lassoFunction(svg,color,area);
   //lassoArray.push[lasso];
   
     
@@ -147,7 +146,7 @@ function scatterPlot(){
     addTitle(svg);
 }
 
-function barChart(){
+function barChart(area){
 
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = 960 - margin.left - margin.right,

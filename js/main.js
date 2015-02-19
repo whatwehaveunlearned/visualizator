@@ -11,8 +11,10 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
 
 //Used to dynamically name the areas
 var graphCounter=0;
-//Used to Hold area objects with its information
+//Hold area objects with its information
 var areas = [];
+//Hold database objects
+var databasesObjects = [];
 
 //Used to manage Selections
 var dataset = []; //I dont need this to be global?
@@ -36,11 +38,18 @@ var plot =  {
             }
 
 //Initialice with a plot
-for (i=0;i<db.length;i++){
+/*for (i=0;i<db.length;i++){
           dataset.push([db[i].weight,db[i].mpg]);
         }
         plot.title="mpg/weight";
         plot.xAxis="mpg";
         plot.yAxis="weight";
 
+loadDb("cars");
 areaCreator (plot.title,plot.xAxis,plot.yAxis,dataset,"scatterPlot");
+*/
+
+d3.select("#start")
+         .on("click",function(d){
+            dbMenu(d3.mouse(this));
+         });

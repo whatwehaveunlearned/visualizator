@@ -27,7 +27,7 @@ function link(area){
 	console.log("");
 }
 
-function lassoFunction (svg,color){
+function lassoFunction (svg,color,area){
   // Lasso functions to execute while lassoing
   var lasso_start = function() {
     lasso.items()
@@ -60,7 +60,7 @@ function lassoFunction (svg,color){
       .classed({"not_possible":false,"possible":false})
       .attr("r",17)
       .on("click",function(d){
-        menu(d3.mouse(this),svg);  
+        menu(d3.mouse(this),area);  
       });
 
     // Reset the style of the not selected dots
