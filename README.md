@@ -19,7 +19,7 @@ Use:
   
     Click here for amazing Viz
     
-    Add Db: Selects a db from the database folder.
+    Add Db: Selects a db from the database folder. (scv file is not working due to minor issue with data format)
     
     Create New Graph: Lets you create a new graph from a previously added Db.
     
