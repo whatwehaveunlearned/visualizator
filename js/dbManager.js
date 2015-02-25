@@ -1,23 +1,45 @@
 //load db
-function loadDb(name){
-	//Detect type of file to open
+function loadDb(name,id){
 	if(name.split(".")[1]=="csv"){
 		d3.csv("datasets/" + name,function(data){
-			db =  {
+			if (data instanceof Array){
+				db =  {
+				  id: id,
 	              name: name,
-	              data:data,
+	              metadata:"false",
+	              data:data
 	            };
+			}else{
+				db =  {
+				  id: id,
+	              name: name,
+	              metadata:data.meta,
+	              data:data.data
+	            };
+			}
 	        databasesObjects.push(db);
 		});
 	}else if(name.split(".")[1]=="json"){
 		d3.json("datasets/" + name,function(data){
-			db =  {
+			if (data instanceof Array){
+				db =  {
+				  id: id,
 	              name: name,
-	              data:data,
+	              metadata:"false",
+	              data:data
 	            };
+			}else{
+				db =  {
+				  id: id,
+	              name: name,
+	              metadata:data.meta,
+	              data:data.data
+	            };
+			}
 	        databasesObjects.push(db);
 		});
 	}
+	dbCounter=dbCounter+1;
 }
 
 function selectDb(name){
@@ -26,4 +48,16 @@ function selectDb(name){
 			return databasesObjects[element];
 		}
 	}
+}
+
+function selectData(db,attrs,type,dataset){
+	if(type=="scatterPlot"){
+		for (i=0;i<db.length;i++){
+        	dataset.push([eval("db[i]."+attrs[0]),eval("db[i]."+attrs[1])]);
+    	}
+	}else if(type=="histogram"){
+		for (i=0;i<db.length;i++){
+        	dataset.push(eval("db[i]."+attrs[0]));
+    	}
+    }
 }

@@ -11,31 +11,24 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
 
 //Used to dynamically name the areas
 var graphCounter=0;
+//Used to dynamically identify db
+var dbCounter=0;
 //Hold area objects with its information
 var areas = [];
 //Hold database objects
 var databasesObjects = [];
+//Database selected
+var databasePointer;
 
 //Used to manage Selections
-var dataset = []; //I dont need this to be global?
+//var dataset = []; //I dont need this to be global?
 var selectedItems=[];
 
 //lasso Array
 var lassoArray;
-//Plot Model
-var plot =  {
-              title:"first",
-              xAxis:"-",
-              yAxis:"-",
-              children:{//maybe I only need to save the conecting objects
-                          number:0,
-                          conecting_elements:"",
-                       },
-              parent:{
-                number:0,
-                conecting_elements:"",
-              },
-            }
+
+//Monitors menu on/off
+var menu = false; 
 
 //Initialice with a plot
 /*for (i=0;i<db.length;i++){
@@ -50,6 +43,13 @@ areaCreator (plot.title,plot.xAxis,plot.yAxis,dataset,"scatterPlot");
 */
 
 d3.select("#start")
-         .on("click",function(d){
-            dbMenu(d3.mouse(this));
-         });
+  .on("click",function(d){
+    if (menu == false){
+      menu=true;
+      mainMenu(d3.mouse(this));
+    } 
+    else{
+      menu=false;
+      d3.select(".btn-group-vertical").remove();
+     } 
+  });

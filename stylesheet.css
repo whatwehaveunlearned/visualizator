@@ -1,4 +1,4 @@
-/*Side Bar Style*/
+/*Menu Style*/
 .btn-group-vertical{
   position: absolute;
   width: 100px;
@@ -11,11 +11,27 @@
   padding: 5px 10px 2px 5px;
 }
 
-/* Chart Area Style */
+#menu{
+  width: 100px;
+  border-style:solid;
+  border-width:5px;
+  padding: 2px 0px 2px 0px;
+}
+
+.selected{
+  font-weight:bold;
+}
+
+.notselected{
+  font-weight:normal;
+}
+/******* END Menu Style  **********/
+/******* Chart Area Style *********/
 .chartArea {
  border-left: 10px solid;
 }
-
+/******* END Chart Area Style *********/
+/*******  Chart Style *********/
 .bar {
 }
 
@@ -49,13 +65,6 @@ body {
 }
 
 /*From Scatterplotwithlasso*/
-#menu{
-  width: 100px;
-  border-style:solid;
-  border-width:5px;
-  padding: 2px 0px 2px 0px;
-}
-
 .attr {
   padding: 5px 10px 2px 5px;
 }
@@ -105,3 +114,5 @@ body {
   fill: brown;
 }
 /*End of Bar Chart*/
+
+/******* END of  Chart Style *********/
