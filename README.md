@@ -31,7 +31,7 @@ areas: Array that holds visualizations objects.
 
     children: Array of children Areas
     data: data of Area
-    database: database of data of Area
+    database: database object of data of Area
     name: Name of Area
     parent: Array of Parent Areas
     title: Name of the Area
