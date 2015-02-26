@@ -1,10 +1,14 @@
 //Adds 2 sets together to draw a new graph
-function add (){ //Add needs to know the attrs in his parent.
+function extract (area){ //Add needs to know the attrs in his parent.
   dataset = [];
+  //Clean selection
   for (item in selectedItems){
-    dataset.push([selectedItems[item].mpg,selectedItems[item].weight]);
+    dataset.push([eval("selectedItems[item]."+ area.xAxis),eval("selectedItems[item]."+ area.yAxis)]);
   }
-  areaCreator ("mpg/weight","mpg","weight",dataset,"scatterPlot");
+  areaCreator (area.title,area.database,area.xAxis,area.yAxis,dataset,selectedItems,area.type,area);
+  //add child to parent
+  var child = searchArea("graphArea"+eval(graphCounter-1));
+  area.children.push(child);
 }
 
 //Changes the type of graph
@@ -28,6 +32,7 @@ function link(area){
 }
 
 function lassoFunction (svg,color,area){
+  var thisArea = searchArea(area[0][0].id);
   // Lasso functions to execute while lassoing
   var lasso_start = function() {
     lasso.items()
@@ -46,21 +51,21 @@ function lassoFunction (svg,color,area){
       .classed({"not_possible":true,"possible":false});
   };
 
-  var lasso_end = function() {
-    
+  var lasso_end = function() { 
     var selected;
+    var data = thisArea.data.objects;
+    var keys = Object.keys(thisArea.database.data[0]); 
     // Reset the color of all dots
     lasso.items()
        .style("fill", function(d) { return color(d.species); });
 
     // Style the selected dots
     selected=lasso.items().filter(function(d) {
-      console.log("s");
       return d.selected===true})
       .classed({"not_possible":false,"possible":false})
       .attr("r",17)
       .on("click",function(d){
-        menu(d3.mouse(this),area);  
+        operationsMenu(d3.mouse(this),thisArea);  
       });
 
     // Reset the style of the not selected dots
@@ -69,11 +74,11 @@ function lassoFunction (svg,color,area){
       //.attr("r",3.5);
 
       for (i=0; i<selected[0].length;i++) {
-        selectedItems.push(db[selected[0][i].id.split("_")[1]])
+        selectedItems.push(data[selected[0][i].id.split("_")[1]])
       }
 
     //Remove duplicates from selectedItems
-    removeDuplicates(selectedItems);
+    removeDuplicates(selectedItems,keys);
   };
 
   // Create the area where the lasso event can be triggered
@@ -97,16 +102,20 @@ function lassoFunction (svg,color,area){
 
   return lasso;
 
-  //Removes duplicates of the lassoSelection
-	function removeDuplicates(objectVector){
-	  var arr = {};
+  //Removes duplicates of the lassoSelection based on myId parameter created when loading the db.
+	function removeDuplicates(objectVector,keys){
+	  //for (key in keys){
+		  var arr = {};
 
-	  for ( var i=0; i < objectVector.length; i++ )
-	    arr[objectVector[i]['carName']] = objectVector[i];
+		  for ( var i=0; i < objectVector.length; i++ ){
+		    arr[objectVector[i].myId] = objectVector[i]
+		  }
 
-	  tempArray = new Array();
-	  for ( var key in arr )
-	    tempArray.push(arr[key]);
-	  selectedItems=tempArray;
+		  tempArray = new Array();
+		  for ( var each in arr ){
+		    tempArray.push(arr[each]);
+		  }
+		  selectedItems=tempArray;
+	    //}
 	}
 }

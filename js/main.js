@@ -30,26 +30,7 @@ var lassoArray;
 //Monitors menu on/off
 var menu = false; 
 
-//Initialice with a plot
-/*for (i=0;i<db.length;i++){
-          dataset.push([db[i].weight,db[i].mpg]);
-        }
-        plot.title="mpg/weight";
-        plot.xAxis="mpg";
-        plot.yAxis="weight";
-
-loadDb("cars");
-areaCreator (plot.title,plot.xAxis,plot.yAxis,dataset,"scatterPlot");
-*/
-
 d3.select("#start")
   .on("click",function(d){
-    if (menu == false){
-      menu=true;
       mainMenu(d3.mouse(this));
-    } 
-    else{
-      menu=false;
-      d3.select(".btn-group-vertical").remove();
-     } 
   });

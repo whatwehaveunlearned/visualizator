@@ -1,8 +1,13 @@
 //Area Creator.
 //Creates a visual Area. Creates a model of the view. Launches the proper graph.
-function areaCreator (title,database,xAxisName,yAxisName,data,type){
+function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObjects,type){
   var parentList=[];
   var childrenList=[];
+  //If we have a parent argument we added to the parent List (children will always have to be added dynamically)
+  if(arguments[7]!=undefined){
+    console.log("as");
+    parentList.push(arguments[7]);
+  }
   var area = d3.select("#applicationArea").append("div")
             .attr({
               class:"chartArea",
@@ -16,13 +21,16 @@ function areaCreator (title,database,xAxisName,yAxisName,data,type){
               xAxis:xAxisName,
               yAxis:yAxisName,
               database:database,
-              data: data,
+              data: {
+                      toRender:dataToRender,
+                      objects:dataObjects,
+                    },
               type: type,
               parent: parentList,
               children: childrenList
             }
   areas.push(plot);
-  eval(type+"(area,plot,data)");
+  eval(type+"(area,plot)");
   graphCounter = graphCounter +1;
 }
 
@@ -57,8 +65,7 @@ function addTitle(svg,plot){
     });
 }
 
-function scatterPlot(area,plot,data){
-
+function scatterPlot(area,plot){
   var x = d3.scale.linear()
       .range([0, width]);
 
@@ -86,71 +93,75 @@ function scatterPlot(area,plot,data){
   //lassoArray.push[lasso];
   
     
-    x.domain(d3.extent(data, function(d) { return d[0]; })).nice();
-    y.domain(d3.extent(data, function(d) { return d[1]; })).nice();
+  x.domain(d3.extent(plot.data.toRender, function(d) { return d[0]; })).nice();
+  y.domain(d3.extent(plot.data.toRender, function(d) { return d[1]; })).nice();
 
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-      .append("text")
-        .attr("class", "label")
-        .attr("x", width)
-        .attr("y", -6)
-        .style("text-anchor", "end")
-        .text(plot.xAxis);
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text(plot.xAxis);
 
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-      .append("text")
-        .attr("class", "label")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text(plot.yAxis)
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text(plot.yAxis)
 
-    svg.selectAll(".dot")
-        .data(data)
-      .enter().append("circle")
-        .attr("id",function(d,i) {return "dot_" + i;}) // added
-        .attr("class", "dot"+graphCounter)
-        .attr("r", 3.5)
-        .attr("cx", function(d) { 
-          return x(d[0]); 
-        })
-        .attr("cy", function(d) { 
-          return y(d[1]); 
-        })
-        .style("fill", function(d) { return color(d.species); })
-        .style("stroke", "#000");
+  svg.selectAll(".dot")
+      .data(plot.data.toRender)
+    .enter().append("circle")
+      .attr("class",function(d,i) {
+        return "dot" + graphCounter + " " + "dot" + d[2];
+      }) // added
+      .attr("id",function(d,i) {
+        return areas[graphCounter].name + "_" + i;
+      })
+      .attr("r", 3.5)
+      .attr("cx", function(d) { 
+        return x(d[0]); 
+      })
+      .attr("cy", function(d) { 
+        return y(d[1]); 
+      })
+      .style("fill", function(d) { return color(d.species); })
+      .style("stroke", "#000");
 
-    lasso.items(d3.selectAll(".dot"+graphCounter));
+  lasso.items(d3.selectAll(".dot"+graphCounter));
 
-    var legend = svg.selectAll(".legend")
-        .data(color.domain())
-      .enter().append("g")
-        .attr("class", "legend")
-        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+  var legend = svg.selectAll(".legend")
+      .data(color.domain())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
-    legend.append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", color);
+  legend.append("rect")
+      .attr("x", width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
 
-    legend.append("text")
-        .attr("x", width - 24)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .style("text-anchor", "end")
-        .text(function(d) { return d; });
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d; });
 
-    addTitle(svg,plot);
+  addTitle(svg,plot);
 }
 
-function histogram(area,plot,data){
+function histogram(area,plot){
 
   var margin = {top: 20, right: 20, bottom: 30, left: 40},
       width = 960 - margin.left - margin.right,
@@ -170,8 +181,8 @@ function histogram(area,plot,data){
       .scale(y)
       .orient("left");
 
-  x.domain(d3.range(data.length))
-  y.domain([0, d3.max(data, function(d) { return d; })]).nice();
+  x.domain(d3.range(plot.data.toRender.length))
+  y.domain([0, d3.max(plot.data.toRender, function(d) { return d; })]).nice();
 
   var svg = d3.select("#graphArea"+graphCounter).append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -195,7 +206,7 @@ function histogram(area,plot,data){
         .text(plot.yAxis);
 
     svg.selectAll(".bar")
-        .data(data)
+        .data(plot.data.toRender)
       .enter().append("rect")
         .attr("class", "bar")
         .attr("x", function(d,i) { 

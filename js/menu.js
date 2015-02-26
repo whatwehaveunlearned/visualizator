@@ -67,7 +67,8 @@ function attrMenu(position,db){
 
 function graphsMenu(position,numAttrs,attrs){
   d3.select("#graphsMenu").remove();
-  var dataset = [];
+  var dataToRender = [];
+  var dataObjects = [];
   var attrs=attrs;//necesary to pass the info to .on
   if (numAttrs==1){
     var menu = ["histogram"];
@@ -87,22 +88,24 @@ function graphsMenu(position,numAttrs,attrs){
   d3.selectAll("#graphsMenu > p")
     .on("click",function(d)
     {
-      selectData(db.data,attrs,this.id,dataset);
-      areaCreator (title,db.name,xAxisName,yAxisName,dataset,this.id);
+      selectData(db.data,attrs,this.id,dataToRender,dataObjects);
+      areaCreator (title,db,xAxisName,yAxisName,dataToRender,dataObjects,this.id);
       d3.selectAll(".btn-group-vertical").remove();
       mainMenu(position);
     });
 }
 
-function operationsMenu(position){
+function operationsMenu(position,thisArea){
+  var thisArea = thisArea;
   d3.select("#operationsMenu").remove();
-  var menu = ["Add Db","Add","exclude","Difference","Average","Change Graph Type","Other Attrs"];
+  var menu = ["Extract","exclude","Difference","Average","Change Graph Type","Other Attrs"];
   fillmenu(menu,position,"operations","general");
   //attrselected
   d3.selectAll("#operationsMenu > p")
     .on("click",function(d)
     {
-      loadDb(this.id);
+      if(this.id=="Extract") extract(thisArea);
+      else if (this.id=="chage Graph Type") changeType();  
     });
 }
 
