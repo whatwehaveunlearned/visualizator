@@ -30,7 +30,7 @@ System Models:
 areas: Array that holds visualizations objects.
 
     children: Array of children Areas
-    data: data of Area
+    data: { dataToRender: Array of values to render, dataObjects: dataObjects of Area}
     database: database object of data of Area
     name: Name of Area
     parent: Array of Parent Areas
