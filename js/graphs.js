@@ -62,6 +62,8 @@ function addTitle(svg,plot){
     })
     .on("mouseout",function(d,i){
       $(this.parentElement.parentElement).draggable("disable");
+      var area = searchArea(this.parentElement.parentElement.parentElement.id);
+      unlink(area);
     });
 }
 
@@ -122,7 +124,7 @@ function scatterPlot(area,plot){
       .data(plot.data.toRender)
     .enter().append("circle")
       .attr("class",function(d,i) {
-        return "dot" + graphCounter + " " + "dot" + d[2];
+        return areas[graphCounter].name + " " + "dot" + d[2];
       }) // added
       .attr("id",function(d,i) {
         return areas[graphCounter].name + "_" + i;
@@ -137,7 +139,7 @@ function scatterPlot(area,plot){
       .style("fill", function(d) { return color(d.species); })
       .style("stroke", "#000");
 
-  lasso.items(d3.selectAll(".dot"+graphCounter));
+  lasso.items(d3.selectAll("."+areas[graphCounter].name));
 
   var legend = svg.selectAll(".legend")
       .data(color.domain())

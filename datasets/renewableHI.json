@@ -1,0 +1,38 @@
+[
+  {
+    "Year":2008,
+    "Renewable Energy":"9.4%",
+    "Energy Efficiency":"8.3%",
+    "Total":"17.8%"
+  },
+  {
+    "Year":2009,
+    "Renewable Energy":"9.5%",
+    "Energy Efficiency":"9.3%",
+    "Total":"18.8%"
+  },
+  {
+    "Year":2010,
+    "Renewable Energy":"9.5%",
+    "Energy Efficiency":"10.9%",
+    "Total":"20.4%"
+  },
+  {
+    "Year":2011,
+    "Renewable Energy":"11.9%",
+    "Energy Efficiency":"12.1%",
+    "Total":"24%"
+  },
+  {
+    "Year":2012,
+    "Renewable Energy":"13.7%",
+    "Energy Efficiency":"14.5%",
+    "Total":"28.2%"
+  },
+  {
+    "Year":2013,
+    "Renewable Energy":"18%",
+    "Energy Efficiency":"15.7%",
+    "Total":"33.7%"
+  }
+]

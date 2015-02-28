@@ -2,13 +2,19 @@
 function extract (area){ //Add needs to know the attrs in his parent.
   dataset = [];
   //Clean selection
-  for (item in selectedItems){
-    dataset.push([eval("selectedItems[item]."+ area.xAxis),eval("selectedItems[item]."+ area.yAxis)]);
+  for (each in selectedItems){
+    dataset.push([eval("selectedItems[each]."+ area.xAxis),eval("selectedItems[each]."+ area.yAxis),selectedItems[each].myId]);
   }
   areaCreator (area.title,area.database,area.xAxis,area.yAxis,dataset,selectedItems,area.type,area);
+  selectedItems = [];
   //add child to parent
   var child = searchArea("graphArea"+eval(graphCounter-1));
   area.children.push(child);
+  d3.selectAll(".selectedData")
+  	.attr({
+      		"r":3.5,
+      	})
+  	.classed("selectedData",false);
 }
 
 //Changes the type of graph
@@ -28,7 +34,28 @@ function changeAttrs(selected){
 
 //Linking attrs
 function link(area){
-	console.log("");
+	
+	//List Parents
+	for (element in area.parent){
+		for (each in area.data.objects){
+			d3.selectAll(".dot"+area.data.objects[each].myId)
+			  .filter("."+area.parent[element].name)
+			  .attr("r",17);
+		}
+	}
+}
+
+//UnLinking attrs
+function unlink(area){
+	
+	//List Parents
+	for (element in area.parent){
+		for (each in area.data.objects){
+			d3.selectAll(".dot"+area.data.objects[each].myId)
+			  .filter("."+area.parent[element].name)
+			  .attr("r",3.5);
+		}
+	}
 }
 
 function lassoFunction (svg,color,area){
@@ -55,6 +82,7 @@ function lassoFunction (svg,color,area){
     var selected;
     var data = thisArea.data.objects;
     var keys = Object.keys(thisArea.database.data[0]); 
+    var previousSelection=d3.selectAll(".selectedData");
     // Reset the color of all dots
     lasso.items()
        .style("fill", function(d) { return color(d.species); });
@@ -63,7 +91,10 @@ function lassoFunction (svg,color,area){
     selected=lasso.items().filter(function(d) {
       return d.selected===true})
       .classed({"not_possible":false,"possible":false})
-      .attr("r",17)
+      .attr({
+      		"r":17,
+      		})
+      .classed("selectedData",true)
       .on("click",function(d){
         operationsMenu(d3.mouse(this),thisArea);  
       });
