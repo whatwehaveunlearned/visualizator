@@ -23,6 +23,7 @@ var databasePointer;
 //Used to manage Selections
 //var dataset = []; //I dont need this to be global?
 var selectedItems=[];
+var parentsOfSelection=[];
 
 //lasso Array
 var lassoArray;

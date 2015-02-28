@@ -1,12 +1,18 @@
 //Adds 2 sets together to draw a new graph
 function extract (area){ //Add needs to know the attrs in his parent.
-  dataset = [];
+  var dataset = [];
+  var parents = [];
+  //Parent selection
+  for (parent in parentsOfSelection){
+  	parents.push(searchArea(parentsOfSelection[parent]));
+  }
   //Clean selection
   for (each in selectedItems){
     dataset.push([eval("selectedItems[each]."+ area.xAxis),eval("selectedItems[each]."+ area.yAxis),selectedItems[each].myId]);
   }
-  areaCreator (area.title,area.database,area.xAxis,area.yAxis,dataset,selectedItems,area.type,area);
+  areaCreator (area.title,area.database,area.xAxis,area.yAxis,dataset,selectedItems,area.type,parents);
   selectedItems = [];
+  parentsOfSelection = [];
   //add child to parent
   var child = searchArea("graphArea"+eval(graphCounter-1));
   area.children.push(child);
@@ -36,10 +42,10 @@ function changeAttrs(selected){
 function link(area){
 	
 	//List Parents
-	for (element in area.parent){
+	for (element in area.parent[0]){
 		for (each in area.data.objects){
 			d3.selectAll(".dot"+area.data.objects[each].myId)
-			  .filter("."+area.parent[element].name)
+			  .filter("."+area.parent[0][element].name)
 			  .attr("r",17);
 		}
 	}
@@ -49,10 +55,10 @@ function link(area){
 function unlink(area){
 	
 	//List Parents
-	for (element in area.parent){
+	for (element in area.parent[0]){
 		for (each in area.data.objects){
 			d3.selectAll(".dot"+area.data.objects[each].myId)
-			  .filter("."+area.parent[element].name)
+			  .filter("."+area.parent[0][element].name)
 			  .attr("r",3.5);
 		}
 	}
@@ -107,7 +113,9 @@ function lassoFunction (svg,color,area){
       for (i=0; i<selected[0].length;i++) {
         selectedItems.push(data[selected[0][i].id.split("_")[1]])
       }
-
+      //Each selection is made on one graph. Save the first element parent to the list in each lasso.
+      parentsOfSelection.push(selected[0][0].classList[0]);
+      parentsOfSelection=cleanArray(parentsOfSelection)
     //Remove duplicates from selectedItems
     removeDuplicates(selectedItems,keys);
   };
@@ -148,5 +156,13 @@ function lassoFunction (svg,color,area){
 		  }
 		  selectedItems=tempArray;
 	    //}
+	}
+
+	function cleanArray(array){
+		var uniqueNames = [];
+		$.each(array, function(i, el){
+		    if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+		});
+		return (uniqueNames);
 	}
 }
