@@ -1,0 +1,742 @@
+
+<html>
+<head>
+	<title>Cereal 2</title>
+	<script type="text/javascript" src="js/d3.js"></script>
+	<style>
+		body
+		{
+			/* prevent text selection for buttons */
+			font-family: sans-serif;
+			font-size: 11px;
+			-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
+			cursor: default;
+		}
+
+		.button
+		{
+			font-family: sans-serif;
+			font-size: 12px;
+			
+			background-color: #dddddd;
+			color: black;
+			font-weight: normal;
+			border-radius: 4px;
+			border-style: solid;
+			border-color: black;
+			border-width: 1px;
+			padding: 4px;
+			margin: 2px 2px;
+		}
+		.button:hover
+		{
+			background-color: #FF9999;
+		}
+		.gridline line,
+		.gridline path
+		{
+			stroke: #bbbbbb;
+			stroke-width: 1px;
+			shape-rendering: crispEdges;
+		}
+		.dropzone rect
+		{
+			fill: rgba(180, 180, 180, 0.5);
+			stroke-width: 1px;
+			stroke: #bbbbbb;
+		}
+		
+		.histogram
+		{
+			fill: #58A1EB;
+		}
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: #000;
+			stroke-width: 1px;
+			shape-rendering: crispEdges;
+		}
+		.axis text {
+			font-family: sans-serif;
+			font-size: 5px;
+		}
+		.axisText {
+			font-family: sans-serif;
+			font-size: 5px;
+		}
+
+		.axisText:hover
+		{
+			fill: #FF9999;
+			stroke-width: 2px;
+		}
+
+		.scatterplot
+		{
+			fill: #58A1EB;
+			/*
+				stroke: #222222;
+				stroke-width: 0.5px;
+			*/
+			stroke: none;
+		}
+		.chartborder
+		{
+			fill: none;
+			stroke: #dddddd;
+			stroke-width: 2px;
+		}
+
+	</style>
+</head>
+<body>
+	<p>Cereal dataset
+	<p><div id="svgPlaceHolder"></div>
+
+	<p><div id="dimensions" width="600">Dimensions: </div>
+	<p>&nbsp;
+	<p><div id="lens_edit" width="600">Lensification: 
+		<span class="button" id="button_lensify">Lensify</span>
+		<span class="button" id="button_edit">Edit</span>
+	</div>
+
+	<script type="text/javascript">
+
+		var CANVAS_WIDTH = 800;
+		var CANVAS_HEIGHT = 400;
+		var GRID_W = 160;
+		var GRID_H = 100;
+		var CELL_PADDING = 24;
+		var MODE = "edit";
+
+		var ROWS = CANVAS_HEIGHT / GRID_H;
+		var COLS = CANVAS_WIDTH / GRID_W;
+		
+		var DROP_START = 5;
+		var DROP_END = 15;
+		var DROP_PAD = 25;
+		var DROP_ROUND = 5;
+		var LENS_PADDING = 100;
+
+		// default nubmer of bins for histograms
+		var BINS = 10;
+
+		var cerealData;
+		var dimensions;
+		var dimensionsMap;
+		var theGrid = [];
+
+		/* grid object */
+		function GridCell(gridX, gridY)
+		{
+			this.xAxis = null;
+			this.yAxis = null;
+			this.chart = null;
+
+			this.gridX = gridX;
+			this.gridY = gridY;
+			this.chartX = gridX * GRID_W + CELL_PADDING;
+			this.chartY = gridY * GRID_H + CELL_PADDING;
+			this.chartW = GRID_W - CELL_PADDING*2;
+			this.chartH = GRID_H - CELL_PADDING*2;
+		}
+		GridCell.prototype.getChartX = function() { return this.chartX; }
+		GridCell.prototype.getChartY = function() { return this.chartY; }
+		GridCell.prototype.getGridX = function() { return this.gridX; }
+		GridCell.prototype.getGridY = function() { return this.gridY; }
+		GridCell.prototype.hasChart = function() { return this.chart != null; }
+		GridCell.prototype.getChart = function() { return this.chart; }
+
+		GridCell.prototype.updateAxis = function(axis, dimension)
+		{
+			if (axis == "x") {
+				this.xAxis = dimension;
+			}
+			else if (axis == "y")
+			{
+				this.yAxis = dimension;
+			}
+			if ((this.xAxis == null) && (this.yAxis == null) && this.chart != null) {
+				this.chart.remove();
+				this.chart = null;
+			}
+			else
+			{
+				this.makeAppropriateChart();
+			}	
+		}
+		GridCell.prototype.makeAppropriateChart = function()
+		{
+			// remove existing chart, if any
+			var oldChartType = this.chart == null ? null : this.chart.chartType();
+
+
+			if (this.xAxis != null && this.yAxis == null)
+			{
+				if (oldChartType != "histogram" && oldChartType != null) {
+					this.chart.remove();
+				}				
+				this.chart = new Histogram(cerealData.cereals, this.xAxis, BINS, this.chartX, this.chartY, this.chartW, this.chartH, this);
+			}
+			else if (this.xAxis != null && this.yAxis != null)
+			{
+				if (oldChartType != "scatterplot" && oldChartType != null) {
+					this.chart.remove();
+				}
+				this.chart = new Scatterplot(cerealData.cereals, this.xAxis, this.yAxis, this.chartX, this.chartY, this.chartW, this.chartH, this);
+			}
+		}
+		var pan_n_zoom = null;
+		function changeMode(mode)
+		{
+			// lensify all charts
+			for (var i = 0; i < ROWS; i++) {
+				for (var j = 0; j < COLS; j++) {
+					if (theGrid[i][j].hasChart()) {
+						var c = theGrid[i][j].getChart()
+						mode == "lens" ? c.lensMode() : c.editMode();
+					}
+				}
+			}
+			if (mode == "lens") {
+				registerZoom();
+			}
+			else
+			{
+				unregisterZoom();
+			}
+			MODE = mode;
+		}
+
+
+		// make a representation of the grid
+		for (var i = 0; i < ROWS; i++)
+		{
+			var row = [];
+			for (var j = 0; j < COLS; j++)
+				row.push(new GridCell(j, i));
+			theGrid.push(row);
+		}
+
+		d3.json("datasets/cereal.json", function(error, json) 
+		{
+			if (error) return console.warn(error);
+			cerealData = json;
+
+			// make a dimensions map
+			dimensions = cerealData.dimensions;
+			dimensionsMap = d3.map();
+			for (var i = 0; i < dimensions.length; i++){
+				dimensionsMap.set(dimensions[i].id, dimensions[i]);
+			}
+
+			// visualize the data
+			makeUI();
+		});
+
+		var draggedButton = null;
+		var lastGrid = null;
+		var activeDropZone = null;
+		
+		function dropZoneVisibility(i, j, visible)
+		{
+			d3.select("#dropzone_" + i + "_" + j).attr("visibility", visible ? "visible" : "hidden");
+		}
+
+		function buttonRelease()
+		{
+			// are we onto something?
+			if (activeDropZone != null)
+			{
+				var gridX = lastGrid[0];
+				var gridY = lastGrid[1];
+				var axis = activeDropZone[2] == "b" ? "x" : "y";
+
+				var cell = theGrid[gridY][gridX];
+				var dimension = draggedButton.text();
+				cell.updateAxis(axis, dimension);
+			}
+
+			// remove button
+			draggedButton.remove();
+			d3.select("body").on("mouseup", null).on("mousemove", null);
+			if (lastGrid !== null) {
+				dropZoneVisibility(lastGrid[0], lastGrid[1], false);
+				lastGrid = null;
+			}
+		}
+		function buttonDrag()
+		{
+	
+			draggedButton
+				.style("position", "absolute")
+				.style("left", d3.event.pageX+5)
+				.style("top", d3.event.pageY+5);
+
+			// test zones
+			var svg = d3.select("#svgPlaceHolder").select("svg");
+			var svgMouse = d3.mouse(svg.node());
+
+			// which zones I'm in
+			if (svgMouse[0] >= 0 && svgMouse[0] <= CANVAS_WIDTH && svgMouse[1] >= 0 && svgMouse[1] <= CANVAS_HEIGHT) 
+			{
+				// which grid cell are we in
+				var gridX = Math.floor(svgMouse[0] / GRID_W);
+				var gridY = Math.floor(svgMouse[1] / GRID_H);
+
+				// test bordering regions
+				var mX = svgMouse[0]-gridX;
+				var mY = svgMouse[1]-gridY;
+				
+				if (lastGrid === null) {
+					lastGrid = [gridX, gridY];
+					dropZoneVisibility(gridX, gridY, true)
+				}
+				else if (lastGrid[0] != gridX || lastGrid[1] != gridY) 
+				{
+					dropZoneVisibility(lastGrid[0], lastGrid[1], false);
+					dropZoneVisibility(gridX, gridY, true);
+					lastGrid = [gridX, gridY];
+				}
+			}
+			else
+			{
+				if (lastGrid !== null) dropZoneVisibility(lastGrid[0], lastGrid[1], false);
+				lastGrid = null;
+			}
+		}
+
+		// zoom parameters
+		var svgZoomer = null;
+		var svgTranslate = "0,0";
+		var svgScale = "1,1";
+
+		function registerZoom()
+		{
+			// restore old zoom
+			d3.select("#dataPlaceHolder").transition().duration(500).attr("transform", "translate("+svgTranslate+")scale("+svgScale+")");
+
+			// associate zoom object with svg
+			var svg = d3.select("#svgPlaceHolder").select("svg");
+			svgZoomer(svg);
+
+		}
+		function unregisterZoom()
+		{
+			// associate zoom event 
+			d3.select("#dataPlaceHolder").transition().duration(500).attr("transform", "");
+
+			// disable event handlers
+			var svg = d3.select("#svgPlaceHolder").select("svg");
+			svg.on("mousedown.zoom", null);
+			svg.on("mousemove.zoom", null);
+			svg.on("dblclick.zoom", null);
+			svg.on("touchstart.zoom", null);
+			svg.on("wheel.zoom", null);
+			svg.on("mousewheel.zoom", null);
+			svg.on("MozMousePixelScroll.zoom", null);
+		}
+
+		function makeUI()
+		{
+
+			d3.select("#button_lensify")
+				.on("click", function() {
+					d3.select("#button_edit").style("background-color", "");
+					changeMode("lens");
+					d3.select(this).style("background-color", "#99FF99");
+					d3.select("#edit_grid").attr("visibility", "hidden");
+				});
+
+			d3.select("#button_edit")
+				.style("background-color", "#99FF99")
+				.on("click", function() {
+					d3.select("#button_lensify").style("background-color", "");
+					changeMode("edit");
+					d3.select(this).style("background-color", "#99FF99");
+					d3.select("#edit_grid").attr("visibility", "visible");
+				});
+
+			var d = d3.select("#dimensions");
+			for (var i = 0; i < dimensions.length; i++)
+			{
+				d.append("span")
+					.classed("button", true)
+					.text(dimensions[i].id)
+					.attr("id", "btn_" + dimensions[i].id)
+					.on("mousedown", function() 
+					{
+						if (MODE != "edit") return;
+						var button = d3.select(this);
+						var d = button.attr("id").split("_")[1];
+
+						// create a copy button
+						draggedButton = d3.select("body").append("span")
+							.classed("button", true)
+							.text(d)
+							.style("position", "absolute")
+							.style("left", d3.event.pageX+5)
+							.style("top", d3.event.pageY+5);
+						d3.select("body").on("mouseup", buttonRelease);
+						d3.select("body").on("mousemove", buttonDrag);
+					})
+			}
+
+			// make SVG
+			var svg = d3.select("#svgPlaceHolder").append("svg")
+				.attr("width", CANVAS_WIDTH)
+				.attr("height", CANVAS_HEIGHT)
+				.style("border", "black solid 1px");
+
+
+			// make a group that will act as a place holder for the data
+			svg.append("g").attr("id", "dataPlaceHolder");
+
+			// add a zoom handler event
+			svgZoomer = d3.behavior.zoom().on("zoom", function zoom()
+				{
+					svgTranslate = "" + d3.event.translate;
+					svgScale = "" + d3.event.scale;
+					d3.select("#dataPlaceHolder").attr("transform", "translate(" + svgTranslate + ")scale(" + svgScale + ")");
+				}
+			);
+
+			// make grid on SVG
+			var g = svg.append("g").classed("gridline", true).attr("id", "edit_grid");
+			var dropZones = svg.append("g").classed("dropzone", true).attr("id", "dropzones").attr("visibility", "visible");
+
+			for (var i = 0; i < ROWS; i++)
+			{
+				if (i != 0)
+					g.append("line")
+						.attr("x1", 0).attr("y1", i*GRID_H)
+						.attr("x2", CANVAS_WIDTH).attr("y2", i*GRID_H)
+						.attr("stroke-dasharray", "5,5");
+
+			}
+			for (var i = 0; i < COLS; i++)
+			{
+				if (i != 0)
+					g.append("line")
+						.attr("x1", i*GRID_W).attr("y1", 0)
+						.attr("x2", i*GRID_W).attr("y2", CANVAS_HEIGHT)
+						.attr("stroke-dasharray", "5,5");
+			}
+
+			// make drop zones
+			for (var i = 0; i < COLS; i++)
+			{
+				var gX = i*GRID_W;
+				for (var j = 0; j < ROWS; j++)
+				{
+					var gY = j*GRID_H;
+					var dropZone = dropZones.append("g")
+						.attr("id", "dropzone_" + i + "_" + j)
+						.attr("visibility", "hidden");
+
+					dropZone.append("rect")
+						.attr("id", "dropzone_" + i + "_" + j + "_l")
+						.attr("x", gX + DROP_START)
+						.attr("y", gY + DROP_PAD)
+						.attr("width", DROP_END)
+						.attr("height", GRID_H - DROP_PAD*2)
+						.attr("rx", DROP_ROUND)
+						.attr("ry", DROP_ROUND)
+						.on("mouseover", function() {
+							activeDropZone = [i, j, "l"];
+							d3.select(this).style("fill", "rgba(252, 146, 153, 0.5)");
+						})
+						.on("mouseout", function() {
+							activeDropZone = null;
+							d3.select(this).style("fill", "");
+						});
+
+					/*
+					dropZone.append("rect")
+						.attr("id", "dropzone_" + i + "_" + j + "_r")
+						.attr("x", gX + GRID_W - DROP_START - DROP_END)
+						.attr("y", gY + DROP_PAD)
+						.attr("width", DROP_END)
+						.attr("height", GRID_H - DROP_PAD*2)
+						.attr("rx", DROP_ROUND)
+						.attr("rx", DROP_ROUND)
+						.on("mouseover", function() {
+							activeDropZone = [i, j, "r"];
+							d3.select(this).style("fill", "#FF9999");
+						})
+						.on("mouseout", function() {
+							activeDropZone = null;
+							d3.select(this).style("fill", "");
+						});
+
+
+					dropZone.append("rect")
+						.attr("id", "dropzone_" + i + "_" + j + "_t")
+						.attr("x", gX + DROP_PAD)
+						.attr("y", gY + DROP_START)
+						.attr("width", GRID_W - DROP_PAD*2)
+						.attr("height", DROP_END)
+						.attr("rx", DROP_ROUND)
+						.attr("ry", DROP_ROUND)
+						.on("mouseover", function() {
+							activeDropZone = [i, j, "t"];
+							d3.select(this).style("fill", "#FF9999");
+						})
+						.on("mouseout", function() {
+							activeDropZone = null;
+							d3.select(this).style("fill", "");
+						});
+					*/
+					
+					dropZone.append("rect")
+						.attr("id", "dropzone_" + i + "_" + j + "_b")
+						.attr("x", gX + DROP_PAD)
+						.attr("y", gY + GRID_H - DROP_START - DROP_END)
+						.attr("width", GRID_W - DROP_PAD*2)
+						.attr("height", DROP_END)
+						.attr("rx", DROP_ROUND)
+						.attr("ry", DROP_ROUND)
+						.on("mouseover", function() {
+							activeDropZone = [i, j, "b"];
+							d3.select(this).style("fill", "rgba(252, 146, 153, 0.5)");
+						})
+						.on("mouseout", function() {
+							activeDropZone = null;
+							d3.select(this).style("fill", "");
+						});
+
+				}
+			}
+		}
+
+		/* chart creation functions */
+		// ===========================
+		function Chart()
+		{
+		}
+		Chart.prototype.applyTransform = function(theTransform)
+		{
+			d3.select("#" + this.chartName)
+				.transition().duration(300)
+				.attr("transform", theTransform);
+		}
+		Chart.prototype.lensMode = function()
+		{
+			var gX = this.gridCell.getGridX();
+			var gY = this.gridCell.getGridY();
+
+			var chartX = LENS_PADDING + gX * this.w;
+			var chartY = LENS_PADDING + gY * this.h;
+			this.applyTransform("translate(" + chartX + "," + chartY + ")");
+
+			// hide axes
+			d3.select("#" + this.chartName + "_axes").attr("visibility", "hidden");
+		}
+		Chart.prototype.editMode = function()
+		{
+			this.applyTransform("translate(" + this.x + "," + this.y + ")");
+
+			// show axes
+			d3.select("#" + this.chartName + "_axes").attr("visibility", "visible");
+		}
+		Chart.prototype.remove = function()
+		{
+			this.chartGroup.remove();
+		}
+
+
+		function Histogram(theData, dimension, bins, x, y, w, h, gridCell)
+		{
+			this.chartName = "chart_" + gridCell.getChartX() + "_" + gridCell.getChartY();
+			this.gridCell = gridCell;
+			this.dimension = dimension;
+			this.data = theData;
+			this.bins = bins;
+			this.w = w;
+			this.h = h;
+			this.x = x;
+			this.y = y;
+
+			// figure out data max
+			this.dataMax = d3.max(theData, function(d) { return d[dimension];});
+
+			// make sure dataMax is divisible by bins
+			this.dataMax = Math.ceil(this.dataMax / bins) * bins;
+
+			// calculate frequencies
+			var frequencies = [];
+			this.frequencyMax = 0;
+			for (var i = 0; i < bins; i++)
+				frequencies.push(0);
+
+			for (var i = 0; i < theData.length; i++)
+			{
+				var b = Math.floor((bins-1) * theData[i][dimension] / this.dataMax);
+				b = Math.min(b, bins-1);
+				this.frequencyMax = Math.max(this.frequencyMax, ++frequencies[b]);
+			}
+
+			// frequency as multiple of 10
+			this.frequencyMax = Math.ceil(this.frequencyMax / 10) * 10;
+
+			var dInfo = dimensionsMap.get(dimension);
+			var xScale, yScale, xScaleAxis;
+
+			if (dInfo.type == 'q')
+			{
+				xScale = d3.scale.ordinal().domain(d3.range(bins)).rangeRoundBands([0, w], 0, 0);
+				xScaleAxis = d3.scale.linear().domain([0, this.dataMax]).range([0, w]);
+				yScale = d3.scale.linear().domain([0, this.frequencyMax]).range([h, 0]);
+			}
+
+
+			this.chartGroup = d3.select("#" + this.chartName);
+			if (this.chartGroup.size() == 0)
+			{
+				this.chartGroup = d3.select("#dataPlaceHolder")
+					.append("g")
+					.attr("transform", "translate(" + x +"," + y + ")")
+					.attr("id", this.chartName);
+			}
+
+			var updateSelection = this.chartGroup.selectAll("rect").data(frequencies);
+			updateSelection.enter().append("rect").classed("histogram", true)
+				.attr("x", function(d, i) { return xScale(i)})
+				.attr("y", function(d, i) { return h})
+				.attr("width", xScale.rangeBand() + "px")
+				.attr("height", function(d, i) { return "0px"});
+
+			updateSelection.transition().duration(300)
+				.attr("x", function(d, i) { return xScale(i)})
+				.attr("y", function(d, i) { return yScale(d)})
+				.attr("width", xScale.rangeBand() + "px")
+				.attr("height", function(d, i) { return h-yScale(d) + "px"});
+
+			var xAxis = d3.svg.axis();
+			var yAxis = d3.svg.axis();
+			var r = d3.range(0, this.dataMax+1, this.dataMax / bins);
+			xAxis.scale(xScaleAxis).orient("bottom").ticks(bins).tickValues(r).tickSize(4);
+			yAxis.scale(yScale).orient("left").ticks(5).tickSize(4);
+
+			// remove existing axes if any
+			d3.select("#" + this.chartName + "_axes").remove();
+			var axesGroup = this.chartGroup.append("g").attr("id", this.chartName + "_axes");
+
+			axesGroup.append("g").attr("class", "axis").attr("transform", "translate(0, " + h + ")").call(xAxis);
+			axesGroup.append("g").attr("class", "axis").call(yAxis);
+
+			axesGroup.append("text")
+				.attr("text-anchor", "middle")
+				.attr("x", w/2)
+				.attr("y", h+CELL_PADDING-5)
+				.classed("axisText", true)
+				.style("font-size", "7px")
+				.text(dimension + " (" + dInfo.unit + ")")
+				.on("dblclick", function() { gridCell.updateAxis("x", null);});
+		}
+		Histogram.prototype = new Chart();
+		Histogram.prototype.constructor=Histogram;
+		Histogram.prototype.chartType = function()
+		{
+			return "histogram";
+		}
+
+
+		function Scatterplot(theData, d1, d2, x, y, w, h, gridCell)
+		{
+			this.chartName = "chart_" + gridCell.getChartX() + "_" + gridCell.getChartY();
+			this.w = w;
+			this.h = h;
+			this.x = x;
+			this.y = y;
+			this.gridCell = gridCell;
+
+			this.maxD1 = d3.max(theData, function(d) { return d[d1];});
+			this.maxD2 = d3.max(theData, function(d) { return d[d2];});
+
+			this.maxD1 = 10*Math.ceil(this.maxD1 / 10);
+			this.maxD2 = 10*Math.ceil(this.maxD2 / 10);
+
+
+			var xScale, yScale;
+			var justUpdate = false;
+			xScale = d3.scale.linear().domain([0, this.maxD1]).range([0, w]);
+			yScale = d3.scale.linear().domain([0, this.maxD2]).range([h, 0]);
+
+			this.chartGroup = d3.select("#" + this.chartName);
+
+			if (this.chartGroup.size() == 0)
+			{
+				this.chartGroup = d3.select("#dataPlaceHolder")
+					.append("g")
+					.attr("transform", "translate(" + x +"," + y + ")")
+					.attr("id", this.chartName);
+			}
+			else
+			{
+				justUpdate = true;
+			}
+
+			// scatterplot points
+			var updateSelection = this.chartGroup.selectAll("circle").data(theData)
+			updateSelection.enter().append("circle").classed("scatterplot", true)
+				.attr("cx", function(d) { return xScale(d[d1]);})
+				.attr("cy", h);
+			updateSelection.transition().duration(300)
+				.attr("cx", function(d) { return xScale(d[d1]);})
+				.attr("cy", function(d) { return yScale(d[d2]);})
+				.attr("r", "2px");
+
+			// make axes
+			var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(5);
+			var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+
+
+			// remove existing axes
+			d3.select("#" + this.chartName + "_border").remove();
+			var border = this.chartGroup.append("g").attr("id", this.chartName + "_border");
+			border.append("rect")
+				.classed("chartborder", true)
+				.attr("x", "0").attr("y", "0")
+				.attr("w", w).attr("h", h);
+
+			d3.select("#" + this.chartName + "_axes").remove();
+			var axesGroup = this.chartGroup.append("g").attr("id", this.chartName + "_axes");
+
+			axesGroup.append("text")
+				.attr("text-anchor", "middle")
+				.attr("x", w/2)
+				.attr("y", h+CELL_PADDING-5)
+				.classed("axisText", true)
+				.style("font-size", "7px")
+				.text(d1 + " (" + dimensionsMap.get(d1).unit + ")")
+				.on("dblclick", function() { gridCell.updateAxis("x", null)});
+
+			axesGroup.append("text")
+				.attr("transform", "translate(" + (-CELL_PADDING+5) + "," + h/2 + ") rotate(-90)")
+				.attr("text-anchor", "middle")
+				.attr("x", 0)
+				.attr("y", 0)
+				.classed("axisText", true)
+				.style("font-size", "7px")
+				.text(d2 + " (" + dimensionsMap.get(d2).unit + ")")
+				.on("dblclick", function() { gridCell.updateAxis("y", null)});
+			
+			axesGroup.append("g").attr("class", "axis").attr("transform", "translate(0, " + h + ")").call(xAxis);
+			axesGroup.append("g").attr("class", "axis").call(yAxis);
+
+
+		}
+		Scatterplot.prototype = new Chart();
+		Scatterplot.prototype.constructor=Scatterplot;
+
+		Scatterplot.prototype.chartType = function()
+		{
+			return "scatterplot";
+		}
+
+	</script>
+
+</body>
+</html>
