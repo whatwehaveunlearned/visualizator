@@ -11,7 +11,9 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
             .attr({
               class:"chartArea",
               "id":"graphArea"+graphCounter
-            });
+            })
+            .style("width","500px"); 
+  $("#graphArea"+graphCounter).resizable();
   //Fix this to make areas resizable
   //$( ".chartArea" ).resizable();
   var plot =  {
@@ -54,13 +56,13 @@ function addTitle(svg,plot){
        "text-anchor":"middle"
     })
     .on("mouseover",function(d,i){
-      $(this.parentElement.parentElement).draggable();
-      $(this.parentElement.parentElement).draggable("enable");
+      $(this.parentElement.parentElement.parentElement).draggable();
+      $(this.parentElement.parentElement.parentElement).draggable("enable");
       var area = searchArea(this.parentElement.parentElement.parentElement.id);
       link(area);
     })
     .on("mouseout",function(d,i){
-      $(this.parentElement.parentElement).draggable("disable");
+      $(this.parentElement.parentElement.parentElement).draggable("disable");
       var area = searchArea(this.parentElement.parentElement.parentElement.id);
       unlink(area);
     });

@@ -39,8 +39,7 @@ function changeAttrs(selected){
 }
 
 //Linking attrs
-function link(area){
-	
+function link(area){	
 	//List Parents
 	for (element in area.parent[0]){
 		for (each in area.data.objects){
@@ -52,8 +51,7 @@ function link(area){
 }
 
 //UnLinking attrs
-function unlink(area){
-	
+function unlink(area){	
 	//List Parents
 	for (element in area.parent[0]){
 		for (each in area.data.objects){
