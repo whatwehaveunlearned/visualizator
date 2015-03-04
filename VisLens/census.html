@@ -1,0 +1,127 @@
+<html>
+<head>
+	<script  type="text/javascript" src="js/d3.js"></script>
+	<script type="text/javascript" src="js/census_query.js"></script>
+	<script type="text/javascript" src="js/topojson.v1.min.js"></script>
+	<style>
+		body {
+			font-family: sans-serif;
+			font-size: 10pt;
+		}
+
+		path {
+			stroke: #bbbbbb;
+			stroke-width: .5px;
+		}
+		path:hover {
+			fill: red;
+		}
+	</style>
+</head>
+<body>
+	
+	<p>Percentage of minorities by county:
+	<p id="svgPlaceholder">
+
+	<script type="text/javascript">
+		var w = 1000;
+		var h = 700;
+		var maxPercentage = 0;
+		var features;
+
+
+		// create and append an SVG canvas
+		var svg = d3.select("#svgPlaceholder").append("svg")
+			.attr("width", w)
+			.attr("height", h)
+			.style("border", "1px solid black");
+	
+		// create D3 map projection and path generators
+		var projection = d3.geo.albersUsa().translate([w/2, h/2]);
+		var pathGenerator = d3.geo.path().projection(projection);
+		var colorScale = d3.scale.quantize()
+			.range(["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a",
+              "#ef3b2c", "#cb181d", "#a50f15", "#67000d"]);
+
+		// read TpopJSON file of US counties
+
+		// read census data
+		var cs = new CensusQuery();
+
+		// variables we want to get from the census API
+		// P0010001: total population
+		// P0050003: whites
+		var variables = ["P0010001", "P0050003"];
+
+		cs.getCounties(jsonReadCallback, variables);
+		function jsonReadCallback(json)
+		{
+
+			// read US counties topoplogy
+			d3.json("datasets/us-counties.json", function(error, topology)
+			{
+				features = topojson.feature(topology, topology.objects.counties).features;
+				mashup();
+			});
+
+			function mashup()
+			{
+				var unfound = 0;
+				for (var i = 0, len=json.length; i < len; i++)
+				{
+					// print the data as is
+					//console.log(json[i]);
+
+					// figure out percentage of whites
+					var datum = json[i];
+					var white_percentage = datum.P0050003 / datum.P0010001;
+
+					// what's left is minority
+					var minority_percentage = 1.0 - white_percentage;
+					if (minority_percentage > maxPercentage)
+						maxPercentage = minority_percentage;
+				
+					// mashup the id of the county with id of the data
+					
+					var found = false;
+					for (var f = 0, featuresLen = features.length; f < featuresLen; f++)
+					{
+						if (features[f].id == +(datum.state_num + datum.county)) {
+							features[f].properties.value = minority_percentage;
+							found = true;
+							break;
+						}
+					}
+					if (!found)
+					{
+						unfound++
+					}
+					
+
+				}
+				console.log("couldn't match: " + unfound + " counties");
+				console.log("max minority percentage: " + maxPercentage);
+				colorScale.domain([0, maxPercentage]);
+
+				svg.selectAll("path")
+					.data(features)
+					.enter().append("path")
+					.attr("d", pathGenerator)
+					.attr("fill", function(d) {
+						var value = d.properties.value;
+						console.log("d: " + value === undefined ? "undefined" : colorScale(value));
+						if (value) 
+							return colorScale(value);
+						else
+							return "#cccccc";
+					});
+			}
+
+		}
+
+
+
+
+	</script>
+</body>
+</html>
