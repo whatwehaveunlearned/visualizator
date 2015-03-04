@@ -137,7 +137,7 @@ CensusQuery.prototype.getStateNumber = function(state)
 }
 
 
-CensusQuery.prototype.getCounties = function(callback, variables, state)
+CensusQuery.prototype.getCounties = function(callback, variables, state, county)
 {
 	// apend NAME to list of variables
 	variables.push("NAME");
@@ -154,7 +154,7 @@ CensusQuery.prototype.getCounties = function(callback, variables, state)
 			query = query + ",";
 	}
 
-	query = query + "&for=county:*";
+	query = query + "&for=county:" + (county ? county : "*");
 	if (state !== null && state !== undefined)
 		query = query + "&in=state:" + this.getStateNumber(state);
 

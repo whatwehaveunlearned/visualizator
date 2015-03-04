@@ -16,6 +16,30 @@
 		path:hover {
 			fill: red;
 		}
+		path.brush {
+			stroke: black;
+			fill: rgba(210, 210, 210, 0.6);
+		}
+		.brushText
+		{
+			font-family: sans-serif;
+			font-size: 15px;
+			color: black;
+			font-weight: bold;
+		}
+
+		.brushRect
+		{
+			stroke: none;
+			fill: rgba(255, 255, 255, 0.8);
+		}
+
+		.smallLabel
+		{
+			fony-size: 10pt;
+			color: black;
+			text-anchor: end;
+		}
 	</style>
 </head>
 <body>
@@ -27,7 +51,7 @@
 		var w = 1000;
 		var h = 700;
 		var maxPercentage = 0;
-		var features;
+		var features, featureMap;
 
 
 		// create and append an SVG canvas
@@ -37,7 +61,7 @@
 			.style("border", "1px solid black");
 	
 		// create D3 map projection and path generators
-		var projection = d3.geo.albersUsa().translate([w/2, h/2]);
+		var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(1200);
 		var pathGenerator = d3.geo.path().projection(projection);
 		var colorScale = d3.scale.quantize()
 			.range(["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a",
@@ -61,6 +85,12 @@
 			d3.json("datasets/us-counties.json", function(error, topology)
 			{
 				features = topojson.feature(topology, topology.objects.counties).features;
+				
+				// make a feature map indexed by county id
+				featureMap = d3.map();
+				for (var i=0, len=features.length; i < len; i++) {
+					featureMap.set(features[i].id, features[i]);
+				}
 				mashup();
 			});
 
@@ -81,39 +111,121 @@
 					if (minority_percentage > maxPercentage)
 						maxPercentage = minority_percentage;
 				
-					// mashup the id of the county with id of the data
-					
-					var found = false;
-					for (var f = 0, featuresLen = features.length; f < featuresLen; f++)
-					{
-						if (features[f].id == +(datum.state_num + datum.county)) {
-							features[f].properties.value = minority_percentage;
-							found = true;
-							break;
-						}
+					// mashup the id of the county with id of the data					
+					var geoid = +(datum.state_num + datum.county);
+					var theFeature = featureMap.get( geoid );
+					if (theFeature) {
+						theFeature.properties.value = minority_percentage;
+						theFeature.properties.countyName = datum.NAME;
+						theFeature.properties.countyNum = datum.county;
+						theFeature.properties.stateNum = datum.state_num;
+						theFeature.properties.state = datum.state_abbr;
 					}
-					if (!found)
+					else
 					{
 						unfound++
 					}
-					
-
 				}
-				console.log("couldn't match: " + unfound + " counties");
-				console.log("max minority percentage: " + maxPercentage);
 				colorScale.domain([0, maxPercentage]);
 
 				svg.selectAll("path")
 					.data(features)
 					.enter().append("path")
 					.attr("d", pathGenerator)
+					.attr("id", function(d) {return "county_" + d.id;})
 					.attr("fill", function(d) {
 						var value = d.properties.value;
-						console.log("d: " + value === undefined ? "undefined" : colorScale(value));
 						if (value) 
 							return colorScale(value);
 						else
 							return "#cccccc";
+					})
+					.on("mouseover", function() 
+					{
+						var MAX_DIM = 130;
+						var RECT_HEIGHT = 90;
+						var RECT_WIDTH = 150;
+
+						var svg = d3.select("#svgPlaceholder").select("svg");
+						var county = d3.select(this);
+						var mouse = d3.mouse(svg.node())
+						var geoid = +(county.attr("id").split("_")[1]);
+						var feature = featureMap.get(geoid);
+						var bounds = pathGenerator.bounds(feature);
+						var len = [bounds[1][0]-bounds[0][0], bounds[1][1]-bounds[0][1]];
+						var countyScale = MAX_DIM / Math.max(len[0], len[1]);
+						len[0] *= countyScale; len[1] *= countyScale; 
+
+						// make a new group to hold the highlight
+						var g = svg.append("g")
+							.attr("id", "countyOverlay")
+							.attr("transform", "translate(" + (mouse[0]+10) + "," + (mouse[1]-10) + ")");
+
+						var countyG = g.append("g").
+							attr("transform", "scale("+countyScale+","+countyScale+") translate(-" + bounds[0][0] + ",-" + bounds[0][1] + ")");
+
+						countyG.append("path")
+							.classed("brush", true)
+							.attr("d", pathGenerator(feature))
+							.style("stroke-width", (2/countyScale).toFixed(1) + "px");
+
+						// append text
+						var popY = 0;
+						g.append("rect")
+							.attr("x", "0").attr("y", popY-RECT_HEIGHT)
+							.attr("width", RECT_WIDTH).attr("height", RECT_HEIGHT)
+							.classed("brushRect", true);
+						popY -= 5+25;
+						
+						var BAR_OFFSET = 60;
+						var BAR_HEIGHT = 10;
+						var BAR_WIDTH_MAX = RECT_WIDTH - BAR_OFFSET - 10;
+						g.append("text").text("whites").classed("smallLabel", true).attr("y", popY).attr("x", BAR_OFFSET-5);
+						var whites = g.append("rect").classed("barchart", true).attr("y", popY-BAR_HEIGHT).attr("x", BAR_OFFSET).attr("height", BAR_HEIGHT).attr("width", 0);
+						popY -= 15;
+
+						g.append("text").text("blacks").classed("smallLabel", true).attr("y", popY).attr("x", BAR_OFFSET-5);
+						var blacks = g.append("rect").classed("barchart", true).attr("y", popY-BAR_HEIGHT).attr("x", BAR_OFFSET).attr("height", BAR_HEIGHT).attr("width", 0)
+						popY -= 15;
+
+						g.append("text").text("asians").classed("smallLabel", true).attr("y", popY).attr("x", BAR_OFFSET-5);
+						var asians = g.append("rect").classed("barchart", true).attr("y", popY-BAR_HEIGHT).attr("x", BAR_OFFSET).attr("height", BAR_HEIGHT).attr("width", 0)
+						popY -= 15;
+
+						g.append("text").text("hispanics").classed("smallLabel", true).attr("y", popY).attr("x", BAR_OFFSET-5);
+						var hispanics = g.append("rect").classed("barchart", true).attr("y", popY-BAR_HEIGHT).attr("x", BAR_OFFSET).attr("height", BAR_HEIGHT).attr("width", 0)
+						popY -= 15;
+
+						g.append("text")
+							.text(feature.properties.countyName + ", " + feature.properties.state)
+							.attr("y", "-10")
+							.classed("brushText", true);
+
+						// send an ajax query
+						var cq = new CensusQuery()
+						cq.getCounties(
+							function(json)
+							{
+								var response = json[0];
+								var d = [+response.P0060002, +response.P0060003, +response.P0060005, +response.P0040003];
+								var theMax = d3.max(d);
+								whites.transition().attr("width", BAR_WIDTH_MAX * response.P0060002 / theMax)
+								blacks.transition().attr("width", BAR_WIDTH_MAX * response.P0060003 / theMax)
+								asians.transition().attr("width", BAR_WIDTH_MAX * response.P0060005 / theMax)
+								hispanics.transition().attr("width", BAR_WIDTH_MAX * response.P0040003 / theMax)
+							},
+							["P0060002", "P0060003", "P0060005", "P0040003"], feature.properties.state, feature.properties.countyNum
+						);
+
+
+					})
+					.on("mousemove", function() 
+					{
+						var mouse = d3.mouse(d3.select("#svgPlaceholder").select("svg").node());
+						d3.select("#countyOverlay").attr("transform", "translate(" + (mouse[0]+10) + "," + (mouse[1]-10) + ")");
+					})
+					.on("mouseout", function() {
+						d3.select("#countyOverlay").remove();
 					});
 			}
 
