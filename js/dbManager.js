@@ -274,16 +274,28 @@ function selectDb(name){
 	}
 }
 //Selects data to plot on the area depending on the type of graph
-function selectData(db,attrs,type,dataToRender,dataObjects){
+function selectData(db,data,attrs,type,dataToRender,dataObjects){
 	if(type=="scatterPlot"){
-		for (i=0;i<db.length;i++){
-			dataObjects.push(db[i]);
-        	dataToRender.push([eval("db[i]."+attrs[0]),eval("db[i]."+attrs[1]),db[i].myId]);
+		for (i=0;i<data.length;i++){
+			dataObjects.push(data[i]);
+        	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+attrs[1]),data[i].myId]);
     	}
 	}else if(type=="histogram"){
-		for (i=0;i<db.length;i++){
-			dataObjects.push(db[i]);
-        	dataToRender.push(eval("db[i]."+attrs[0]));
+		for (i=0;i<data.length;i++){
+			dataObjects.push(data[i]);
+        	dataToRender.push(eval("data[i]."+attrs[0]));
+    	}
+    }else if(type=="lineChart"){
+    	var dateAttr;
+    	for(i=0; i<db.metadata.infered.attrTypes.length; i++){
+    		if(db.metadata.infered.attrTypes[i].type=="Date or Time"){
+    			dateAttr=db.metadata.infered.attrTypes[i].attr;
+    			i=db.metadata.infered.attrTypes.length;
+    		}
+  		}
+		for (i=0;i<data.length;i++){
+			dataObjects.push(data[i]);
+        	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+dateAttr)]);
     	}
     }
 }

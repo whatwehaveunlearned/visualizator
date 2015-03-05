@@ -71,7 +71,7 @@ function graphsMenu(position,numAttrs,attrs){
   var dataObjects = [];
   var attrs=attrs;//necesary to pass the info to .on
   if (numAttrs==1){
-    var menu = ["histogram"];
+    var menu = ["histogram","lineChart"];
     xAxisName = "";
     yAxisName = attrs[0];
     title = db.name + " " + attrs[0];
@@ -88,7 +88,7 @@ function graphsMenu(position,numAttrs,attrs){
   d3.selectAll("#graphsMenu > p")
     .on("click",function(d)
     {
-      selectData(db.data,attrs,this.id,dataToRender,dataObjects);
+      selectData(db,db.data,attrs,this.id,dataToRender,dataObjects);
       areaCreator (title,db,xAxisName,yAxisName,dataToRender,dataObjects,this.id);
       d3.selectAll(".btn-group-vertical").remove();
       mainMenu(position);

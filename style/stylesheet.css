@@ -40,8 +40,6 @@
 
 /******  END KW Car **************/
 /*******  Chart Style *********/
-.bar {
-}
 
 /* Axis Style */
 .axis path,
@@ -122,5 +120,24 @@ body {
   fill: brown;
 }
 /*End of Bar Chart*/
+
+/*lineChart*/
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+/*END of LineChart
 
 /******* END of  Chart Style *********/
