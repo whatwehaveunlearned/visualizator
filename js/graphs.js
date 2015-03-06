@@ -3,6 +3,7 @@
 function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObjects,type){
   var parentList=[];
   var childrenList=[];
+  var areaWidth = width + margin.left + margin.right + 30;
   //If we have a parent argument we added to the parent List (children will always have to be added dynamically)
   if(arguments[7]!=undefined){
     parentList.push(arguments[7]);
@@ -12,10 +13,7 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
               class:"chartArea",
               "id":"graphArea"+graphCounter
             })
-            .style("width","500px"); 
-  $("#graphArea"+graphCounter).resizable();
-  //Fix this to make areas resizable
-  //$( ".chartArea" ).resizable();
+            .style("width",areaWidth + "px"); 
   var plot =  {
               name: "graphArea"+graphCounter,
               title:title,
@@ -30,8 +28,31 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
               parent: parentList,
               children: childrenList
             }
+  var svg = d3.select("#graphArea"+graphCounter).append("svg")
+      .attr({
+          "width": width + margin.left + margin.right,
+          "height": height + margin.top + margin.bottom,
+          "viewBox": "0 0 "+ (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom), 
+          "id":"svg"+graphCounter
+        })
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   areas.push(plot);
-  eval(type+"(area,plot)");
+  eval(type+"(area,plot,svg)");
+  $("#graphArea"+graphCounter).resizable({
+    aspectRatio: (width + margin.left + margin.right) / (height + margin.top + margin.bottom)
+  });
+  $("#graphArea"+graphCounter).resize(function() {
+      var svg=d3.select("#"+this.children[0].id)
+        .attr({
+          width:this.offsetWidth,
+          height:this.offsetHeight
+        })
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      var area=d3.select("#"+this.id);
+      var plot = searchArea(this.id);
+  });
   graphCounter = graphCounter +1;
 }
 
@@ -68,7 +89,7 @@ function addTitle(svg,plot){
     });
 }
 
-function scatterPlot(area,plot){
+function scatterPlot(area,plot,svg){
   var x = d3.scale.linear()
       .range([0, width]);
 
@@ -84,12 +105,6 @@ function scatterPlot(area,plot){
   var yAxis = d3.svg.axis()
       .scale(y)
       .orient("left");
-
-  var svg = d3.select("#graphArea"+graphCounter).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   //Call lasso function
   var lasso = lassoFunction(svg,color,area);
@@ -125,10 +140,10 @@ function scatterPlot(area,plot){
       .data(plot.data.toRender)
     .enter().append("circle")
       .attr("class",function(d,i) {
-        return areas[graphCounter].name + " " + "dot" + d[2];
+        return plot.name + " " + "dot" + d[2];
       }) // added
       .attr("id",function(d,i) {
-        return areas[graphCounter].name + "_" + i;
+        return plot.name + "_" + i;
       })
       .attr("r", 3.5)
       .attr("cx", function(d) { 
@@ -140,7 +155,7 @@ function scatterPlot(area,plot){
       .style("fill", function(d) { return color(d.species); })
       .style("stroke", "#000");
 
-  lasso.items(d3.selectAll("."+areas[graphCounter].name));
+  lasso.items(d3.selectAll("."+plot.name));
 
   var legend = svg.selectAll(".legend")
       .data(color.domain())
@@ -164,7 +179,7 @@ function scatterPlot(area,plot){
   addTitle(svg,plot);
 }
 
-function histogram(area,plot){
+function histogram(area,plot,svg){
   var x = d3.scale.ordinal()
       .rangeRoundBands([0, width], .1);
 
@@ -181,12 +196,6 @@ function histogram(area,plot){
 
   x.domain(d3.range(plot.data.toRender.length))
   y.domain([0, d3.max(plot.data.toRender, function(d) { return d; })]).nice();
-
-  var svg = d3.select("#graphArea"+graphCounter).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     svg.append("g")
         .attr("class", "x axis")
@@ -218,7 +227,7 @@ function histogram(area,plot){
     addTitle(svg,plot);
 }
 
-function lineChart(area,plot){
+function lineChart(area,plot,svg){
 
   var x = d3.time.scale()
       .range([0, width]);
@@ -237,12 +246,6 @@ function lineChart(area,plot){
   var line = d3.svg.line()
       .x(function(d) { return x(d[1]); })
       .y(function(d) { return y(d[0]); });
-
-  var svg = d3.select("body").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     x.domain(d3.extent(plot.data.toRender, function(d) { return d[1]; }));
     y.domain(d3.extent(plot.data.toRender, function(d) { return d[0]; }));
