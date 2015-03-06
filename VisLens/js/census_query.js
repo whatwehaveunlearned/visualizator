@@ -162,7 +162,7 @@ CensusQuery.prototype.getCounties = function(callback, variables, state, county)
 	d3.json(query, function(error, data)
 	{
 		if (error) { 
-			return console.warn(error); 
+			callback(error); 
 		}
 		else
 		{
@@ -195,7 +195,7 @@ CensusQuery.prototype.getCounties = function(callback, variables, state, county)
 				}
 				json.push(obj);
 			}
-			callback(json);
+			callback(null, json);
 		}
 
 	});

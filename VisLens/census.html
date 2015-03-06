@@ -1,8 +1,13 @@
+<!DOCTYPE html>
+<meta chartset="utf-8">
 <html>
 <head>
 	<script  type="text/javascript" src="js/d3.js"></script>
 	<script type="text/javascript" src="js/census_query.js"></script>
+	<script type="text/javascript" src="js/census_charts.js"></script>
 	<script type="text/javascript" src="js/topojson.v1.min.js"></script>
+	<script type="text/javascript" src="js/queue.v1.min.js"></script>
+
 	<style>
 		body {
 			font-family: sans-serif;
@@ -40,26 +45,56 @@
 			color: black;
 			text-anchor: end;
 		}
+
+		svg.placeholder
+		{
+			position: absolute;
+			margin: 0px 0px;
+			padding: 0px 0px;
+			border: 1px dashed #cccccc;
+		}
+
+		.histogramBar
+		{
+			fill: black;
+			stroke: none;
+		}
+
 	</style>
 </head>
 <body>
 	
-	<p>Percentage of minorities by county:
-	<p id="svgPlaceholder">
+	<span id="svgPlaceholder"></span>
+	<span id="lensPlaceholder"></span>
 
 	<script type="text/javascript">
-		var w = 1000;
-		var h = 700;
+		var w = 960;
+		var h = 900;
 		var maxPercentage = 0;
 		var features, featureMap;
 
+		var lensW = 300;
+		var lensH = 900;
 
 		// create and append an SVG canvas
 		var svg = d3.select("#svgPlaceholder").append("svg")
 			.attr("width", w)
 			.attr("height", h)
-			.style("border", "1px solid black");
+			.style("left", "10px")
+			.style("top", "10px")
+			.attr("id", "mainCanvas")
+			.classed("placeholder", true);
 	
+		// create another svg for charts
+		var svgLens = d3.select("#lensPlaceholder").append("svg")
+			.attr("width", lensW)
+			.attr("height", lensH)
+			.style("left", (w + 10 + 10)+"px")
+			.style("top", "10px")
+			.attr("id", "lensCanvas")
+			.classed("placeholder", true);
+		
+
 		// create D3 map projection and path generators
 		var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(1200);
 		var pathGenerator = d3.geo.path().projection(projection);
@@ -78,21 +113,30 @@
 		var variables = ["P0010001", "P0050003"];
 
 		cs.getCounties(jsonReadCallback, variables);
-		function jsonReadCallback(json)
+		function jsonReadCallback(error, json)
 		{
-
-			// read US counties topoplogy
-			d3.json("datasets/us-counties.json", function(error, topology)
+			if (error) {
+				alert("Error getting census data: " + error);
+			}
+			else
 			{
-				features = topojson.feature(topology, topology.objects.counties).features;
-				
-				// make a feature map indexed by county id
-				featureMap = d3.map();
-				for (var i=0, len=features.length; i < len; i++) {
-					featureMap.set(features[i].id, features[i]);
-				}
-				mashup();
-			});
+				// read US counties topoplogy
+				d3.json("datasets/us-counties.json", function(error2, topology)
+				{
+					if (error) {
+						alert("Error getting US counties data: " + error2);
+						return;
+					}
+					features = topojson.feature(topology, topology.objects.counties).features;
+					
+					// make a feature map indexed by county id
+					featureMap = d3.map();
+					for (var i=0, len=features.length; i < len; i++) {
+						featureMap.set(features[i].id, features[i]);
+					}
+					mashup();
+				});
+			}
 
 			function mashup()
 			{
@@ -146,7 +190,7 @@
 						var RECT_HEIGHT = 90;
 						var RECT_WIDTH = 150;
 
-						var svg = d3.select("#svgPlaceholder").select("svg");
+						var svg = d3.select("#mainCanvas");
 						var county = d3.select(this);
 						var mouse = d3.mouse(svg.node())
 						var geoid = +(county.attr("id").split("_")[1]);
@@ -204,8 +248,9 @@
 						// send an ajax query
 						var cq = new CensusQuery()
 						cq.getCounties(
-							function(json)
+							function(error, json)
 							{
+								if (error) return;
 								var response = json[0];
 								var d = [+response.P0060002, +response.P0060003, +response.P0060005, +response.P0040003];
 								var theMax = d3.max(d);
@@ -221,12 +266,16 @@
 					})
 					.on("mousemove", function() 
 					{
-						var mouse = d3.mouse(d3.select("#svgPlaceholder").select("svg").node());
+						var mouse = d3.mouse(d3.select("#mainCanvas").node());
 						d3.select("#countyOverlay").attr("transform", "translate(" + (mouse[0]+10) + "," + (mouse[1]-10) + ")");
 					})
 					.on("mouseout", function() {
 						d3.select("#countyOverlay").remove();
-					});
+					})
+					.on("dblclick", function() {
+						//alert("selected county: " + )
+					})
+					;
 			}
 
 		}
