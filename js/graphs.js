@@ -244,8 +244,12 @@ function lineChart(area,plot,svg){
       .orient("left");
 
   var line = d3.svg.line()
-      .x(function(d) { return x(d[1]); })
-      .y(function(d) { return y(d[0]); });
+      .x(function(d) { 
+        return x(d[1]); 
+      })
+      .y(function(d) {
+       return y(d[0]); 
+     });
 
     x.domain(d3.extent(plot.data.toRender, function(d) { return d[1]; }));
     y.domain(d3.extent(plot.data.toRender, function(d) { return d[0]; }));

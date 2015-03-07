@@ -293,6 +293,10 @@ function selectData(db,data,attrs,type,dataToRender,dataObjects){
     			i=db.metadata.infered.attrTypes.length;
     		}
   		}
+  		//Order the elements based on date (older to newer) to paint line.
+  		data.sort(function(a,b){
+		  return eval("a."+dateAttr)-eval("b."+dateAttr);
+		});
 		for (i=0;i<data.length;i++){
 			dataObjects.push(data[i]);
         	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+dateAttr)]);
