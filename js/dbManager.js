@@ -92,19 +92,19 @@ function dbKwCard(db){
 	var card = d3.select( "body" )
 	  			 .append("div")
 	  			 .attr({
-	  				"id":"dbKwCard"+graphCounter,
+	  				"id":"dbKwCard"+dbCounter,
 	  				"class":"dbKwCard"
 	  			 })
 	  			 .style("width","1000px");
 	var cardTitle = card.append("div")
-						.attr("id","dbKwCardTitle"+graphCounter)
+						.attr("id","dbKwCardTitle"+dbCounter)
 	cardTitle.append("p")
 	  		.text(db.name);
 	cardTitle.append("span")
 			 .attr("class","glyphicon glyphicon-remove")
 			 .on("click",function()
     		{
-    			$("#dbKwCard"+graphCounter).remove();
+    			$("#dbKwCard"+dbCounter).remove();
     		});
 	fillAttrTable(db,attrs);
 	fillTypeTable(attrs);
@@ -112,16 +112,16 @@ function dbKwCard(db){
 	  	.text("ok");
 	card.append("button")
 	  	.text("New Graph with this data");
-	$("#"+"dbKwCard"+graphCounter).draggable();
-	$("#"+"dbKwCard"+graphCounter).resizable();
+	$("#"+"dbKwCard"+dbCounter).draggable();
+	$("#"+"dbKwCard"+dbCounter).resizable();
 
 	//dbKwCard Internal functions
 	//Fill table of data
 	function fillAttrTable(db,attrs){
-		var table= d3.select("#"+"dbKwCard"+graphCounter)
+		var table= d3.select("#"+"dbKwCard"+dbCounter)
 		  			 .append("table")
 		  			 .attr({
-		  				 "id":"attrTable"
+		  				 "id":"attrTable"+dbCounter
 		  			 })
 		var theadTr = table.append("thead")
 						 .append("tr");
@@ -134,7 +134,7 @@ function dbKwCard(db){
 				columnsData.push({data : attrs[each]})
 			}
 		//Convert to dataTable
-		$('#attrTable').dataTable({
+		$('#attrTable'+dbCounter).dataTable({
 			data:db.data,
 			columns:columnsData,
 			scrollY: 300,
@@ -143,10 +143,10 @@ function dbKwCard(db){
 	}
 	//Fill table of attributes Types
 	function fillTypeTable (attrs){
-	 	var table= d3.select("#"+"dbKwCard"+graphCounter)
+	 	var table= d3.select("#"+"dbKwCard"+dbCounter)
 	  			 .append("table")
 	  			 .attr({
-	  				 "id":"typeTable"
+	  				 "id":"typeTable"+dbCounter
 	  			 })
 	  			 .style("height","100px");
 	  	var theadTr = table.append("thead")
@@ -160,7 +160,7 @@ function dbKwCard(db){
 	  		var td = tbody.append("td")
 	  		dataType(td,each,attrs);
 	  	}
-	  	$('#typeTable').dataTable({
+	  	$('#typeTable'+dbCounter).dataTable({
 	  		paging: false,
 	  		searching: false,
 	    	ordering:  false,

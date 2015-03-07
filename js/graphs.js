@@ -30,9 +30,9 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
             }
   var svg = d3.select("#graphArea"+graphCounter).append("svg")
       .attr({
-          "width": width + margin.left + margin.right,
-          "height": height + margin.top + margin.bottom,
-          "viewBox": "0 0 "+ (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom), 
+          "width": svgAttr.width,
+          "height": svgAttr.height,
+          "viewBox": "0 0 "+ (svgAttr.width) + " " + (svgAttr.height), 
           "id":"svg"+graphCounter
         })
       .append("g")
@@ -40,7 +40,7 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
   areas.push(plot);
   eval(type+"(area,plot,svg)");
   $("#graphArea"+graphCounter).resizable({
-    aspectRatio: (width + margin.left + margin.right) / (height + margin.top + margin.bottom)
+    aspectRatio: (svgAttr.width) / (svgAttr.height)
   });
   $("#graphArea"+graphCounter).resize(function() {
       var svg=d3.select("#"+this.children[0].id)
@@ -70,9 +70,9 @@ function addTitle(svg,plot){
      .text(plot.title)
      .attr({
        x: 500,
-       y: 50, 
+       y: -50, 
        "font-family": "sans-serif",
-       "font-size": 50,
+       "font-size": 30,
        fill: "black",
        "text-anchor":"middle"
     })

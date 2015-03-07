@@ -5,9 +5,11 @@
 
 //########################## GLOBAL VARIABLES DECLARATION ########################################################
 
-var margin = {top: 20, right: 20, bottom: 30, left: 40},
+var margin = {top: 80, right: 30, bottom: 20, left: 40},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 500 - margin.bottom;
+
+var svgAttr = {width:960,height:600}
 
 //Used to dynamically name the areas
 var graphCounter=0;
