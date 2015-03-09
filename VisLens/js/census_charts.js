@@ -1,8 +1,8 @@
 var BAR_WIDTH = 10;			// width of a single bar, in pixels
-var CELL_W = 100;
-var CELL_H = 100;
-var PADDING_V = 10;
-var PADDING_H = 50;
+var CELL_W = 25;
+var CELL_H = 25;
+var PADDING_V = 5;
+var PADDING_H = 5;
 
 function Histogram(theData, w, h, chartGroup)
 {
@@ -10,14 +10,12 @@ function Histogram(theData, w, h, chartGroup)
 	this.chartGroup = chartGroup;
 
 	// find maximum value in the chart
-	this.yMax = d3.max( theData );
+	this.yMax = d3.max( theData );	
 	
-	// frequency as multiple of 10
-	//this.yMax = Math.ceil(this.frequencyMax / 10) * 10;
-
 	var bins = theData.length;
 	var spaceForBars = bins * BAR_WIDTH;
-	var outterPadding = (w - spaceForBars) / 2;
+	var outterPadding = ((w - spaceForBars) / 2) / spaceForBars;
+	outterPadding = Math.min(1, Math.max(0, outterPadding));
 
 	var xScale, yScale;
 
@@ -68,35 +66,102 @@ Histogram.prototype.remove = function()
 	chartGroup.remove();
 }
 
-function LensGrid()
+function LensGrid(svg, mapProjection, lensOffsetX, lensOffsetY)
 {
 	this.selection = [];
 	this.selectionMap = d3.map();
 
-	this.pathGenerator = d3.geo.path();
+	this.svg = svg;
+	this.pathGenerator = d3.geo.path(d3.geo.albersUsa().translate([0,0]));
+	this.mapProjection = mapProjection;
+	this.lensOffset = [lensOffsetX, lensOffsetY];
 
 	// these are the mini charts that we will display in each cell
 	this.charts = [
 		{
 			type: "histogram",
 			variables: [
+				"P0060002",
+				"P0060003",
+				"P0060005",
+				"P0040003"
 			]
 		},
 		{
+			label: "Male age distribution",
 			type: "histogram",
 			variables: [
+				"P0120003",		// male under 5
+				"P0120004",		// male 5-9
+				"P0120005",
+				"P0120006",
+				"P0120007",
+				"P0120008",
+				"P0120009",
+				"P0120010",
+				"P0120011",
+				"P0120012",
+				"P0120013",
+				"P0120014",
+				"P0120015",
+				"P0120016",
+				"P0120017",
+				"P0120018",
+				"P0120019",
+				"P0120020",
+				"P0120021",
+				"P0120022",
+				"P0120023",		// male 75-79
+				"P0120024",		// male 80-84
+				"P0120025"		// male 85 and over
+			]
+		},
+		{
+			label: "Female age distribution",
+			type: "histogram",
+			variables: [
+				"P0120027",		// female under 5
+				"P0120028",		// female 5-9
+				"P0120029",
+				"P0120030",
+				"P0120031",
+				"P0120032",
+				"P0120033",
+				"P0120034",
+				"P0120035",
+				"P0120036",
+				"P0120037",
+				"P0120038",
+				"P0120039",
+				"P0120040",
+				"P0120041",
+				"P0120042",
+				"P0120043",
+				"P0120044",
+				"P0120045",
+				"P0120046",
+				"P0120047",		// female 75-79
+				"P0120048",		// female 80-84
+				"P0120049"		// female 85 and over
 			]
 		}
+
 	];
 }
 
-LensGrid.prototype.addCounty = function(countyNum, countyPath)
+LensGrid.prototype.addCounty = function(countyNum, stateAbbr, countyPath)
 {
-	if (selectionMap.get(countyNum))
+	var geoid = +(getStateNumber(stateAbbr) + "" + countyNum);
+
+	var existingSelection = this.selectionMap.get(geoid)
+	if (existingSelection)
 	{
 		// already selected, do nothing
+		existingSelection.countyPath.style("fill", "red");
+		existingSelection.countyPath.transition().duration(750).style("fill", "#aaaaaa");
 		return;
 	}
+	
 
 	// figure the bounds
 	var thisLens = this;
@@ -105,64 +170,146 @@ LensGrid.prototype.addCounty = function(countyNum, countyPath)
 	// make the charts
 	var q = queue(1);
 	var cq = new CensusQuery();
-	for (var c=0; c<this.charts.length; c++)
+	
+	for (var c=0; c < this.charts.length; c++)
 	{
 		var chart = this.charts[c];
-		q.defer(function(variables, callback) 
+		var chartVariables = chart.variables;
+		q.defer(function(theVars, _stateAbbr, _countyNum, _callback) 
 		{
-			cq.getCounties(callback, variables, null, countyNum)
-		}, chart.variables);
+			cq.getCounties(_callback, theVars, _stateAbbr, _countyNum)
+		 }, chartVariables, stateAbbr, countyNum);
 	}
 
 	// wait for all the jobs to be finished
 	q.awaitAll(function(error, results)
 	{
-		// make a cell
+		if (error)
+		{
+			console.warn("\t error: " + error + ", results: " + (error ? " ERRORED " : results.length));
+			return;
+		}
+
+		var rowNum = thisLens.selection.length;
+		var group = thisLens.svg.append("g")
+			.attr("id", "row_group_" + geoid)
+			.attr("transform", "translate(0," + rowNum * (CELL_H + PADDING_V) + ")");
+
 		var lensRow = {
+			rowNum: rowNum,
 			charts: [],
 			group: null,
 			countyGroup: null
 		};
 
-		var rowNum = thisLens.selection.length;
-		var group = d3.select("#lensPlaceholder").append("g")
-			.attr("transform", "translate(0," + rowNum * (CELL_H + PADDING_V) + ")");
-
 		// add a representation of the county
-		var bounds = this.pathGenerator.bounds(countyPath);
-		var countyLen = [bounds[1][0]-bounds[0][1], bounds[1][1]-bounds[0][1]];
+		var bounds = thisLens.pathGenerator.bounds(countyPath);
+		var countyLen = [bounds[1][0]-bounds[0][0], bounds[1][1]-bounds[0][1]];
 		var countyScale = Math.min(CELL_W / countyLen[0], CELL_H / countyLen[1]);
 		var scaledCountyLen = [countyScale*countyLen[0], countyScale*countyLen[1]];
+
 		var countyGroup = group.append("g")
+			.attr("id", "county_group_" + geoid)
 			.attr("transform", "translate(" + (CELL_W-scaledCountyLen[0])/2 + "," + (CELL_H-scaledCountyLen[1])/2 + ") " +
-				"scale(" + countyScale + "," + countyScale + ")");
-		countyGroup.append("path")
-			.style("fill", "black")
-			.style("stroke", "none")
+				"scale(" + countyScale + "," + countyScale + ") " + 
+				"translate(-"+bounds[0][0]+",-"+bounds[0][1]+")");
+
+		lensRow.countyPath = countyGroup.append("path")
+			.attr("id", "selection_county_" + geoid)
+			.style("fill", "red")
+			.style("stroke", "white")
 			.attr("d", thisLens.pathGenerator(countyPath));
 
+		group
+			.on("mouseover", function()
+			{
+				var geoid = d3.select(this).attr("id").split("_")[2];
+				thisLens.addSelectionLink(geoid);
+			})
+			.on("mouseout", function()
+			{
+				var geoid = d3.select(this).attr("id").split("_")[2];
+				thisLens.removeSelectionLink(geoid);
+			});
+		lensRow.countyPath.transition().duration(750).style("fill", "#aaaaaa");
+
+
+		// append all chart groups
 		lensRow.group = group;
 		lensRow.countyGroup = countyGroup;
 
-		// append all chart groups
+
 		for (var c=0; c < thisLens.charts.length; c++)
 		{
+			var chart = thisLens.charts[c];
 			var chartGroup = group.append("g")
-				.attr("transform", "translate(" + (CELL_W+PADDING_H)*c + ",0)");
+				.attr("transform", "translate(" + (CELL_W+PADDING_H)*(c+1) + ",0)");
 
-			var data = [];
-			for (var d=0, len=thisLens.charts[c].variables; d<len; d++) {
-				var varName = thisLens.charts[c].variables[d];
-				var varValue = results[c][varName];
-				data.push(varValue);
+			var chartData = [];
+			var chartResults = results[c][0];
+			for (var d=0, len=chart.variables.length; d<len; d++) 
+			{
+				var varName = chart.variables[d];
+				var varValue = chartResults[varName];
+				chartData.push(+varValue);
 			}
 
-			var histogram = new Histogram(data, CELL_W, CELL_H, chartGroup);
+			var histogram = new Histogram(chartData, CELL_W, CELL_H, chartGroup);
 			lensRow.charts.push(histogram);
 		}
 		thisLens.selection.push( lensRow );
+		thisLens.selectionMap.set( geoid, lensRow );
 	});
 }
 
-LensGrid.prototype.remove = function(rowNum) {
+LensGrid.prototype.addSelectionLink = function(geoid)
+{
+	var s = this.selectionMap.get(geoid);
+	if (s)
+	{
+		var feature = featureMap.get(geoid);
+		d3.select("#selection_county_" + geoid).style("fill", "red");
+
+		var countyCentroid = this.mapProjection.centroid(feature);
+		var cellCoordinates = [this.lensOffset[0], s.rowNum * (CELL_H+PADDING_V)+CELL_H/2];
+		//console.log("centroid: " + countyCentroid + ", cell: " + cellCoordinates);
+
+		// draw a linke between the two
+		var gg = d3.select("#brushes").append("g")
+			.attr("id", "county_link_" + geoid);
+
+		gg.append("line")
+			.style("stroke", "black")
+			.style("stroke-width", "1px")
+			.attr("x1", countyCentroid[0])
+			.attr("y1", countyCentroid[1])
+			.attr("x2", cellCoordinates[0])
+			.attr("y2", cellCoordinates[1]);
+
+		gg.append("circle")
+			.attr("cx", countyCentroid[0])
+			.attr("cy", countyCentroid[1])
+			.attr("r", "3px")
+			.style("fill", "black")
+			.style("stroke", "none"); 
+		this.selectionGroup = gg;
+	}
+}
+
+LensGrid.prototype.removeSelectionLink = function(geoid)
+{
+	if (this.selectionGroup)
+	{
+		if (!geoid) 
+			geoid = this.selectionGroup.attr("id").split("_")[2];
+		this.selectionGroup.remove();
+		this.selectionGroup = null;
+
+		d3.select("#selection_county_"+geoid).style("fill", "#aaaaaa");
+	}
+}
+
+LensGrid.prototype.remove = function(geoid) {
+	var selection = this.selectionMap.get(geoid);
+
 }

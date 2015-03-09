@@ -15,7 +15,7 @@
 		}
 
 		path {
-			stroke: #bbbbbb;
+			stroke: #999999;
 			stroke-width: .5px;
 		}
 		path:hover {
@@ -25,6 +25,7 @@
 			stroke: black;
 			fill: rgba(210, 210, 210, 0.6);
 		}
+
 		.brushText
 		{
 			font-family: sans-serif;
@@ -56,7 +57,7 @@
 
 		.histogramBar
 		{
-			fill: black;
+			fill: #999999;
 			stroke: none;
 		}
 
@@ -78,14 +79,15 @@
 
 		// create and append an SVG canvas
 		var svg = d3.select("#svgPlaceholder").append("svg")
-			.attr("width", w)
-			.attr("height", h)
+			.attr("width", w + lensW)
+			.attr("height", Math.max(h, lensH))
 			.style("left", "10px")
 			.style("top", "10px")
 			.attr("id", "mainCanvas")
 			.classed("placeholder", true);
 	
 		// create another svg for charts
+		/*
 		var svgLens = d3.select("#lensPlaceholder").append("svg")
 			.attr("width", lensW)
 			.attr("height", lensH)
@@ -93,14 +95,30 @@
 			.style("top", "10px")
 			.attr("id", "lensCanvas")
 			.classed("placeholder", true);
-		
+		*/
+
+		// append a group for charts
+		var gMap = svg.append("g");
+		var gLens = svg.append("g").attr("transform", "translate("+w+",0)");
+		var gBrush = svg.append("g").attr("id", "brushes");
+
 
 		// create D3 map projection and path generators
 		var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(1200);
-		var pathGenerator = d3.geo.path().projection(projection);
+		var pathGenerator = d3.geo.path().projection(projection);		
+		
+		// create the lens object
+		var theLens = new LensGrid(gLens, pathGenerator, w, 0);
+
+
+		
+
+		//var theColors = ["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d"]
+		var theColors = ['rgb(178,24,43)','rgb(214,96,77)','rgb(244,165,130)','rgb(253,219,199)','rgb(255,255,255)','rgb(224,224,224)','rgb(186,186,186)','rgb(135,135,135)'].reverse();
+		//var theColors = ['rgb(178,24,43)','rgb(239,138,98)','rgb(253,219,199)','rgb(247,247,247)','rgb(209,229,240)','rgb(103,169,207)','rgb(33,102,172)'];
+
 		var colorScale = d3.scale.quantize()
-			.range(["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a",
-              "#ef3b2c", "#cb181d", "#a50f15", "#67000d"]);
+			.range(theColors);
 
 		// read TpopJSON file of US counties
 
@@ -158,10 +176,12 @@
 					// mashup the id of the county with id of the data					
 					var geoid = +(datum.state_num + datum.county);
 					var theFeature = featureMap.get( geoid );
-					if (theFeature) {
+					if (theFeature) 
+					{
 						theFeature.properties.value = minority_percentage;
 						theFeature.properties.countyName = datum.NAME;
 						theFeature.properties.countyNum = datum.county;
+						theFeature.properties.geoid = geoid;
 						theFeature.properties.stateNum = datum.state_num;
 						theFeature.properties.state = datum.state_abbr;
 					}
@@ -172,7 +192,7 @@
 				}
 				colorScale.domain([0, maxPercentage]);
 
-				svg.selectAll("path")
+				gMap.selectAll("path")
 					.data(features)
 					.enter().append("path")
 					.attr("d", pathGenerator)
@@ -262,6 +282,7 @@
 							["P0060002", "P0060003", "P0060005", "P0040003"], feature.properties.state, feature.properties.countyNum
 						);
 
+						theLens.addSelectionLink(geoid);
 
 					})
 					.on("mousemove", function() 
@@ -270,12 +291,16 @@
 						d3.select("#countyOverlay").attr("transform", "translate(" + (mouse[0]+10) + "," + (mouse[1]-10) + ")");
 					})
 					.on("mouseout", function() {
+						theLens.removeSelectionLink();
 						d3.select("#countyOverlay").remove();
 					})
-					.on("dblclick", function() {
-						//alert("selected county: " + )
-					})
-					;
+					.on("dblclick", function() 
+					{
+						var clickedCounty = d3.select(this);
+						var geoid = +clickedCounty.attr("id").split("_")[1];
+						var feature = featureMap.get(geoid);
+						theLens.addCounty(feature.properties.countyNum, feature.properties.state, feature);
+					});
 			}
 
 		}

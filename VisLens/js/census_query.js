@@ -124,7 +124,8 @@ function CensusQuery(key)
 	}
 }
 
-CensusQuery.prototype.getStateNumber = function(state)
+
+function getStateNumber(state)
 {
 	if (state.length == 2)
 	{
@@ -135,54 +136,61 @@ CensusQuery.prototype.getStateNumber = function(state)
 		return state_to_num[state.capitalize().replace("Of", "of")];
 	}
 }
-
+CensusQuery.prototype.getStateNumber = getStateNumber;
 
 CensusQuery.prototype.getCounties = function(callback, variables, state, county)
 {
 	// apend NAME to list of variables
-	variables.push("NAME");
+	var theVars = variables.slice(0);
+	theVars.push("NAME");
 
 	// construct query string
 	var query = "http://api.census.gov/data/2010/sf1?key=" + this.key;
-	var varCount = variables.length;
+	var varCount = theVars.length;
 
 	query = query + "&get="
 	for (var i=0; i < varCount; i++)
 	{
-		query = query + variables;
+		query = query + theVars[i];
 		if (i != varCount-1)
 			query = query + ",";
 	}
 
 	query = query + "&for=county:" + (county ? county : "*");
-	if (state !== null && state !== undefined)
+	if (state)
 		query = query + "&in=state:" + this.getStateNumber(state);
+
+	//console.log("query: " + query);
 
 	// get and parse the JSON file
 	d3.json(query, function(error, data)
 	{
 		if (error) { 
-			callback(error); 
+			callback(error, null); 
 		}
 		else
 		{
-			var json = [];
+
+			var results = [];
+			
+			// read the header
 			var actualVars = data[0];
-			var varCount = actualVars.length;
+			var actualVarCount = actualVars.length;
 
 			var stateI = -1;
-			for (var j = 0; j < varCount; j++) {
+			for (var j = 0; j < actualVarCount; j++) {
 				if (actualVars[j] == "state") {
 					stateI = j;
 					break;
 				}
 			}
 
+			// ignore first line, which is the header
 			for (var i = 1, len = data.length; i < len; i++)
 			{
 				var obj = {};
 				var d = data[i];
-				for (var j = 0; j < varCount; j++)
+				for (var j = 0; j < actualVarCount; j++)
 				{
 					if (stateI == j)
 					{
@@ -193,9 +201,9 @@ CensusQuery.prototype.getCounties = function(callback, variables, state, county)
 					else
 						obj[ actualVars[j] ] =  d[j];
 				}
-				json.push(obj);
+				results.push(obj);
 			}
-			callback(null, json);
+			callback(null, results);
 		}
 
 	});
