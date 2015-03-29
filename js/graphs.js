@@ -276,3 +276,59 @@ function lineChart(area,plot,svg){
     
     addTitle(svg,plot);
 }
+
+function map(area,plot,svg){
+  //var data = [[19.084743376000063, -155.77583923699996],[21.276625083000056, -157.80294715899998],[21.30423490800007, -157.79986941499996]];
+
+  var projection = d3.geo.mercator()
+      .scale(6000)
+      .translate([17000 , 2500]);
+
+  var path = d3.geo.path()
+      .projection(projection);
+
+  var lasso = lassoFunction(svg,"color",area);
+
+  d3.json("datasets/hawaii.json", function(error, hawaii) {
+    if (error) return console.error(error);
+
+    svg.selectAll(".subunit")
+      .data(topojson.feature(hawaii, hawaii.objects.filterMap).features)
+      .enter().append("path")
+      .attr("class", function(d) { 
+        return "subunit " + d.id; })
+      .attr("d", path);
+
+    svg.append("path")
+      .datum(topojson.feature(hawaii, hawaii.objects.hawaiiPlaces))
+      .attr("d", path)
+      .attr("class", "place");
+
+    svg.selectAll(".place-label")
+      .data(topojson.feature(hawaii, hawaii.objects.hawaiiPlaces).features)
+    .enter().append("text")
+      .attr("class", "place-label")
+      .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+      .attr("dy", "-0.2em")
+      .text(function(d) { return d.properties.name; });
+        svg.selectAll(".pin")
+        .data(plot.data.toRender)
+        .enter().append("circle")
+        .attr("class","pin")
+        .attr("r", 5)
+        .attr("fill","red")
+        .attr("fill-opacity",0.2)
+        .attr("transform", function(d) {
+        return "translate(" + projection([
+            //coordinates should be passed longitude,latitude
+            d[1],
+            d[0]
+          ]) + ")"
+        })
+    .style("stroke", "#000")
+    .style("stroke-width", 0.2);
+
+    lasso.items(d3.selectAll(".pin"));
+  });
+  addTitle(svg,plot);
+}

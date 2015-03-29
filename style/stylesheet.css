@@ -138,6 +138,14 @@ body {
   stroke: steelblue;
   stroke-width: 1.5px;
 }
-/*END of LineChart
+/*END of LineChart*/
+
+/* map */
+.subunit {
+  fill: none;
+  stroke: #777;
+}
+
+/*END of map */
 
 /******* END of  Chart Style *********/

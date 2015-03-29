@@ -89,7 +89,7 @@ function lassoFunction (svg,color,area){
     var previousSelection=d3.selectAll(".selectedData");
     // Reset the color of all dots
     lasso.items()
-       .style("fill", function(d) { return color(d.species); });
+       .style("fill", function(d) { return "red"; });
 
     // Style the selected dots
     selected=lasso.items().filter(function(d) {

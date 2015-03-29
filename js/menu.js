@@ -71,7 +71,7 @@ function graphsMenu(position,numAttrs,attrs){
   var dataObjects = [];
   var attrs=attrs;//necesary to pass the info to .on
   if (numAttrs==1){
-    var menu = ["histogram","lineChart"];
+    var menu = ["histogram","lineChart","map"];
     xAxisName = "";
     yAxisName = attrs[0];
     title = db.name + " " + attrs[0];

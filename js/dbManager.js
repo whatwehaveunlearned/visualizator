@@ -85,7 +85,7 @@ function loadDb(name,id){
 //Constructs dbKWCard  (databaseKnowledgeCard)
 function dbKwCard(db){
 	var attrs = Object.keys(db.data[0]);
-	//Change myId to be the first element
+	//Change myId to be the first element (switch last for first)
 	var temp = attrs[0];
 	attrs[0]=attrs[(attrs.length-1)];
 	attrs[(attrs.length-1)]=temp;
@@ -109,6 +109,10 @@ function dbKwCard(db){
 	fillAttrTable(db,attrs);
 	fillTypeTable(attrs);
 	card.append("button")
+		.on("click",function()
+	    	{
+	    		selectData(db,db.data,"attrs","map","dataToRender","dataObjects")
+	    	})
 	  	.text("ok");
 	card.append("button")
 	  	.text("New Graph with this data");
@@ -171,7 +175,7 @@ function dbKwCard(db){
 	}
 	//Create dropdown menu for attributes Types
 	function dataType(element,each,attrs){
-		var dataTypes =["Number (Hole)","Number (Decimal)","Date or Time","String"];
+		var dataTypes =["Number (Hole)","Number (Decimal)","Date or Time","String","Coordinate"];
 		//Read types from db in order to fill table
 		var actualType = [];
 		for (attr in attrs){
@@ -252,6 +256,12 @@ function dbKwCard(db){
 function dbNormalize(db,type,keyValue){
 	if(type=="Date or Time"){
 		normalizeTime(keyValue)
+	}else if(type=="Coordinate"){
+		normalizeCoordinate(keyValue)
+	}else if(type=="Number (Decimal)"){
+		for(each in db.data){
+			db.data[each][keyValue] = parseInt(db.data[each][keyValue]);
+		}
 	}
 	//Internal dbNormalize Functions
 	//Function to normalizeTime
@@ -260,9 +270,83 @@ function dbNormalize(db,type,keyValue){
 		var temp;
 		for(each in db.data){
 			db.data[each][keyValue] = new Date(String(eval("db.data[each]."+ keyValue)));
-
 		}
 	}
+
+	//Right now is made as a hack depending on the db we need to see how to do this
+	function normalizeCoordinate(keyvalue){
+		for(each in db.data){
+			if(db.data[each][keyValue]!="") {db.data[each][keyValue] = db.data[each][keyValue].split("(")[1].split(")")[0];}
+		}
+	}
+	
+	//*******************************Geolocation using google API Not valid now*********************************
+	function normalizeGoogleCoordinate(){
+		var address = [];
+		var resultsArray = [];
+		//To monitor elements and send them in groups of 5 google API does not allow more at a time
+		var counter = 0;
+		loopElements();
+
+		function loopElements(){
+			for (i=counter;i<counter+5;i++){
+				dbGeocoder(db.data[i].BlockAddress+" Hawaii");
+			}
+		}
+
+		function dbGeocoder(address){
+			var geocoder = new google.maps.Geocoder();
+			geocoder.geocode( { 'address': address}, function(results, status) {
+		      if (status == google.maps.GeocoderStatus.OK) {
+		        resultsArray.push(results);
+		        if(resultsArray.length==counter+5){
+		        	counter=counter+5;
+		        	console.log(counter);
+		        	loopElements();
+		        }else if (resultsArray.length==db.data.length){
+		        	parseDb(resultsArray);
+		        }
+		      } else {
+		        resultsArray.push("Geocode was not successful for the following reason: " + status);
+		        if(resultsArray.length==counter+5){
+		        	counter=counter+5;
+		        	console.log(counter);
+		        	loopElements();
+		        }else if (resultsArray.length==db.data.length){
+		        	parseDb(resultsArray);
+		        }
+		      }
+		    });
+		}
+
+		function parseDb(resultsArray){
+			for (result in resultsArray){
+				if (typeof resultsArray[result] != "String")
+				{
+					if (resultsArray[result].length>1){
+						for (element in resultsArray[result]){
+							if(resultsArray[result][element].address_components!=undefined && resultsArray[result][element].address_components[3].long_name=="Hawaii"){
+								db.data[result].BlockAddress=resultsArray[result][element];
+							}
+						}
+					}else{
+						db.data[result].BlockAddress=resultsArray[result][0];
+					}
+				}
+			}
+		}
+		//*******************************END Geolocation using google API Not valid now *********************************
+	}
+
+	/*	function normalizeCoordinate(){
+		MQA.withModule("geocoder", function() {
+			var locations = ["4400 BLOCK KAPOLEI PKWY"];
+		    // executes a geocode and adds the result to the map
+		    MQA.Geocoder.geocode(locations, { maxResults: 10 }, null, function (response) {
+		    	console.log(response);
+		    });
+		});
+	}*/
 }
 //Select a database from databasesObjects
 //returns databaseObject. Needs name of db.
@@ -301,5 +385,14 @@ function selectData(db,data,attrs,type,dataToRender,dataObjects){
 			dataObjects.push(data[i]);
         	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+dateAttr)]);
     	}
+    }else if(type=="map"){
+    	for (i=0;i<data.length;i++){
+			dataObjects.push(data[i]);
+        	if(isNaN(parseFloat(eval("data[i]."+attrs[0]).split(",")[0]))!=true)
+        	{
+        		dataToRender.push([parseFloat(eval("data[i]."+attrs[0]).split(",")[0]),parseFloat(eval("data[i]."+attrs[0]).split(",")[1])]);
+        	}
+    	}
+    	//areaCreator ("title",db,"xAxisName","yAxisName",dataToRender,dataObjects,"map");
     }
 }
