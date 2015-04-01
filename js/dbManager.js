@@ -34,8 +34,10 @@ function loadDb(name,id){
 	            };
 			}
 	        databasesObjects.push(db);
+	        //dbDimensionOrMeasure(db);
 	        dbKwCard(db);
-			dbNormalize(db); 
+			//dbNormalize(db);
+			dbCounter=dbCounter+1; 
 		});
 	}else if(name.split(".")[1]=="json"){
 		d3.json("datasets/" + name,function(data){
@@ -65,11 +67,13 @@ function loadDb(name,id){
 	            };
 			}
 	        databasesObjects.push(db);
+	        //NEED SOME PREPROCESSING TO ADD DIMENSIONORMEASURE AND NORMALIZE AT THIS POINT
+	        //dbDimensionOrMeasure(db);
 	        dbKwCard(db);
-			dbNormalize(db);  
+			//dbNormalize(db);
+			dbCounter=dbCounter+1;  
 		});
 	}
-	dbCounter=dbCounter+1;
 
 	//loadDb Internal Functions
 	//Add myId attr to db
@@ -80,10 +84,31 @@ function loadDb(name,id){
 			counter++; 
 		}
 	}
+	function dbDimensionOrMeasure(db){
+		for (var element in db.data){
+			if (db.data.hasOwnProperty(element)) {
+		       var obj = db.data[element];
+		        for (var prop in obj) {
+		          // important check that this is objects own property 
+		          // not from prototype prop inherited
+		          if(obj.hasOwnProperty(prop)){
+		          	//Dimension
+		            if(isNaN(eval("obj."+prop))){
+		            	db.data[element][prop] = String(eval("obj."+prop))
+		            }else{//Measure
+		            	db.data[element][prop] = +eval("obj."+prop)
+		            }
+		          }
+		        }
+			}
+		}
+	}
 }
 
 //Constructs dbKWCard  (databaseKnowledgeCard)
 function dbKwCard(db){
+	var attrSelection=[];
+	var graphTypeSelection="Histogram";
 	var attrs = Object.keys(db.data[0]);
 	//Change myId to be the first element (switch last for first)
 	var temp = attrs[0];
@@ -92,7 +117,7 @@ function dbKwCard(db){
 	var card = d3.select( "body" )
 	  			 .append("div")
 	  			 .attr({
-	  				"id":"dbKwCard"+dbCounter,
+	  				"id":"dbKwCard-"+dbCounter,
 	  				"class":"dbKwCard"
 	  			 })
 	  			 .style("width","1000px");
@@ -104,25 +129,122 @@ function dbKwCard(db){
 			 .attr("class","glyphicon glyphicon-remove")
 			 .on("click",function()
     		{
-    			$("#dbKwCard"+dbCounter).remove();
+    			$("#dbKwCard-"+this.parentElement.parentElement.id.split("-")[1]).remove();
     		});
 	fillAttrTable(db,attrs);
 	fillTypeTable(attrs);
 	card.append("button")
+		.attr("id","newGraph")
 		.on("click",function()
 	    	{
-	    		selectData(db,db.data,"attrs","map","dataToRender","dataObjects")
+	    		$("#newGraph").hide();
+	    		var graphTypes = ["Histogram","Scatterplot","Linechart","Map"]
+	    		var dataBase = this.parentElement.id.split("-")[1];
+	    		var cardMenu = card.append("div")
+	    							.attr({
+	    								"id":"dbKwCardMenu-"+dbCounter,
+	    								"class":"dbKwCardMenu"
+	    							});
+	    		var minimize = cardMenu.append("span")
+			 							.attr("class","glyphicon glyphicon-chevron-up")
+			 							.style("float","right")
+			 							.on("click",function()
+    									{
+    										$("#dbKwCardMenu-"+this.parentElement.id.split("-")[1]).remove();
+    										$("#newGraph").show();
+    									});
+	    		//Attr List Selection
+	    		var list =	cardMenu.append("ol")
+	    							.attr({
+	    								"id":"attrList-"+dbCounter,
+	    								"class":"selectable"
+	    							})
+	    		for (value in Object.keys(databasesObjects[dataBase].data[0])){	
+	    			list.append("li")
+	    				.attr({
+	    					"class":"ui-widget-content"
+	    				})
+	    				.text(Object.keys(databasesObjects[dataBase].data[0])[value]);
+	    		}
+	    		$(".selectable").selectable({
+	    			stop: function() {
+	    				attrSelection=[];
+				        $( ".ui-selected").each(function() {
+				          var index = $( "#selectable li" ).index( this );
+				          attrSelection.push(this.textContent);
+				        });
+				    }
+	    		})
+	    		//graphType Selection
+	    		var cardGraphType = cardMenu.append("div")
+	    							.attr({
+	    								"id":"dbKwCardgraphType-"+dbCounter,
+	    								"class":"dbKwCardMenugraphType"
+	    							})
+    			var fieldset = cardGraphType.append("form")
+    						 			.attr("action","#")
+    						 			.append("fieldset")
+    						 			
+	 			fieldset.append("label")
+	 					.attr("for","graphType"+dbCounter)
+	 					.style({
+							"position":"absolute",
+							"top":"-50px"
+						})
+	 					.text("Select Type")
+	 			var dropdown = fieldset.append("select")
+	 								   .attr({
+	 								   "name":"graphType",
+	 								   "id":"graphType-"+dbCounter
+	 									})
+    			for (type in graphTypes){
+    				dropdown.append("option")
+    						.text(graphTypes[type])
+	    		}
+	    		//Create New Graph
+	    		cardMenu.append("button")
+	    				.attr("id","create")
+	    				.style({
+							"position":"absolute",
+							"left":"87%",
+							"bottom":"10px",
+							"width" : "100px",
+							"height": "50px"
+						})
+	    				.on("click",function()
+	    				{
+	    					var dataToRender = [];
+	    					var dataObjects = [];
+	    					if (attrSelection.length==1){
+							    xAxisName = "";
+							    yAxisName = attrSelection[0];
+							    title = db.name + " " + attrSelection[0];
+							  } 
+							else if (attrSelection.length==2){
+							    xAxisName = attrSelection[0];
+							    yAxisName = attrSelection[1];
+							    title = db.name + " " + attrSelection[0] + "/" +attrSelection[1];
+							} 
+	    					console.log(attrSelection)
+	    					console.log(graphTypeSelection)
+	    					selectData(db,db.data,attrSelection,graphTypeSelection,dataToRender,dataObjects);
+      						areaCreator (title,db,xAxisName,yAxisName,dataToRender,dataObjects,graphTypeSelection);
+	    				})
+	    				.text("create")
+	    		$("#graphType-"+dbCounter).selectmenu({
+	    			change: function( event, data ) {
+				          graphTypeSelection= data.item.value;
+				    }
+	    		});
 	    	})
-	  	.text("ok");
-	card.append("button")
-	  	.text("New Graph with this data");
-	$("#"+"dbKwCard"+dbCounter).draggable();
-	$("#"+"dbKwCard"+dbCounter).resizable();
+	  	.text("New Graph");
+	$("#"+"dbKwCard-"+dbCounter).draggable();
+	$("#"+"dbKwCard-"+dbCounter).resizable();
 
 	//dbKwCard Internal functions
 	//Fill table of data
 	function fillAttrTable(db,attrs){
-		var table= d3.select("#"+"dbKwCard"+dbCounter)
+		var table= d3.select("#"+"dbKwCard-"+dbCounter)
 		  			 .append("table")
 		  			 .attr({
 		  				 "id":"attrTable"+dbCounter
@@ -138,16 +260,17 @@ function dbKwCard(db){
 				columnsData.push({data : attrs[each]})
 			}
 		//Convert to dataTable
-		$('#attrTable'+dbCounter).dataTable({
+		peter=$('#attrTable'+dbCounter).dataTable({
 			data:db.data,
 			columns:columnsData,
 			scrollY: 300,
 			"scrollX": true
 		});
+		console.log("stop");
 	}
 	//Fill table of attributes Types
 	function fillTypeTable (attrs){
-	 	var table= d3.select("#"+"dbKwCard"+dbCounter)
+	 	var table= d3.select("#"+"dbKwCard-"+dbCounter)
 	  			 .append("table")
 	  			 .attr({
 	  				 "id":"typeTable"+dbCounter
@@ -245,7 +368,7 @@ function dbKwCard(db){
     							i=db.metadata.infered.attrTypes.length;
     					}
     				}
-    				db.metadata.infered.attrTypes.push({attr:keyValues[selectedAttr],type:type});
+    				//I think this line should be eliminated db.metadata.infered.attrTypes.push({attr:keyValues[selectedAttr],type:type});
 	    			dbNormalize(db,this.text,keyValues[selectedAttr]);
 	    		})
 				.text(dataTypes[element]);
@@ -259,6 +382,20 @@ function dbNormalize(db,type,keyValue){
 	}else if(type=="Coordinate"){
 		normalizeCoordinate(keyValue)
 	}else if(type=="Number (Decimal)"){
+		for(each in db.data){
+			//Check if it has a comma
+			if(db.data[each][keyValue].indexOf(',') > -1){
+				//If thousands comma
+				if(db.data[each][keyValue].split(",")[1].split(".")[0].length==3){
+					db.data[each][keyValue]=db.data[each][keyValue].replace(",", "")
+				}//If not it has to be decimal coma
+				else{
+					db.data[each][keyValue]=db.data[each][keyValue].replace(",", ".")
+				}
+			}
+			db.data[each][keyValue] = parseFloat(db.data[each][keyValue]);
+		}
+	}else if(type=="Number (Hole)"){
 		for(each in db.data){
 			db.data[each][keyValue] = parseInt(db.data[each][keyValue]);
 		}
@@ -359,17 +496,17 @@ function selectDb(name){
 }
 //Selects data to plot on the area depending on the type of graph
 function selectData(db,data,attrs,type,dataToRender,dataObjects){
-	if(type=="scatterPlot"){
+	if(type=="Scatterplot"){
 		for (i=0;i<data.length;i++){
 			dataObjects.push(data[i]);
         	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+attrs[1]),data[i].myId]);
     	}
-	}else if(type=="histogram"){
+	}else if(type=="Histogram"){
 		for (i=0;i<data.length;i++){
 			dataObjects.push(data[i]);
         	dataToRender.push(eval("data[i]."+attrs[0]));
     	}
-    }else if(type=="lineChart"){
+    }else if(type=="Linechart"){
     	var dateAttr;
     	for(i=0; i<db.metadata.infered.attrTypes.length; i++){
     		if(db.metadata.infered.attrTypes[i].type=="Date or Time"){
@@ -385,7 +522,7 @@ function selectData(db,data,attrs,type,dataToRender,dataObjects){
 			dataObjects.push(data[i]);
         	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+dateAttr)]);
     	}
-    }else if(type=="map"){
+    }else if(type=="Map"){
     	for (i=0;i<data.length;i++){
 			dataObjects.push(data[i]);
         	if(isNaN(parseFloat(eval("data[i]."+attrs[0]).split(",")[0]))!=true)
@@ -393,6 +530,5 @@ function selectData(db,data,attrs,type,dataToRender,dataObjects){
         		dataToRender.push([parseFloat(eval("data[i]."+attrs[0]).split(",")[0]),parseFloat(eval("data[i]."+attrs[0]).split(",")[1])]);
         	}
     	}
-    	//areaCreator ("title",db,"xAxisName","yAxisName",dataToRender,dataObjects,"map");
     }
 }

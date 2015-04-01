@@ -89,7 +89,7 @@ function addTitle(svg,plot){
     });
 }
 
-function scatterPlot(area,plot,svg){
+function Scatterplot(area,plot,svg){
   var x = d3.scale.linear()
       .range([0, width]);
 
@@ -179,7 +179,7 @@ function scatterPlot(area,plot,svg){
   addTitle(svg,plot);
 }
 
-function histogram(area,plot,svg){
+function Histogram(area,plot,svg){
   var x = d3.scale.ordinal()
       .rangeRoundBands([0, width], .1);
 
@@ -227,7 +227,7 @@ function histogram(area,plot,svg){
     addTitle(svg,plot);
 }
 
-function lineChart(area,plot,svg){
+function Linechart(area,plot,svg){
 
   var x = d3.time.scale()
       .range([0, width]);
@@ -277,7 +277,7 @@ function lineChart(area,plot,svg){
     addTitle(svg,plot);
 }
 
-function map(area,plot,svg){
+function Map(area,plot,svg){
   //var data = [[19.084743376000063, -155.77583923699996],[21.276625083000056, -157.80294715899998],[21.30423490800007, -157.79986941499996]];
 
   var projection = d3.geo.mercator()

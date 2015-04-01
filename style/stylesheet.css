@@ -31,14 +31,37 @@
  border: 10px solid;
 }
 /******* END Chart Area Style *********/
-/****** DataBase KW Car **************/
+/****** DataBase KW Card **************/
 .dbKwCard{
   border-style:solid;
   border-width:5px;
   padding: 5px;
 }
 
-/******  END KW Car **************/
+
+.dbKwCardMenu .dbKwCardMenugraphType {position:absolute;left:65%;top:73%}
+.dbKwCardMenu #create{position:absolute;left:87%;bottom:10px;width : 100px;height: 50px;font-size: 150%}
+
+.dbKwCardMenu .selectable { margin:0.4em; list-style-type: none; padding: 0; width: 60%; max-height: 250px; overflow-y: scroll; border-style:solid; border-width:0.4em; }
+.dbKwCardMenu .selectable .ui-selecting { background: #FECA40; }
+.dbKwCardMenu .selectable .ui-selected { background: #F39814; color: white; }
+.dbKwCardMenu .selectable li { font-size: 1.5em; text-align:center  }
+
+fieldset {
+  border: 0;
+}
+label {
+  display: block;
+  margin: 30px 0 0 0;
+}
+select {
+  width: 200px;
+}
+.overflow {
+  height: 200px;
+}
+
+/******  END KW Card **************/
 /*******  Chart Style *********/
 
 /* Axis Style */
