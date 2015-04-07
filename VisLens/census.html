@@ -5,8 +5,15 @@
 	<script  type="text/javascript" src="js/d3.js"></script>
 	<script type="text/javascript" src="js/census_query.js"></script>
 	<script type="text/javascript" src="js/census_charts.js"></script>
+	<script type="text/javascript" src="js/census_selection.js"></script>
+	<script type="text/javascript" src="js/sim_matrix.js"></script>
 	<script type="text/javascript" src="js/topojson.v1.min.js"></script>
 	<script type="text/javascript" src="js/queue.v1.min.js"></script>
+
+	<!-- canvg includes -->
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
 
 	<style>
 		body {
@@ -67,6 +74,8 @@
 	
 	<span id="svgPlaceholder"></span>
 	<span id="lensPlaceholder"></span>
+	<p>
+		<div id="canvasPlaceholder"><canvas id="theCanvas" width="400" height="400" style="border: solid 1px black"></canvas></div>
 
 	<script type="text/javascript">
 		var w = 960;
@@ -76,6 +85,7 @@
 
 		var lensW = 300;
 		var lensH = 900;
+		var selectionLenses = null;
 
 		// create and append an SVG canvas
 		var svg = d3.select("#svgPlaceholder").append("svg")
@@ -85,23 +95,36 @@
 			.style("top", "10px")
 			.attr("id", "mainCanvas")
 			.classed("placeholder", true);
-	
-		// create another svg for charts
-		/*
-		var svgLens = d3.select("#lensPlaceholder").append("svg")
-			.attr("width", lensW)
-			.attr("height", lensH)
-			.style("left", (w + 10 + 10)+"px")
-			.style("top", "10px")
-			.attr("id", "lensCanvas")
-			.classed("placeholder", true);
-		*/
 
 		// append a group for charts
 		var gMap = svg.append("g");
 		var gLens = svg.append("g").attr("transform", "translate("+w+",0)");
 		var gBrush = svg.append("g").attr("id", "brushes");
 
+		// create an object for managing selection boxes
+		floatingLenses = new SelectionBoxes(svg, gBrush);
+
+		svg
+			.on("mousedown", function() { 
+				floatingLenses.mousedown( d3.mouse(svg.node()) );
+
+				// register mousemove event
+				svg
+					.on("mousemove", function() 
+					{
+						floatingLenses.mousemove( d3.mouse(svg.node()) );
+					})
+					.on("mouseup", function() {
+						floatingLenses.mouseup( d3.mouse( svg.node()) );
+						svg.on("mousemove", null).on("mouseup", null);
+					});
+
+
+			});
+			
+		// hide canvas so that it acts as an off-screen raster buffer
+		d3.select("#theCanvas").style("visibility", "hidden");
+	
 
 		// create D3 map projection and path generators
 		var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(1200);
@@ -110,17 +133,13 @@
 		// create the lens object
 		var theLens = new LensGrid(gLens, pathGenerator, w, 0);
 
-
-		
-
+		var theColors = ['rgb(247,247,247)','rgb(217,217,217)','rgb(189,189,189)','rgb(150,150,150)','rgb(99,99,99)','rgb(37,37,37)'];
 		//var theColors = ["#fff5f0", "#fee0d2", "#fcbba1", "#fc9272", "#fb6a4a", "#ef3b2c", "#cb181d", "#a50f15", "#67000d"]
-		var theColors = ['rgb(178,24,43)','rgb(214,96,77)','rgb(244,165,130)','rgb(253,219,199)','rgb(255,255,255)','rgb(224,224,224)','rgb(186,186,186)','rgb(135,135,135)'].reverse();
+		//var theColors = ['rgb(178,24,43)','rgb(214,96,77)','rgb(244,165,130)','rgb(253,219,199)','rgb(255,255,255)','rgb(224,224,224)','rgb(186,186,186)','rgb(135,135,135)'].reverse();
 		//var theColors = ['rgb(178,24,43)','rgb(239,138,98)','rgb(253,219,199)','rgb(247,247,247)','rgb(209,229,240)','rgb(103,169,207)','rgb(33,102,172)'];
 
 		var colorScale = d3.scale.quantize()
 			.range(theColors);
-
-		// read TpopJSON file of US counties
 
 		// read census data
 		var cs = new CensusQuery();
@@ -204,8 +223,12 @@
 						else
 							return "#cccccc";
 					})
+					/*
+					// create an overlay with information about county on hover event 
 					.on("mouseover", function() 
 					{
+						if (floatingLenses.getSelection())
+							return;
 						var MAX_DIM = 130;
 						var RECT_HEIGHT = 90;
 						var RECT_WIDTH = 150;
@@ -284,7 +307,10 @@
 
 						theLens.addSelectionLink(geoid);
 
-					})
+					});
+					*/
+					/*
+					// create overlays with information about county on hover
 					.on("mousemove", function() 
 					{
 						var mouse = d3.mouse(d3.select("#mainCanvas").node());
@@ -301,6 +327,7 @@
 						var feature = featureMap.get(geoid);
 						theLens.addCounty(feature.properties.countyNum, feature.properties.state, feature);
 					});
+					*/
 			}
 
 		}
