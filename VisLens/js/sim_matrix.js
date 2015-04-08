@@ -1,5 +1,6 @@
 var SIMMAT_ELEMENT_SIZE = 20;
 var SIMMAT_ELEMENT_BORDER = "#eeeeee";
+var MATRIX_COLOR_SCALE = ['rgb(215,48,39)','rgb(252,141,89)','rgb(254,224,144)','rgb(255,255,191)','rgb(224,243,248)','rgb(145,191,219)','rgb(69,117,180)'].reverse();
 
 function SimilarityMatrix(_svg)
 {
@@ -19,8 +20,7 @@ SimilarityMatrix.prototype.draw = function(simMatrix)
 
 	this.g = this.svg.append("g");
 	
-	var theColors = ['rgb(215,48,39)','rgb(252,141,89)','rgb(254,224,144)','rgb(255,255,191)','rgb(224,243,248)','rgb(145,191,219)','rgb(69,117,180)'].reverse();
-	var colorScale = d3.scale.quantize().domain([this.minSimilarity,1]).range(theColors);
+	var colorScale = d3.scale.quantize().domain([this.minSimilarity,1]).range(MATRIX_COLOR_SCALE);
 	
 	(function(thisObject) {
 
@@ -71,6 +71,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 				}
 			}
 		}
+		theMin.push(minD);
 		return theMin;
 	}
 
@@ -79,8 +80,9 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	{
 		for (var k = j+1, len = m.length; k < len; k++) 
 		{
-			if (k > i)
+			if (k > i) {
 				m[k].splice(i, 1);
+			}
 			m[k].splice(j, 1);
 		}
 	}
@@ -102,6 +104,17 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	iteration = 1;
 	while (clusterList.length > 1)
 	{
+		/*
+		console.log("\t distance matrix BEFORE merge: ");
+		for (var r=0, len=clusterDistance.length; r<len; r++) {
+			var line = "\t\t" + "[" + r + "," + clusterDistance[r].length + "]: ";
+			for (var s=0; s<r; s++) {
+				line += (clusterDistance[r][s] === undefined ? "X.XXX" : clusterDistance[r][s].toFixed(3)) + "\t";
+			}
+			console.log(line);
+		}
+		*/
+
 		// select two cluster of the lowest distance
 		var merger = selectMin(clusterDistance);
 
@@ -109,46 +122,69 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 		var i = merger[0];
 		var j = merger[1];
 
-		var newCluster = 
-		{ 
-			members: clusterList[i].members.concat(clusterList[j].members), 
-			l: iteration++
-		};
-
 		// add a new row to clusterDistance to
 		// reflect the distance to the new cluster
 		var newDRow = [];
 		for (var k = 0, len = clusterList.length-2; k < len; k++) 
 		{
 			// jump over i and j
-			var otherI = k + (k >= j ? 1 : 0) + (k >= i ? 1 : 0);
+			var m = k;
+			if (m >= j) m++;
+			if (m >= i) m++;
 
-			var d1 = clusterDistance[Math.max(otherI,i)][Math.min(otherI,i)];
-			var d2 = clusterDistance[Math.max(otherI,j)][Math.min(otherI,j)];
-			newDRow.push(Math.max(d1, d2));
+			var d1 = clusterDistance[Math.max(m,i)][Math.min(m,i)];
+			var d2 = clusterDistance[Math.max(m,j)][Math.min(m,j)];
+			newDRow.push(Math.min(d1, d2));
 		}
-		clusterDistance.push(newDRow);
 
 		// remove two old columns
 		removeColumn(clusterDistance, i, j);
 
-		// remove two old rows
+		// remove two old rows from distance matrix
 		clusterDistance.splice(i, 1);
 		clusterDistance.splice(j, 1);
+		
+		// add new line
+		clusterDistance.push(newDRow);
 
 		// remove old clusters from cluster list and add new one
 		var c1 = clusterList.splice(i, 1)[0];
 		var c2 = clusterList.splice(j, 1)[0];
 		
 		// add newly created cluster
+		var newCluster = 
+		{ 
+			members: [], 
+			l: iteration++
+		};
 		clusterList.push(newCluster);
 
 		// mark parent / child relationship between newly formed clusters and its predecessors
 		// larger clusters are placed first
+		// merge by seniority (# of members)
 		if (c1.members.length >= c2.members.length) 
+		{
 			newCluster.children = [c1, c2];
-		else
+			newCluster.members = c1.members.concat(c2.members);
+		}
+		else 
+		{
 			newCluster.children = [c2, c1];
+			newCluster.members = c2.members.concat(c1.members)
+		}
+		
+		/*
+		console.log("\t distance matrix AFTER merge: ");
+		for (var r=0, len=clusterDistance.length; r<len; r++) {
+			var line = "\t\t" + "[" + r + "," + clusterDistance[r].length + "]: ";
+			for (var s=0; s<r; s++) {
+				line += (clusterDistance[r][s] === undefined ? "X.XXX" : clusterDistance[r][s].toFixed(3)) + "\t";
+			}
+			console.log(line);
+		}
+		*/
+
+		//console.log("\t merged " + i + ", " + j + ", distance: " + merger[2] + ", members: " + newCluster.members);
 		c1.parent = newCluster;
 		c2.parent = newCluster;
 	}
@@ -156,7 +192,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	this.clusters = clusterList[0];
 
 	// layout the matrix
-	layoutMatrix(this.clusters, 0, this.data2ij, this.ij2data );
+	this.layoutMatrix(this.clusters, 0);
 	
 	this.clusteredMatrix = [];
 	for (var i=0, len=this.matrix.length; i < len; i++) 
@@ -241,18 +277,18 @@ SimilarityMatrix.prototype.drawMatrix = function()
 }
 
 // a depth first layout function
-function layoutMatrix(cluster, order, m2ij, ij2m)
+SimilarityMatrix.prototype.layoutMatrix = function(cluster, order)
 {
 	if (cluster.children)
 	{
 		// layout my children
-		return layoutMatrix(cluster.children[1], layoutMatrix(cluster.children[0], order, m2ij, ij2m), m2ij, ij2m);
+		return this.layoutMatrix(cluster.children[1], this.layoutMatrix(cluster.children[0], order));
 	}
 	else
 	{
 		// has to be a single element
-		m2ij[cluster.members[0]] = order;
-		ij2m[order] = cluster.members[0];
+		this.data2ij[cluster.members[0]] = order;
+		this.ij2data[order] = cluster.members[0];
 		return order+1;
 	}
 }
