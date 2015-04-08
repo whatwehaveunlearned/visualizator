@@ -1,6 +1,8 @@
 var SIMMAT_ELEMENT_SIZE = 20;
 var SIMMAT_ELEMENT_BORDER = "#eeeeee";
 var MATRIX_COLOR_SCALE = ['rgb(215,48,39)','rgb(252,141,89)','rgb(254,224,144)','rgb(255,255,191)','rgb(224,243,248)','rgb(145,191,219)','rgb(69,117,180)'].reverse();
+var DENDOGRAM_NODE_HEIGHT = SIMMAT_ELEMENT_SIZE/2;
+var DENDOGRAM_COLOR = "#959595";
 
 function SimilarityMatrix(_svg)
 {
@@ -97,7 +99,8 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 		clusterDistance.push([]);
 		for (var j = 0; j < i; j++)
 		{
-			clusterDistance[i].push( this.matrix[i][j] );
+			// distance is inverse of similarity
+			clusterDistance[i].push( 1.0 - this.matrix[i][j] );
 		}
 	}
 
@@ -134,7 +137,9 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 
 			var d1 = clusterDistance[Math.max(m,i)][Math.min(m,i)];
 			var d2 = clusterDistance[Math.max(m,j)][Math.min(m,j)];
-			newDRow.push(Math.min(d1, d2));
+			
+			// this new cluster's distance to m is the maximum of i & j
+			newDRow.push(Math.max(d1, d2));
 		}
 
 		// remove two old columns
@@ -193,6 +198,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 
 	// layout the matrix
 	this.layoutMatrix(this.clusters, 0);
+	this.layoutDendogram(this.clusters, 0);
 	
 	this.clusteredMatrix = [];
 	for (var i=0, len=this.matrix.length; i < len; i++) 
@@ -236,6 +242,45 @@ SimilarityMatrix.prototype.brush = function(i)
 	}
 }
 
+SimilarityMatrix.prototype.brushCluster = function(cluster)
+{
+	floatingLenses.brushBoxes(cluster.members, true);
+
+	// determine ij extents
+	var r = this.matrix.length;
+	var s = -1;
+	for (var k=0, len=cluster.members.length; k<len; k++)
+	{
+		var i = this.data2ij[cluster.members[k]];
+		if (r > i) r=i;
+		if (s < i) s=i;
+	}
+
+	// create a rectangular brush
+	if (s >= r)
+	{
+		var rectSize = (s-r+1) * SIMMAT_ELEMENT_SIZE;
+		var rectXY = r * SIMMAT_ELEMENT_SIZE;
+
+		
+		this.brushGroup.append("rect")
+			.attr("x", rectXY)
+			.attr("y", rectXY)
+			.attr("width", rectSize)
+			.attr("height", rectSize)
+			.attr("stroke", "black")
+			.attr("stroke-width", "2px")
+			.attr("fill", "none");
+		
+	}
+}
+
+SimilarityMatrix.prototype.unbrushCluster = function()
+{
+	floatingLenses.unbrushBoxes(true);
+	this.brushGroup.html("");
+}
+
 SimilarityMatrix.prototype.unbrush = function()
 {
 	if (this.brushGroup)
@@ -272,8 +317,17 @@ SimilarityMatrix.prototype.updateMatrix = function(matrix, _minSimilarity)
 
 SimilarityMatrix.prototype.drawMatrix = function()
 {
-	if (this.clusteredMatrix)
+	if (this.clusteredMatrix) {
 		this.draw(this.clusteredMatrix);
+
+		if (this.dendogramGroup) {
+			this.dendogramGroup.remove()
+		}
+		this.dendogramGroup = this.g.append("g");
+		var depth = this.drawDendogram(this.clusters)[0];
+
+		this.dendogramGroup.attr("transform", "translate(" + ((-this.clusters.dendogram.depth-.5)*DENDOGRAM_NODE_HEIGHT) + ",0)");
+	}
 }
 
 // a depth first layout function
@@ -292,3 +346,124 @@ SimilarityMatrix.prototype.layoutMatrix = function(cluster, order)
 		return order+1;
 	}
 }
+
+SimilarityMatrix.prototype.highlightCluster = function(cluster, theColor)
+{
+	if (cluster.dendogram.lines)
+		cluster.dendogram.lines.attr("stroke", theColor)
+	if (cluster.dendogram.circle)
+		cluster.dendogram.circle.attr("fill", theColor);
+
+	// do my children
+	if (cluster.children) 
+	{
+		this.highlightCluster(cluster.children[0], theColor);
+		this.highlightCluster(cluster.children[1], theColor);
+	}
+}
+
+SimilarityMatrix.prototype.drawDendogram = function(cluster)
+{
+	// invert depth
+	var myX = (this.clusters.dendogram.depth - cluster.dendogram.depth) * DENDOGRAM_NODE_HEIGHT;
+	var myY = cluster.dendogram.centroid * SIMMAT_ELEMENT_SIZE + SIMMAT_ELEMENT_SIZE/2;
+
+	/*
+	// add a circle
+	cluster.dendogram.circle = this.dendogramGroup.append("circle")
+		.attr("cx", myX)
+		.attr("cy", myY)
+		.attr("fill", DENDOGRAM_COLOR)
+		.attr("stroke", "none")
+		.attr("r", "2.5px");
+	*/
+
+	if (cluster.children)
+	{
+		// draw my children
+		var c1 = this.drawDendogram(cluster.children[0]);
+		var c2 = this.drawDendogram(cluster.children[1]);
+
+		// c	onnect my children with lines
+		var lines = [
+			{x1: myX, y1: c1[1], x2: c1[0], y2: c1[1]},
+			{x1: myX, y1: c2[1], x2: c2[0], y2: c2[1]},
+			{x1: myX, y1: c1[1], x2: myX, y2: c2[1]}
+		];
+		(function(thisCluster, thisMatrix) 
+		{
+			var g = thisMatrix.dendogramGroup.append("g");
+			thisCluster.dendogram.lines = g.selectAll("line")
+				.data(lines).enter().append("line")
+				.attr("x1", function(d) { return d.x1} )
+				.attr("y1", function(d) { return d.y1} )
+				.attr("x2", function(d) { return d.x2} )
+				.attr("y2", function(d) { return d.y2} )
+				.attr("stroke", DENDOGRAM_COLOR)
+				.attr("stroke-width", "2px")
+				.on("mouseover", function() 
+				{
+					thisMatrix.highlightCluster(thisCluster, "red");
+					thisMatrix.brushCluster(thisCluster);
+				})
+				.on("mouseout", function() {
+					thisMatrix.highlightCluster(thisCluster, DENDOGRAM_COLOR);
+					thisMatrix.unbrushCluster();					
+				});
+		})(cluster, this);
+	}
+			
+	return [myX, myY];
+}
+
+SimilarityMatrix.prototype.layoutDendogram = function(cluster, depth)
+{
+	if (cluster.children)
+	{
+		var c1 = this.layoutDendogram(cluster.children[0], depth);
+		var c2 = this.layoutDendogram(cluster.children[1], depth);
+		cluster.dendogram = {
+			centroid: (c1.centroid + c2.centroid) / 2, 
+			depth: Math.max(c1.depth, c2.depth)+1
+		};
+	}
+	else
+	{
+		cluster.dendogram = {
+			centroid: this.data2ij[cluster.members[0]],
+			depth: depth
+		};
+	}
+	return cluster.dendogram;
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

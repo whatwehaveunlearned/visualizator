@@ -311,12 +311,15 @@ function SelectionBoxes(svg, brushGroup)
 			{
 				if (SIMMAT_ELEMENT_SIZE > 1) {
 					SIMMAT_ELEMENT_SIZE--;
+					DENDOGRAM_NODE_HEIGHT -= 0.5;
 					thisObject.similarityMatrix.drawMatrix();
 				}
 			}
 			else if (d3.event.keyCode == 187) 
 			{
 				SIMMAT_ELEMENT_SIZE += 1;
+				DENDOGRAM_NODE_HEIGHT += 0.5;
+
 				thisObject.similarityMatrix.drawMatrix();
 			}
 		});
@@ -406,30 +409,30 @@ SelectionBoxes.prototype.id2Matrix = function(id)
 	return this.boxesMap.get(id);
 }
 
-SelectionBoxes.prototype.brushBoxes = function(brushList)
+SelectionBoxes.prototype.brushBoxes = function(brushList, dontBrushMatrix)
 {
 
 	var i = brushList[0];
 	var j = brushList.length > 1 ? brushList[1] : i;
 
-	this.brushedBox = [i, j];
-	this.boxes[i].brush();
-	if (i != j)
-		this.boxes[j].brush();
-	this.similarityMatrix.brush(this.brushedBox);
+	this.brushedBox = brushList;
+
+	for (var k = 0; k < brushList.length; k++)
+		this.boxes[ brushList[k] ].brush();
+	
+	if (!dontBrushMatrix)
+		this.similarityMatrix.brush(this.brushedBox);
 }
 
-SelectionBoxes.prototype.unbrushBoxes = function()
+SelectionBoxes.prototype.unbrushBoxes = function(dontBrushMatrix)
 {
 	if (this.brushedBox !== undefined)
 	{
-		var i = this.brushedBox[0];
-		var j = this.brushedBox.length > 1 ? this.brushedBox[1] : this.brushedBox[0];
+		for (var k = 0; k < this.brushedBox.length; k++)
+			this.boxes[ this.brushedBox[k] ].unbrush();	
 
-		this.boxes[ i ].unbrush();	
-		this.boxes[ j ].unbrush();
-
-		this.unbrushMatrix();
+		if (!dontBrushMatrix)
+			this.unbrushMatrix();
 		this.brushedBox = undefined;
 	}
 }
