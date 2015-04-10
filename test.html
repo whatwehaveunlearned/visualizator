@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.subunit {
+  fill: none;
+  stroke: #777;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src = "js/goodlasso.js"></script>
+
+<script>
+  
+  function lassoFunction (svg){
+    // Lasso functions to execute while lassoing
+    var lasso_start = function() {
+      lasso.items()
+        //.attr("r",3.5) // reset size
+        .style("fill",null) // clear all of the fills
+        .classed({"not_possible":true,"selected":false}); // style as not possible
+    };
+
+    var lasso_draw = function() {
+      // Style the possible dots
+      lasso.items().filter(function(d) {return d.possible===true})
+        .classed({"not_possible":false,"possible":true});
+
+      // Style the not possible dot
+      lasso.items().filter(function(d) {return d.possible===false})
+        .classed({"not_possible":true,"possible":false});
+    };
+
+    var lasso_end = function() { 
+      var selected;
+     // var data = thisArea.data.objects;
+      //var keys = Object.keys(thisArea.database.data[0]); 
+      var previousSelection=d3.selectAll(".selectedData");
+      // Reset the color of all dots
+      lasso.items()
+         .style("fill", function(d) { return "red"; });
+
+      // Style the selected dots
+      selected=lasso.items().filter(function(d) {
+        return d.selected===true})
+        .classed({"not_possible":false,"possible":false})
+        .attr({
+            "r":17,
+            })
+        .classed("selectedData",true)
+        .on("click",function(d){
+          operationsMenu(d3.mouse(this),thisArea);  
+        });
+
+      // Reset the style of the not selected dots
+      lasso.items().filter(function(d) {return d.selected===false})
+        .classed({"not_possible":false,"possible":false})
+        //.attr("r",3.5);
+
+        for (i=0; i<selected[0].length;i++) {
+          selectedItems.push(data[selected[0][i].id.split("_")[1]])
+        }
+        //Each selection is made on one graph. Save the first element parent to the list in each lasso.
+        //parentsOfSelection.push(selected[0][0].classList[0]);
+        //parentsOfSelection=cleanArray(parentsOfSelection)
+      //Remove duplicates from selectedItems
+      //removeDuplicates(selectedItems,keys);
+    };
+
+    // Create the area where the lasso event can be triggered
+    var lasso_area = svg.append("rect")
+                          .attr("width",width)
+                          .attr("height",height)
+                          .style("opacity",0);
+
+    // Define the lasso
+    var lasso = d3.lasso()
+          .closePathDistance(75) // max distance for the lasso loop to be closed
+          .closePathSelect(true) // can items be selected by closing the path?
+          .hoverSelect(true) // can items by selected by hovering over them?
+          .area(lasso_area) // area where the lasso can be started
+          .on("start",lasso_start) // lasso start function
+          .on("draw",lasso_draw) // lasso draw function
+          .on("end",lasso_end); // lasso end function
+
+    // Init the lasso on the svg:g that contains the dots
+    svg.call(lasso);
+
+    return lasso;
+  }
+</script>
+
+<script>
+
+var data = [[19.084743376000063, -155.77583923699996],[21.276625083000056, -157.80294715899998],[21.30423490800007, -157.79986941499996]];
+var width = 2000,
+    height = 2000;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+var lasso = lassoFunction(svg);
+
+var projection = d3.geo.mercator()
+    .scale(6000)
+    .translate([17000 , 2500]);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+d3.json("datasets/hawaii.json", function(error, hawaii) {
+  if (error) return console.error(error);
+
+  svg.selectAll(".subunit")
+    .data(topojson.feature(hawaii, hawaii.objects.filterMap).features)
+    .enter().append("path")
+    .attr("class", function(d) { 
+      return "subunit " + d.id; })
+    .attr("d", path);
+
+  svg.append("path")
+    .datum(topojson.feature(hawaii, hawaii.objects.hawaiiPlaces))
+    .attr("d", path)
+    .attr("class", "place");
+
+  svg.selectAll(".place-label")
+    .data(topojson.feature(hawaii, hawaii.objects.hawaiiPlaces).features)
+  .enter().append("text")
+    .attr("class", "place-label")
+    .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
+    .attr("dy", "-0.2em")
+    .text(function(d) { return d.properties.name; });
+
+  svg.selectAll(".pin")
+  .data(data)
+  .enter().append("circle", ".pin")
+  .attr("r", 5)
+  .attr("fill","red")
+  .attr("transform", function(d) {
+    return "translate(" + projection([
+      //coordinates should be passed longitude,latitude
+      d[1],
+      d[0]
+    ]) + ")"
+  });
+});
+lasso.items(d3.selectAll(".pin"));
+
+
+
+</script>
+

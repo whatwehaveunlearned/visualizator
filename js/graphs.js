@@ -311,10 +311,12 @@ function Map(area,plot,svg){
       .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
       .attr("dy", "-0.2em")
       .text(function(d) { return d.properties.name; });
-        svg.selectAll(".pin")
+        svg.selectAll(".dot")
         .data(plot.data.toRender)
         .enter().append("circle")
-        .attr("class","pin")
+        .attr("class",function(d,i) {
+            return plot.name + " " + "dot" + d[2];
+        })
         .attr("r", 5)
         .attr("fill","red")
         .attr("fill-opacity",0.2)
@@ -328,7 +330,7 @@ function Map(area,plot,svg){
     .style("stroke", "#000")
     .style("stroke-width", 0.2);
 
-    lasso.items(d3.selectAll(".pin"));
+    lasso.items(d3.selectAll("."+plot.name));
   });
   addTitle(svg,plot);
 }

@@ -214,7 +214,7 @@ function dbKwCard(db){
 	    				.on("click",function()
 	    				{
 	    					var dataToRender = [];
-	    					var dataObjects = [];
+	    					var dataObjects;
 	    					if (attrSelection.length==1){
 							    xAxisName = "";
 							    yAxisName = attrSelection[0];
@@ -224,9 +224,8 @@ function dbKwCard(db){
 							    xAxisName = attrSelection[0];
 							    yAxisName = attrSelection[1];
 							    title = db.name + " " + attrSelection[0] + "/" +attrSelection[1];
-							} 
-	    					console.log(attrSelection)
-	    					console.log(graphTypeSelection)
+							}
+							dataObjects = peter._('tr', {"filter":"applied"}); 
 	    					selectData(db,db.data,attrSelection,graphTypeSelection,dataToRender,dataObjects);
       						areaCreator (title,db,xAxisName,yAxisName,dataToRender,dataObjects,graphTypeSelection);
 	    				})
@@ -281,10 +280,16 @@ function dbKwCard(db){
 	  	for (each in attrs){
 	  		var attr = theadTr.append("th").text(attrs[each])
 	  	}
-	  	var tbody = table.append("tbody")
+	  	var tbody1 = table.append("tbody")
 	  				   .append("tr")
 	  	for (each in attrs){
-	  		var td = tbody.append("td")
+	  		var td = tbody1.append("td")
+	  		dataType(td,each,attrs);
+	  	}
+	  	var tbody2= table.append("tbody")
+	  					 .append("tr")
+	  	for (each in attrs){
+	  		var td = tbody2.append("td")
 	  		dataType(td,each,attrs);
 	  	}
 	  	$('#typeTable'+dbCounter).dataTable({
@@ -497,14 +502,12 @@ function selectDb(name){
 //Selects data to plot on the area depending on the type of graph
 function selectData(db,data,attrs,type,dataToRender,dataObjects){
 	if(type=="Scatterplot"){
-		for (i=0;i<data.length;i++){
-			dataObjects.push(data[i]);
-        	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+attrs[1]),data[i].myId]);
+		for (i=0;i<dataObjects.length;i++){
+        	dataToRender.push([eval("dataObjects[i]."+attrs[0]),eval("dataObjects[i]."+attrs[1]),data[i].myId]);
     	}
 	}else if(type=="Histogram"){
-		for (i=0;i<data.length;i++){
-			dataObjects.push(data[i]);
-        	dataToRender.push(eval("data[i]."+attrs[0]));
+		for (i=0;i<dataObjects.length;i++){
+        	dataToRender.push(eval("dataObjects[i]."+attrs[0]));
     	}
     }else if(type=="Linechart"){
     	var dateAttr;
@@ -515,19 +518,17 @@ function selectData(db,data,attrs,type,dataToRender,dataObjects){
     		}
   		}
   		//Order the elements based on date (older to newer) to paint line.
-  		data.sort(function(a,b){
+  		dataObjects.sort(function(a,b){
 		  return eval("a."+dateAttr)-eval("b."+dateAttr);
 		});
-		for (i=0;i<data.length;i++){
-			dataObjects.push(data[i]);
-        	dataToRender.push([eval("data[i]."+attrs[0]),eval("data[i]."+dateAttr)]);
+		for (i=0;i<dataObjects.length;i++){
+        	dataToRender.push([eval("dataObjects[i]."+attrs[0]),eval("dataObjects[i]."+dateAttr)]);
     	}
     }else if(type=="Map"){
-    	for (i=0;i<data.length;i++){
-			dataObjects.push(data[i]);
-        	if(isNaN(parseFloat(eval("data[i]."+attrs[0]).split(",")[0]))!=true)
+    	for (i=0;i<dataObjects.length;i++){
+        	if(isNaN(parseFloat(eval("dataObjects[i]."+attrs[0]).split(",")[0]))!=true)
         	{
-        		dataToRender.push([parseFloat(eval("data[i]."+attrs[0]).split(",")[0]),parseFloat(eval("data[i]."+attrs[0]).split(",")[1])]);
+        		dataToRender.push([parseFloat(eval("dataObjects[i]."+attrs[0]).split(",")[0]),parseFloat(eval("dataObjects[i]."+attrs[0]).split(",")[1]),dataObjects[i].myId]);
         	}
     	}
     }
