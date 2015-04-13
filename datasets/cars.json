@@ -7,7 +7,7 @@
     "weight":3504,
     "acceleration":12,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevelle malibu"
   },
   {
@@ -18,7 +18,7 @@
     "weight":3693,
     "acceleration":11.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick skylark 320"
   },
   {
@@ -29,7 +29,7 @@
     "weight":3436,
     "acceleration":11,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth satellite"
   },
   {
@@ -40,7 +40,7 @@
     "weight":3433,
     "acceleration":12,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc rebel sst"
   },
   {
@@ -51,7 +51,7 @@
     "weight":3449,
     "acceleration":10.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford torino"
   },
   {
@@ -62,7 +62,7 @@
     "weight":4341,
     "acceleration":10,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford galaxie 500"
   },
   {
@@ -73,7 +73,7 @@
     "weight":4354,
     "acceleration":9,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet impala"
   },
   {
@@ -84,7 +84,7 @@
     "weight":4312,
     "acceleration":8.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth fury iii"
   },
   {
@@ -95,7 +95,7 @@
     "weight":4425,
     "acceleration":10,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac catalina"
   },
   {
@@ -106,7 +106,7 @@
     "weight":3850,
     "acceleration":8.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc ambassador dpl"
   },
   {
@@ -117,7 +117,7 @@
     "weight":3563,
     "acceleration":10,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge challenger se"
   },
   {
@@ -128,7 +128,7 @@
     "weight":3609,
     "acceleration":8,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth 'cuda 340"
   },
   {
@@ -139,7 +139,7 @@
     "weight":3761,
     "acceleration":9.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet monte carlo"
   },
   {
@@ -150,7 +150,7 @@
     "weight":3086,
     "acceleration":10,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick estate wagon (sw)"
   },
   {
@@ -161,7 +161,7 @@
     "weight":2372,
     "acceleration":15,
     "modelYear":70,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corona mark ii"
   },
   {
@@ -172,7 +172,7 @@
     "weight":2833,
     "acceleration":15.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth duster"
   },
   {
@@ -183,7 +183,7 @@
     "weight":2774,
     "acceleration":15.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc hornet"
   },
   {
@@ -194,7 +194,7 @@
     "weight":2587,
     "acceleration":16,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford maverick"
   },
   {
@@ -205,7 +205,7 @@
     "weight":2130,
     "acceleration":14.5,
     "modelYear":70,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun pl510"
   },
   {
@@ -216,7 +216,7 @@
     "weight":1835,
     "acceleration":20.5,
     "modelYear":70,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen 1131 deluxe sedan"
   },
   {
@@ -227,7 +227,7 @@
     "weight":2672,
     "acceleration":17.5,
     "modelYear":70,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 504"
   },
   {
@@ -238,7 +238,7 @@
     "weight":2430,
     "acceleration":14.5,
     "modelYear":70,
-    "origin":2,
+    "origin":"EU",
     "carName":"audi 100 ls"
   },
   {
@@ -249,7 +249,7 @@
     "weight":2375,
     "acceleration":17.5,
     "modelYear":70,
-    "origin":2,
+    "origin":"EU",
     "carName":"saab 99e"
   },
   {
@@ -260,7 +260,7 @@
     "weight":2234,
     "acceleration":12.5,
     "modelYear":70,
-    "origin":2,
+    "origin":"EU",
     "carName":"bmw 2002"
   },
   {
@@ -271,7 +271,7 @@
     "weight":2648,
     "acceleration":15,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc gremlin"
   },
   {
@@ -282,7 +282,7 @@
     "weight":4615,
     "acceleration":14,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford f250"
   },
   {
@@ -293,7 +293,7 @@
     "weight":4376,
     "acceleration":15,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevy c20"
   },
   {
@@ -304,7 +304,7 @@
     "weight":4382,
     "acceleration":13.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge d200"
   },
   {
@@ -315,7 +315,7 @@
     "weight":4732,
     "acceleration":18.5,
     "modelYear":70,
-    "origin":1,
+    "origin":"USA",
     "carName":"hi 1200d"
   },
   {
@@ -326,7 +326,7 @@
     "weight":2130,
     "acceleration":14.5,
     "modelYear":71,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun pl510"
   },
   {
@@ -337,7 +337,7 @@
     "weight":2264,
     "acceleration":15.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet vega 2300"
   },
   {
@@ -348,7 +348,7 @@
     "weight":2228,
     "acceleration":14,
     "modelYear":71,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corona"
   },
   {
@@ -359,7 +359,7 @@
     "weight":2046,
     "acceleration":19,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto"
   },
   {
@@ -370,7 +370,7 @@
     "weight":2634,
     "acceleration":13,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc gremlin"
   },
   {
@@ -381,7 +381,7 @@
     "weight":3439,
     "acceleration":15.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth satellite custom"
   },
   {
@@ -392,7 +392,7 @@
     "weight":3329,
     "acceleration":15.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevelle malibu"
   },
   {
@@ -403,7 +403,7 @@
     "weight":3302,
     "acceleration":15.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford torino 500"
   },
   {
@@ -414,7 +414,7 @@
     "weight":3288,
     "acceleration":15.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc matador"
   },
   {
@@ -425,7 +425,7 @@
     "weight":4209,
     "acceleration":12,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet impala"
   },
   {
@@ -436,7 +436,7 @@
     "weight":4464,
     "acceleration":11.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac catalina brougham"
   },
   {
@@ -447,7 +447,7 @@
     "weight":4154,
     "acceleration":13.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford galaxie 500"
   },
   {
@@ -458,7 +458,7 @@
     "weight":4096,
     "acceleration":13,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth fury iii"
   },
   {
@@ -469,7 +469,7 @@
     "weight":4955,
     "acceleration":11.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge monaco (sw)"
   },
   {
@@ -480,7 +480,7 @@
     "weight":4746,
     "acceleration":12,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford country squire (sw)"
   },
   {
@@ -491,7 +491,7 @@
     "weight":5140,
     "acceleration":12,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac safari (sw)"
   },
   {
@@ -502,7 +502,7 @@
     "weight":2962,
     "acceleration":13.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc hornet sportabout (sw)"
   },
   {
@@ -513,7 +513,7 @@
     "weight":2408,
     "acceleration":19,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet vega (sw)"
   },
   {
@@ -524,7 +524,7 @@
     "weight":3282,
     "acceleration":15,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac firebird"
   },
   {
@@ -535,7 +535,7 @@
     "weight":3139,
     "acceleration":14.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford mustang"
   },
   {
@@ -546,7 +546,7 @@
     "weight":2220,
     "acceleration":14,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury capri 2000"
   },
   {
@@ -557,7 +557,7 @@
     "weight":2123,
     "acceleration":14,
     "modelYear":71,
-    "origin":2,
+    "origin":"EU",
     "carName":"opel 1900"
   },
   {
@@ -568,7 +568,7 @@
     "weight":2074,
     "acceleration":19.5,
     "modelYear":71,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 304"
   },
   {
@@ -579,7 +579,7 @@
     "weight":2065,
     "acceleration":14.5,
     "modelYear":71,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat 124b"
   },
   {
@@ -590,7 +590,7 @@
     "weight":1773,
     "acceleration":19,
     "modelYear":71,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla 1200"
   },
   {
@@ -601,7 +601,7 @@
     "weight":1613,
     "acceleration":18,
     "modelYear":71,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 1200"
   },
   {
@@ -612,7 +612,7 @@
     "weight":1834,
     "acceleration":19,
     "modelYear":71,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen model 111"
   },
   {
@@ -623,7 +623,7 @@
     "weight":1955,
     "acceleration":20.5,
     "modelYear":71,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth cricket"
   },
   {
@@ -634,7 +634,7 @@
     "weight":2278,
     "acceleration":15.5,
     "modelYear":72,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corona hardtop"
   },
   {
@@ -645,7 +645,7 @@
     "weight":2126,
     "acceleration":17,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge colt hardtop"
   },
   {
@@ -656,7 +656,7 @@
     "weight":2254,
     "acceleration":23.5,
     "modelYear":72,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen type 3"
   },
   {
@@ -667,7 +667,7 @@
     "weight":2408,
     "acceleration":19.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet vega"
   },
   {
@@ -678,7 +678,7 @@
     "weight":2226,
     "acceleration":16.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto runabout"
   },
   {
@@ -689,7 +689,7 @@
     "weight":4274,
     "acceleration":12,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet impala"
   },
   {
@@ -700,7 +700,7 @@
     "weight":4385,
     "acceleration":12,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac catalina"
   },
   {
@@ -711,7 +711,7 @@
     "weight":4135,
     "acceleration":13.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth fury iii"
   },
   {
@@ -722,7 +722,7 @@
     "weight":4129,
     "acceleration":13,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford galaxie 500"
   },
   {
@@ -733,7 +733,7 @@
     "weight":3672,
     "acceleration":11.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc ambassador sst"
   },
   {
@@ -744,7 +744,7 @@
     "weight":4633,
     "acceleration":11,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury marquis"
   },
   {
@@ -755,7 +755,7 @@
     "weight":4502,
     "acceleration":13.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick lesabre custom"
   },
   {
@@ -766,7 +766,7 @@
     "weight":4456,
     "acceleration":13.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile delta 88 royale"
   },
   {
@@ -777,7 +777,7 @@
     "weight":4422,
     "acceleration":12.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"chrysler newport royal"
   },
   {
@@ -788,7 +788,7 @@
     "weight":2330,
     "acceleration":13.5,
     "modelYear":72,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda rx2 coupe"
   },
   {
@@ -799,7 +799,7 @@
     "weight":3892,
     "acceleration":12.5,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc matador (sw)"
   },
   {
@@ -810,7 +810,7 @@
     "weight":4098,
     "acceleration":14,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevelle concours (sw)"
   },
   {
@@ -821,7 +821,7 @@
     "weight":4294,
     "acceleration":16,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford gran torino (sw)"
   },
   {
@@ -832,7 +832,7 @@
     "weight":4077,
     "acceleration":14,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth satellite custom (sw)"
   },
   {
@@ -843,7 +843,7 @@
     "weight":2933,
     "acceleration":14.5,
     "modelYear":72,
-    "origin":2,
+    "origin":"EU",
     "carName":"volvo 145e (sw)"
   },
   {
@@ -854,7 +854,7 @@
     "weight":2511,
     "acceleration":18,
     "modelYear":72,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen 411 (sw)"
   },
   {
@@ -865,7 +865,7 @@
     "weight":2979,
     "acceleration":19.5,
     "modelYear":72,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 504 (sw)"
   },
   {
@@ -876,7 +876,7 @@
     "weight":2189,
     "acceleration":18,
     "modelYear":72,
-    "origin":2,
+    "origin":"EU",
     "carName":"renault 12 (sw)"
   },
   {
@@ -887,7 +887,7 @@
     "weight":2395,
     "acceleration":16,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto (sw)"
   },
   {
@@ -898,7 +898,7 @@
     "weight":2288,
     "acceleration":17,
     "modelYear":72,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 510 (sw)"
   },
   {
@@ -909,7 +909,7 @@
     "weight":2506,
     "acceleration":14.5,
     "modelYear":72,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyouta corona mark ii (sw)"
   },
   {
@@ -920,7 +920,7 @@
     "weight":2164,
     "acceleration":15,
     "modelYear":72,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge colt (sw)"
   },
   {
@@ -931,7 +931,7 @@
     "weight":2100,
     "acceleration":16.5,
     "modelYear":72,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla 1600 (sw)"
   },
   {
@@ -942,7 +942,7 @@
     "weight":4100,
     "acceleration":13,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick century 350"
   },
   {
@@ -953,7 +953,7 @@
     "weight":3672,
     "acceleration":11.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc matador"
   },
   {
@@ -964,7 +964,7 @@
     "weight":3988,
     "acceleration":13,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet malibu"
   },
   {
@@ -975,7 +975,7 @@
     "weight":4042,
     "acceleration":14.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford gran torino"
   },
   {
@@ -986,7 +986,7 @@
     "weight":3777,
     "acceleration":12.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge coronet custom"
   },
   {
@@ -997,7 +997,7 @@
     "weight":4952,
     "acceleration":11.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury marquis brougham"
   },
   {
@@ -1008,7 +1008,7 @@
     "weight":4464,
     "acceleration":12,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet caprice classic"
   },
   {
@@ -1019,7 +1019,7 @@
     "weight":4363,
     "acceleration":13,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford ltd"
   },
   {
@@ -1030,7 +1030,7 @@
     "weight":4237,
     "acceleration":14.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth fury gran sedan"
   },
   {
@@ -1041,7 +1041,7 @@
     "weight":4735,
     "acceleration":11,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"chrysler new yorker brougham"
   },
   {
@@ -1052,7 +1052,7 @@
     "weight":4951,
     "acceleration":11,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick electra 225 custom"
   },
   {
@@ -1063,7 +1063,7 @@
     "weight":3821,
     "acceleration":11,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc ambassador brougham"
   },
   {
@@ -1074,7 +1074,7 @@
     "weight":3121,
     "acceleration":16.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth valiant"
   },
   {
@@ -1085,7 +1085,7 @@
     "weight":3278,
     "acceleration":18,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet nova custom"
   },
   {
@@ -1096,7 +1096,7 @@
     "weight":2945,
     "acceleration":16,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc hornet"
   },
   {
@@ -1107,7 +1107,7 @@
     "weight":3021,
     "acceleration":16.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford maverick"
   },
   {
@@ -1118,7 +1118,7 @@
     "weight":2904,
     "acceleration":16,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth duster"
   },
   {
@@ -1129,7 +1129,7 @@
     "weight":1950,
     "acceleration":21,
     "modelYear":73,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen super beetle"
   },
   {
@@ -1140,7 +1140,7 @@
     "weight":4997,
     "acceleration":14,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet impala"
   },
   {
@@ -1151,7 +1151,7 @@
     "weight":4906,
     "acceleration":12.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford country"
   },
   {
@@ -1162,7 +1162,7 @@
     "weight":4654,
     "acceleration":13,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth custom suburb"
   },
   {
@@ -1173,7 +1173,7 @@
     "weight":4499,
     "acceleration":12.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile vista cruiser"
   },
   {
@@ -1184,7 +1184,7 @@
     "weight":2789,
     "acceleration":15,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc gremlin"
   },
   {
@@ -1195,7 +1195,7 @@
     "weight":2279,
     "acceleration":19,
     "modelYear":73,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota carina"
   },
   {
@@ -1206,7 +1206,7 @@
     "weight":2401,
     "acceleration":19.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet vega"
   },
   {
@@ -1217,7 +1217,7 @@
     "weight":2379,
     "acceleration":16.5,
     "modelYear":73,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 610"
   },
   {
@@ -1228,7 +1228,7 @@
     "weight":2124,
     "acceleration":13.5,
     "modelYear":73,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"maxda rx3"
   },
   {
@@ -1239,7 +1239,7 @@
     "weight":2310,
     "acceleration":18.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto"
   },
   {
@@ -1250,7 +1250,7 @@
     "weight":2472,
     "acceleration":14,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury capri v6"
   },
   {
@@ -1261,7 +1261,7 @@
     "weight":2265,
     "acceleration":15.5,
     "modelYear":73,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat 124 sport coupe"
   },
   {
@@ -1272,7 +1272,7 @@
     "weight":4082,
     "acceleration":13,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet monte carlo s"
   },
   {
@@ -1283,7 +1283,7 @@
     "weight":4278,
     "acceleration":9.5,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac grand prix"
   },
   {
@@ -1294,7 +1294,7 @@
     "weight":1867,
     "acceleration":19.5,
     "modelYear":73,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat 128"
   },
   {
@@ -1305,7 +1305,7 @@
     "weight":2158,
     "acceleration":15.5,
     "modelYear":73,
-    "origin":2,
+    "origin":"EU",
     "carName":"opel manta"
   },
   {
@@ -1316,7 +1316,7 @@
     "weight":2582,
     "acceleration":14,
     "modelYear":73,
-    "origin":2,
+    "origin":"EU",
     "carName":"audi 100ls"
   },
   {
@@ -1327,7 +1327,7 @@
     "weight":2868,
     "acceleration":15.5,
     "modelYear":73,
-    "origin":2,
+    "origin":"EU",
     "carName":"volvo 144ea"
   },
   {
@@ -1338,7 +1338,7 @@
     "weight":3399,
     "acceleration":11,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge dart custom"
   },
   {
@@ -1349,7 +1349,7 @@
     "weight":2660,
     "acceleration":14,
     "modelYear":73,
-    "origin":2,
+    "origin":"EU",
     "carName":"saab 99le"
   },
   {
@@ -1360,7 +1360,7 @@
     "weight":2807,
     "acceleration":13.5,
     "modelYear":73,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota mark ii"
   },
   {
@@ -1371,7 +1371,7 @@
     "weight":3664,
     "acceleration":11,
     "modelYear":73,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile omega"
   },
   {
@@ -1382,7 +1382,7 @@
     "weight":3102,
     "acceleration":16.5,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth duster"
   },
   {
@@ -1393,7 +1393,7 @@
     "weight":2875,
     "acceleration":17,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford maverick"
   },
   {
@@ -1404,7 +1404,7 @@
     "weight":2901,
     "acceleration":16,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc hornet"
   },
   {
@@ -1415,7 +1415,7 @@
     "weight":3336,
     "acceleration":17,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet nova"
   },
   {
@@ -1426,7 +1426,7 @@
     "weight":1950,
     "acceleration":19,
     "modelYear":74,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun b210"
   },
   {
@@ -1437,7 +1437,7 @@
     "weight":2451,
     "acceleration":16.5,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto"
   },
   {
@@ -1448,7 +1448,7 @@
     "weight":1836,
     "acceleration":21,
     "modelYear":74,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla 1200"
   },
   {
@@ -1459,7 +1459,7 @@
     "weight":2542,
     "acceleration":17,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet vega"
   },
   {
@@ -1470,7 +1470,7 @@
     "weight":3781,
     "acceleration":17,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevelle malibu classic"
   },
   {
@@ -1481,7 +1481,7 @@
     "weight":3632,
     "acceleration":18,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc matador"
   },
   {
@@ -1492,7 +1492,7 @@
     "weight":3613,
     "acceleration":16.5,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth satellite sebring"
   },
   {
@@ -1503,7 +1503,7 @@
     "weight":4141,
     "acceleration":14,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford gran torino"
   },
   {
@@ -1514,7 +1514,7 @@
     "weight":4699,
     "acceleration":14.5,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick century luxus (sw)"
   },
   {
@@ -1525,7 +1525,7 @@
     "weight":4457,
     "acceleration":13.5,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge coronet custom (sw)"
   },
   {
@@ -1536,7 +1536,7 @@
     "weight":4638,
     "acceleration":16,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford gran torino (sw)"
   },
   {
@@ -1547,7 +1547,7 @@
     "weight":4257,
     "acceleration":15.5,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc matador (sw)"
   },
   {
@@ -1558,7 +1558,7 @@
     "weight":2219,
     "acceleration":16.5,
     "modelYear":74,
-    "origin":2,
+    "origin":"EU",
     "carName":"audi fox"
   },
   {
@@ -1569,7 +1569,7 @@
     "weight":1963,
     "acceleration":15.5,
     "modelYear":74,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen dasher"
   },
   {
@@ -1580,7 +1580,7 @@
     "weight":2300,
     "acceleration":14.5,
     "modelYear":74,
-    "origin":2,
+    "origin":"EU",
     "carName":"opel manta"
   },
   {
@@ -1591,7 +1591,7 @@
     "weight":1649,
     "acceleration":16.5,
     "modelYear":74,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corona"
   },
   {
@@ -1602,7 +1602,7 @@
     "weight":2003,
     "acceleration":19,
     "modelYear":74,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 710"
   },
   {
@@ -1613,7 +1613,7 @@
     "weight":2125,
     "acceleration":14.5,
     "modelYear":74,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge colt"
   },
   {
@@ -1624,7 +1624,7 @@
     "weight":2108,
     "acceleration":15.5,
     "modelYear":74,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat 128"
   },
   {
@@ -1635,7 +1635,7 @@
     "weight":2246,
     "acceleration":14,
     "modelYear":74,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat 124 tc"
   },
   {
@@ -1646,7 +1646,7 @@
     "weight":2489,
     "acceleration":15,
     "modelYear":74,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic"
   },
   {
@@ -1657,7 +1657,7 @@
     "weight":2391,
     "acceleration":15.5,
     "modelYear":74,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"subaru"
   },
   {
@@ -1668,7 +1668,7 @@
     "weight":2000,
     "acceleration":16,
     "modelYear":74,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat x1.9"
   },
   {
@@ -1679,7 +1679,7 @@
     "weight":3264,
     "acceleration":16,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth valiant custom"
   },
   {
@@ -1690,7 +1690,7 @@
     "weight":3459,
     "acceleration":16,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet nova"
   },
   {
@@ -1701,7 +1701,7 @@
     "weight":3432,
     "acceleration":21,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury monarch"
   },
   {
@@ -1712,7 +1712,7 @@
     "weight":3158,
     "acceleration":19.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford maverick"
   },
   {
@@ -1723,7 +1723,7 @@
     "weight":4668,
     "acceleration":11.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac catalina"
   },
   {
@@ -1734,7 +1734,7 @@
     "weight":4440,
     "acceleration":14,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet bel air"
   },
   {
@@ -1745,7 +1745,7 @@
     "weight":4498,
     "acceleration":14.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth grand fury"
   },
   {
@@ -1756,7 +1756,7 @@
     "weight":4657,
     "acceleration":13.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford ltd"
   },
   {
@@ -1767,7 +1767,7 @@
     "weight":3907,
     "acceleration":21,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick century"
   },
   {
@@ -1778,7 +1778,7 @@
     "weight":3897,
     "acceleration":18.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevroelt chevelle malibu"
   },
   {
@@ -1789,7 +1789,7 @@
     "weight":3730,
     "acceleration":19,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc matador"
   },
   {
@@ -1800,7 +1800,7 @@
     "weight":3785,
     "acceleration":19,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth fury"
   },
   {
@@ -1811,7 +1811,7 @@
     "weight":3039,
     "acceleration":15,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick skyhawk"
   },
   {
@@ -1822,7 +1822,7 @@
     "weight":3221,
     "acceleration":13.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet monza 2+2"
   },
   {
@@ -1833,7 +1833,7 @@
     "weight":3169,
     "acceleration":12,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford mustang ii"
   },
   {
@@ -1844,7 +1844,7 @@
     "weight":2171,
     "acceleration":16,
     "modelYear":75,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla"
   },
   {
@@ -1855,7 +1855,7 @@
     "weight":2639,
     "acceleration":17,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto"
   },
   {
@@ -1866,7 +1866,7 @@
     "weight":2914,
     "acceleration":16,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc gremlin"
   },
   {
@@ -1877,7 +1877,7 @@
     "weight":2592,
     "acceleration":18.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac astro"
   },
   {
@@ -1888,7 +1888,7 @@
     "weight":2702,
     "acceleration":13.5,
     "modelYear":75,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corona"
   },
   {
@@ -1899,7 +1899,7 @@
     "weight":2223,
     "acceleration":16.5,
     "modelYear":75,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen dasher"
   },
   {
@@ -1910,7 +1910,7 @@
     "weight":2545,
     "acceleration":17,
     "modelYear":75,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 710"
   },
   {
@@ -1921,7 +1921,7 @@
     "weight":2984,
     "acceleration":14.5,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto"
   },
   {
@@ -1932,7 +1932,7 @@
     "weight":1937,
     "acceleration":14,
     "modelYear":75,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen rabbit"
   },
   {
@@ -1943,7 +1943,7 @@
     "weight":3211,
     "acceleration":17,
     "modelYear":75,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc pacer"
   },
   {
@@ -1954,7 +1954,7 @@
     "weight":2694,
     "acceleration":15,
     "modelYear":75,
-    "origin":2,
+    "origin":"EU",
     "carName":"audi 100ls"
   },
   {
@@ -1965,7 +1965,7 @@
     "weight":2957,
     "acceleration":17,
     "modelYear":75,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 504"
   },
   {
@@ -1976,7 +1976,7 @@
     "weight":2945,
     "acceleration":14.5,
     "modelYear":75,
-    "origin":2,
+    "origin":"EU",
     "carName":"volvo 244dl"
   },
   {
@@ -1987,7 +1987,7 @@
     "weight":2671,
     "acceleration":13.5,
     "modelYear":75,
-    "origin":2,
+    "origin":"EU",
     "carName":"saab 99le"
   },
   {
@@ -1998,7 +1998,7 @@
     "weight":1795,
     "acceleration":17.5,
     "modelYear":75,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic cvcc"
   },
   {
@@ -2009,7 +2009,7 @@
     "weight":2464,
     "acceleration":15.5,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat 131"
   },
   {
@@ -2020,7 +2020,7 @@
     "weight":2220,
     "acceleration":16.9,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"opel 1900"
   },
   {
@@ -2031,7 +2031,7 @@
     "weight":2572,
     "acceleration":14.9,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"capri ii"
   },
   {
@@ -2042,7 +2042,7 @@
     "weight":2255,
     "acceleration":17.7,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge colt"
   },
   {
@@ -2053,7 +2053,7 @@
     "weight":2202,
     "acceleration":15.3,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"renault 12tl"
   },
   {
@@ -2064,7 +2064,7 @@
     "weight":4215,
     "acceleration":13,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevelle malibu classic"
   },
   {
@@ -2075,7 +2075,7 @@
     "weight":4190,
     "acceleration":13,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge coronet brougham"
   },
   {
@@ -2086,7 +2086,7 @@
     "weight":3962,
     "acceleration":13.9,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc matador"
   },
   {
@@ -2097,7 +2097,7 @@
     "weight":4215,
     "acceleration":12.8,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford gran torino"
   },
   {
@@ -2108,7 +2108,7 @@
     "weight":3233,
     "acceleration":15.4,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth valiant"
   },
   {
@@ -2119,7 +2119,7 @@
     "weight":3353,
     "acceleration":14.5,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet nova"
   },
   {
@@ -2130,7 +2130,7 @@
     "weight":3012,
     "acceleration":17.6,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford maverick"
   },
   {
@@ -2141,7 +2141,7 @@
     "weight":3085,
     "acceleration":17.6,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc hornet"
   },
   {
@@ -2152,7 +2152,7 @@
     "weight":2035,
     "acceleration":22.2,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevette"
   },
   {
@@ -2163,7 +2163,7 @@
     "weight":2164,
     "acceleration":22.1,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet woody"
   },
   {
@@ -2174,7 +2174,7 @@
     "weight":1937,
     "acceleration":14.2,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"vw rabbit"
   },
   {
@@ -2185,7 +2185,7 @@
     "weight":1795,
     "acceleration":17.4,
     "modelYear":76,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic"
   },
   {
@@ -2196,7 +2196,7 @@
     "weight":3651,
     "acceleration":17.7,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge aspen se"
   },
   {
@@ -2207,7 +2207,7 @@
     "weight":3574,
     "acceleration":21,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford granada ghia"
   },
   {
@@ -2218,7 +2218,7 @@
     "weight":3645,
     "acceleration":16.2,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac ventura sj"
   },
   {
@@ -2229,7 +2229,7 @@
     "weight":3193,
     "acceleration":17.8,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc pacer d/l"
   },
   {
@@ -2240,7 +2240,7 @@
     "weight":1825,
     "acceleration":12.2,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen rabbit"
   },
   {
@@ -2251,7 +2251,7 @@
     "weight":1990,
     "acceleration":17,
     "modelYear":76,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun b-210"
   },
   {
@@ -2262,7 +2262,7 @@
     "weight":2155,
     "acceleration":16.4,
     "modelYear":76,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla"
   },
   {
@@ -2273,7 +2273,7 @@
     "weight":2565,
     "acceleration":13.6,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford pinto"
   },
   {
@@ -2284,7 +2284,7 @@
     "weight":3150,
     "acceleration":15.7,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"volvo 245"
   },
   {
@@ -2295,7 +2295,7 @@
     "weight":3940,
     "acceleration":13.2,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth volare premier v8"
   },
   {
@@ -2306,7 +2306,7 @@
     "weight":3270,
     "acceleration":21.9,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 504"
   },
   {
@@ -2317,7 +2317,7 @@
     "weight":2930,
     "acceleration":15.5,
     "modelYear":76,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota mark ii"
   },
   {
@@ -2328,7 +2328,7 @@
     "weight":3820,
     "acceleration":16.7,
     "modelYear":76,
-    "origin":2,
+    "origin":"EU",
     "carName":"mercedes-benz 280s"
   },
   {
@@ -2339,7 +2339,7 @@
     "weight":4380,
     "acceleration":12.1,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"cadillac seville"
   },
   {
@@ -2350,7 +2350,7 @@
     "weight":4055,
     "acceleration":12,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevy c10"
   },
   {
@@ -2361,7 +2361,7 @@
     "weight":3870,
     "acceleration":15,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford f108"
   },
   {
@@ -2372,7 +2372,7 @@
     "weight":3755,
     "acceleration":14,
     "modelYear":76,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge d100"
   },
   {
@@ -2383,7 +2383,7 @@
     "weight":2045,
     "acceleration":18.5,
     "modelYear":77,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda accord cvcc"
   },
   {
@@ -2394,7 +2394,7 @@
     "weight":2155,
     "acceleration":14.8,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick opel isuzu deluxe"
   },
   {
@@ -2405,7 +2405,7 @@
     "weight":1825,
     "acceleration":18.6,
     "modelYear":77,
-    "origin":2,
+    "origin":"EU",
     "carName":"renault 5 gtl"
   },
   {
@@ -2416,7 +2416,7 @@
     "weight":2300,
     "acceleration":15.5,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth arrow gs"
   },
   {
@@ -2427,7 +2427,7 @@
     "weight":1945,
     "acceleration":16.8,
     "modelYear":77,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun f-10 hatchback"
   },
   {
@@ -2438,7 +2438,7 @@
     "weight":3880,
     "acceleration":12.5,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet caprice classic"
   },
   {
@@ -2449,7 +2449,7 @@
     "weight":4060,
     "acceleration":19,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile cutlass supreme"
   },
   {
@@ -2460,7 +2460,7 @@
     "weight":4140,
     "acceleration":13.7,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge monaco brougham"
   },
   {
@@ -2471,7 +2471,7 @@
     "weight":4295,
     "acceleration":14.9,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury cougar brougham"
   },
   {
@@ -2482,7 +2482,7 @@
     "weight":3520,
     "acceleration":16.4,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet concours"
   },
   {
@@ -2493,7 +2493,7 @@
     "weight":3425,
     "acceleration":16.9,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick skylark"
   },
   {
@@ -2504,7 +2504,7 @@
     "weight":3630,
     "acceleration":17.7,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth volare custom"
   },
   {
@@ -2515,7 +2515,7 @@
     "weight":3525,
     "acceleration":19,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford granada"
   },
   {
@@ -2526,7 +2526,7 @@
     "weight":4220,
     "acceleration":11.1,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac grand prix lj"
   },
   {
@@ -2537,7 +2537,7 @@
     "weight":4165,
     "acceleration":11.4,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet monte carlo landau"
   },
   {
@@ -2548,7 +2548,7 @@
     "weight":4325,
     "acceleration":12.2,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"chrysler cordoba"
   },
   {
@@ -2559,7 +2559,7 @@
     "weight":4335,
     "acceleration":14.5,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford thunderbird"
   },
   {
@@ -2570,7 +2570,7 @@
     "weight":1940,
     "acceleration":14.5,
     "modelYear":77,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen rabbit custom"
   },
   {
@@ -2581,7 +2581,7 @@
     "weight":2740,
     "acceleration":16,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac sunbird coupe"
   },
   {
@@ -2592,7 +2592,7 @@
     "weight":2265,
     "acceleration":18.2,
     "modelYear":77,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla liftback"
   },
   {
@@ -2603,7 +2603,7 @@
     "weight":2755,
     "acceleration":15.8,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford mustang ii 2+2"
   },
   {
@@ -2614,7 +2614,7 @@
     "weight":2051,
     "acceleration":17,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevette"
   },
   {
@@ -2625,7 +2625,7 @@
     "weight":2075,
     "acceleration":15.9,
     "modelYear":77,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge colt m/m"
   },
   {
@@ -2636,7 +2636,7 @@
     "weight":1985,
     "acceleration":16.4,
     "modelYear":77,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"subaru dl"
   },
   {
@@ -2647,7 +2647,7 @@
     "weight":2190,
     "acceleration":14.1,
     "modelYear":77,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen dasher"
   },
   {
@@ -2658,7 +2658,7 @@
     "weight":2815,
     "acceleration":14.5,
     "modelYear":77,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 810"
   },
   {
@@ -2669,7 +2669,7 @@
     "weight":2600,
     "acceleration":12.8,
     "modelYear":77,
-    "origin":2,
+    "origin":"EU",
     "carName":"bmw 320i"
   },
   {
@@ -2680,7 +2680,7 @@
     "weight":2720,
     "acceleration":13.5,
     "modelYear":77,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda rx-4"
   },
   {
@@ -2691,7 +2691,7 @@
     "weight":1985,
     "acceleration":21.5,
     "modelYear":78,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen rabbit custom diesel"
   },
   {
@@ -2702,7 +2702,7 @@
     "weight":1800,
     "acceleration":14.4,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford fiesta"
   },
   {
@@ -2713,7 +2713,7 @@
     "weight":1985,
     "acceleration":19.4,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda glc deluxe"
   },
   {
@@ -2724,7 +2724,7 @@
     "weight":2070,
     "acceleration":18.6,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun b210 gx"
   },
   {
@@ -2735,7 +2735,7 @@
     "weight":1800,
     "acceleration":16.4,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic cvcc"
   },
   {
@@ -2746,7 +2746,7 @@
     "weight":3365,
     "acceleration":15.5,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile cutlass salon brougham"
   },
   {
@@ -2757,7 +2757,7 @@
     "weight":3735,
     "acceleration":13.2,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge diplomat"
   },
   {
@@ -2768,7 +2768,7 @@
     "weight":3570,
     "acceleration":12.8,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury monarch ghia"
   },
   {
@@ -2779,7 +2779,7 @@
     "weight":3535,
     "acceleration":19.2,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac phoenix lj"
   },
   {
@@ -2790,7 +2790,7 @@
     "weight":3155,
     "acceleration":18.2,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet malibu"
   },
   {
@@ -2801,7 +2801,7 @@
     "weight":2965,
     "acceleration":15.8,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford fairmont (auto)"
   },
   {
@@ -2812,7 +2812,7 @@
     "weight":2720,
     "acceleration":15.4,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford fairmont (man)"
   },
   {
@@ -2823,7 +2823,7 @@
     "weight":3430,
     "acceleration":17.2,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth volare"
   },
   {
@@ -2834,7 +2834,7 @@
     "weight":3210,
     "acceleration":17.2,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc concord"
   },
   {
@@ -2845,7 +2845,7 @@
     "weight":3380,
     "acceleration":15.8,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick century special"
   },
   {
@@ -2856,7 +2856,7 @@
     "weight":3070,
     "acceleration":16.7,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury zephyr"
   },
   {
@@ -2867,7 +2867,7 @@
     "weight":3620,
     "acceleration":18.7,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge aspen"
   },
   {
@@ -2878,7 +2878,7 @@
     "weight":3410,
     "acceleration":15.1,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc concord d/l"
   },
   {
@@ -2889,7 +2889,7 @@
     "weight":3425,
     "acceleration":13.2,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet monte carlo landau"
   },
   {
@@ -2900,7 +2900,7 @@
     "weight":3445,
     "acceleration":13.4,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick regal sport coupe (turbo)"
   },
   {
@@ -2911,7 +2911,7 @@
     "weight":3205,
     "acceleration":11.2,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford futura"
   },
   {
@@ -2922,7 +2922,7 @@
     "weight":4080,
     "acceleration":13.7,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge magnum xe"
   },
   {
@@ -2933,7 +2933,7 @@
     "weight":2155,
     "acceleration":16.5,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevette"
   },
   {
@@ -2944,7 +2944,7 @@
     "weight":2560,
     "acceleration":14.2,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corona"
   },
   {
@@ -2955,7 +2955,7 @@
     "weight":2300,
     "acceleration":14.7,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 510"
   },
   {
@@ -2966,7 +2966,7 @@
     "weight":2230,
     "acceleration":14.5,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge omni"
   },
   {
@@ -2977,7 +2977,7 @@
     "weight":2515,
     "acceleration":14.8,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota celica gt liftback"
   },
   {
@@ -2988,7 +2988,7 @@
     "weight":2745,
     "acceleration":16.7,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth sapporo"
   },
   {
@@ -2999,7 +2999,7 @@
     "weight":2855,
     "acceleration":17.6,
     "modelYear":78,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile starfire sx"
   },
   {
@@ -3010,7 +3010,7 @@
     "weight":2405,
     "acceleration":14.9,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 200-sx"
   },
   {
@@ -3021,7 +3021,7 @@
     "weight":2830,
     "acceleration":15.9,
     "modelYear":78,
-    "origin":2,
+    "origin":"EU",
     "carName":"audi 5000"
   },
   {
@@ -3032,7 +3032,7 @@
     "weight":3140,
     "acceleration":13.6,
     "modelYear":78,
-    "origin":2,
+    "origin":"EU",
     "carName":"volvo 264gl"
   },
   {
@@ -3043,7 +3043,7 @@
     "weight":2795,
     "acceleration":15.7,
     "modelYear":78,
-    "origin":2,
+    "origin":"EU",
     "carName":"saab 99gle"
   },
   {
@@ -3054,7 +3054,7 @@
     "weight":3410,
     "acceleration":15.8,
     "modelYear":78,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 604sl"
   },
   {
@@ -3065,7 +3065,7 @@
     "weight":1990,
     "acceleration":14.9,
     "modelYear":78,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen scirocco"
   },
   {
@@ -3076,7 +3076,7 @@
     "weight":2135,
     "acceleration":16.6,
     "modelYear":78,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda accord lx"
   },
   {
@@ -3087,7 +3087,7 @@
     "weight":3245,
     "acceleration":15.4,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac lemans v6"
   },
   {
@@ -3098,7 +3098,7 @@
     "weight":2990,
     "acceleration":18.2,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury zephyr 6"
   },
   {
@@ -3109,7 +3109,7 @@
     "weight":2890,
     "acceleration":17.3,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford fairmont 4"
   },
   {
@@ -3120,7 +3120,7 @@
     "weight":3265,
     "acceleration":18.2,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc concord dl 6"
   },
   {
@@ -3131,7 +3131,7 @@
     "weight":3360,
     "acceleration":16.6,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge aspen 6"
   },
   {
@@ -3142,7 +3142,7 @@
     "weight":3840,
     "acceleration":15.4,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet caprice classic"
   },
   {
@@ -3153,7 +3153,7 @@
     "weight":3725,
     "acceleration":13.4,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford ltd landau"
   },
   {
@@ -3164,7 +3164,7 @@
     "weight":3955,
     "acceleration":13.2,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury grand marquis"
   },
   {
@@ -3175,7 +3175,7 @@
     "weight":3830,
     "acceleration":15.2,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge st. regis"
   },
   {
@@ -3186,7 +3186,7 @@
     "weight":4360,
     "acceleration":14.9,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick estate wagon (sw)"
   },
   {
@@ -3197,7 +3197,7 @@
     "weight":4054,
     "acceleration":14.3,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford country squire (sw)"
   },
   {
@@ -3208,7 +3208,7 @@
     "weight":3605,
     "acceleration":15,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet malibu classic (sw)"
   },
   {
@@ -3219,7 +3219,7 @@
     "weight":3940,
     "acceleration":13,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"chrysler lebaron town @ country (sw)"
   },
   {
@@ -3230,7 +3230,7 @@
     "weight":1925,
     "acceleration":14,
     "modelYear":79,
-    "origin":2,
+    "origin":"EU",
     "carName":"vw rabbit custom"
   },
   {
@@ -3241,7 +3241,7 @@
     "weight":1975,
     "acceleration":15.2,
     "modelYear":79,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"maxda glc deluxe"
   },
   {
@@ -3252,7 +3252,7 @@
     "weight":1915,
     "acceleration":14.4,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge colt hatchback custom"
   },
   {
@@ -3263,7 +3263,7 @@
     "weight":2670,
     "acceleration":15,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc spirit dl"
   },
   {
@@ -3274,7 +3274,7 @@
     "weight":3530,
     "acceleration":20.1,
     "modelYear":79,
-    "origin":2,
+    "origin":"EU",
     "carName":"mercedes benz 300d"
   },
   {
@@ -3285,7 +3285,7 @@
     "weight":3900,
     "acceleration":17.4,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"cadillac eldorado"
   },
   {
@@ -3296,7 +3296,7 @@
     "weight":3190,
     "acceleration":24.8,
     "modelYear":79,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 504"
   },
   {
@@ -3307,7 +3307,7 @@
     "weight":3420,
     "acceleration":22.2,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile cutlass salon brougham"
   },
   {
@@ -3318,7 +3318,7 @@
     "weight":2200,
     "acceleration":13.2,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth horizon"
   },
   {
@@ -3329,7 +3329,7 @@
     "weight":2150,
     "acceleration":14.9,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth horizon tc3"
   },
   {
@@ -3340,7 +3340,7 @@
     "weight":2020,
     "acceleration":19.2,
     "modelYear":79,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 210"
   },
   {
@@ -3351,7 +3351,7 @@
     "weight":2130,
     "acceleration":14.7,
     "modelYear":79,
-    "origin":2,
+    "origin":"EU",
     "carName":"fiat strada custom"
   },
   {
@@ -3362,7 +3362,7 @@
     "weight":2670,
     "acceleration":16,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick skylark limited"
   },
   {
@@ -3373,7 +3373,7 @@
     "weight":2595,
     "acceleration":11.3,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet citation"
   },
   {
@@ -3384,7 +3384,7 @@
     "weight":2700,
     "acceleration":12.9,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile omega brougham"
   },
   {
@@ -3395,7 +3395,7 @@
     "weight":2556,
     "acceleration":13.2,
     "modelYear":79,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac phoenix"
   },
   {
@@ -3406,7 +3406,7 @@
     "weight":2144,
     "acceleration":14.7,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"vw rabbit"
   },
   {
@@ -3417,7 +3417,7 @@
     "weight":1968,
     "acceleration":18.8,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla tercel"
   },
   {
@@ -3428,7 +3428,7 @@
     "weight":2120,
     "acceleration":15.5,
     "modelYear":80,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet chevette"
   },
   {
@@ -3439,7 +3439,7 @@
     "weight":2019,
     "acceleration":16.4,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 310"
   },
   {
@@ -3450,7 +3450,7 @@
     "weight":2678,
     "acceleration":16.5,
     "modelYear":80,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet citation"
   },
   {
@@ -3461,7 +3461,7 @@
     "weight":2870,
     "acceleration":18.1,
     "modelYear":80,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford fairmont"
   },
   {
@@ -3472,7 +3472,7 @@
     "weight":3003,
     "acceleration":20.1,
     "modelYear":80,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc concord"
   },
   {
@@ -3483,7 +3483,7 @@
     "weight":3381,
     "acceleration":18.7,
     "modelYear":80,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge aspen"
   },
   {
@@ -3494,7 +3494,7 @@
     "weight":2188,
     "acceleration":15.8,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"audi 4000"
   },
   {
@@ -3505,7 +3505,7 @@
     "weight":2711,
     "acceleration":15.5,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corona liftback"
   },
   {
@@ -3516,7 +3516,7 @@
     "weight":2542,
     "acceleration":17.5,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda 626"
   },
   {
@@ -3527,7 +3527,7 @@
     "weight":2434,
     "acceleration":15,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 510 hatchback"
   },
   {
@@ -3538,7 +3538,7 @@
     "weight":2265,
     "acceleration":15.2,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla"
   },
   {
@@ -3549,7 +3549,7 @@
     "weight":2110,
     "acceleration":17.9,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda glc"
   },
   {
@@ -3560,7 +3560,7 @@
     "weight":2800,
     "acceleration":14.4,
     "modelYear":80,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge colt"
   },
   {
@@ -3571,7 +3571,7 @@
     "weight":2110,
     "acceleration":19.2,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 210"
   },
   {
@@ -3582,7 +3582,7 @@
     "weight":2085,
     "acceleration":21.7,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"vw rabbit c (diesel)"
   },
   {
@@ -3593,7 +3593,7 @@
     "weight":2335,
     "acceleration":23.7,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"vw dasher (diesel)"
   },
   {
@@ -3604,7 +3604,7 @@
     "weight":2950,
     "acceleration":19.9,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"audi 5000s (diesel)"
   },
   {
@@ -3615,7 +3615,7 @@
     "weight":3250,
     "acceleration":21.8,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"mercedes-benz 240d"
   },
   {
@@ -3626,7 +3626,7 @@
     "weight":1850,
     "acceleration":13.8,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic 1500 gl"
   },
   {
@@ -3637,7 +3637,7 @@
     "weight":1835,
     "acceleration":17.3,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"renault lecar deluxe"
   },
   {
@@ -3648,7 +3648,7 @@
     "weight":2145,
     "acceleration":18,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"subaru dl"
   },
   {
@@ -3659,7 +3659,7 @@
     "weight":1845,
     "acceleration":15.3,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"vokswagen rabbit"
   },
   {
@@ -3670,7 +3670,7 @@
     "weight":2910,
     "acceleration":11.4,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 280-zx"
   },
   {
@@ -3681,7 +3681,7 @@
     "weight":2420,
     "acceleration":12.5,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda rx-7 gs"
   },
   {
@@ -3692,7 +3692,7 @@
     "weight":2500,
     "acceleration":15.1,
     "modelYear":80,
-    "origin":2,
+    "origin":"EU",
     "carName":"triumph tr7 coupe"
   },
   {
@@ -3703,7 +3703,7 @@
     "weight":2905,
     "acceleration":14.3,
     "modelYear":80,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford mustang cobra"
   },
   {
@@ -3714,7 +3714,7 @@
     "weight":2290,
     "acceleration":17,
     "modelYear":80,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda accord"
   },
   {
@@ -3725,7 +3725,7 @@
     "weight":2490,
     "acceleration":15.7,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth reliant"
   },
   {
@@ -3736,7 +3736,7 @@
     "weight":2635,
     "acceleration":16.4,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick skylark"
   },
   {
@@ -3747,7 +3747,7 @@
     "weight":2620,
     "acceleration":14.4,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge aries wagon (sw)"
   },
   {
@@ -3758,7 +3758,7 @@
     "weight":2725,
     "acceleration":12.6,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet citation"
   },
   {
@@ -3769,7 +3769,7 @@
     "weight":2385,
     "acceleration":12.9,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth reliant"
   },
   {
@@ -3780,7 +3780,7 @@
     "weight":1755,
     "acceleration":16.9,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota starlet"
   },
   {
@@ -3791,7 +3791,7 @@
     "weight":1875,
     "acceleration":16.4,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth champ"
   },
   {
@@ -3802,7 +3802,7 @@
     "weight":1760,
     "acceleration":16.1,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic 1300"
   },
   {
@@ -3813,7 +3813,7 @@
     "weight":2065,
     "acceleration":17.8,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"subaru"
   },
   {
@@ -3824,7 +3824,7 @@
     "weight":1975,
     "acceleration":19.4,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 210 mpg"
   },
   {
@@ -3835,7 +3835,7 @@
     "weight":2050,
     "acceleration":17.3,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota tercel"
   },
   {
@@ -3846,7 +3846,7 @@
     "weight":1985,
     "acceleration":16,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda glc 4"
   },
   {
@@ -3857,7 +3857,7 @@
     "weight":2215,
     "acceleration":14.9,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth horizon 4"
   },
   {
@@ -3868,7 +3868,7 @@
     "weight":2045,
     "acceleration":16.2,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford escort 4w"
   },
   {
@@ -3879,7 +3879,7 @@
     "weight":2380,
     "acceleration":20.7,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford escort 2h"
   },
   {
@@ -3890,7 +3890,7 @@
     "weight":2190,
     "acceleration":14.2,
     "modelYear":81,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen jetta"
   },
   {
@@ -3901,7 +3901,7 @@
     "weight":2320,
     "acceleration":15.8,
     "modelYear":81,
-    "origin":2,
+    "origin":"EU",
     "carName":"renault 18i"
   },
   {
@@ -3912,7 +3912,7 @@
     "weight":2210,
     "acceleration":14.4,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda prelude"
   },
   {
@@ -3923,7 +3923,7 @@
     "weight":2350,
     "acceleration":16.8,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla"
   },
   {
@@ -3934,7 +3934,7 @@
     "weight":2615,
     "acceleration":14.8,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 200sx"
   },
   {
@@ -3945,7 +3945,7 @@
     "weight":2635,
     "acceleration":18.3,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda 626"
   },
   {
@@ -3956,7 +3956,7 @@
     "weight":3230,
     "acceleration":20.4,
     "modelYear":81,
-    "origin":2,
+    "origin":"EU",
     "carName":"peugeot 505s turbo diesel"
   },
   {
@@ -3967,7 +3967,7 @@
     "weight":3160,
     "acceleration":19.6,
     "modelYear":81,
-    "origin":2,
+    "origin":"EU",
     "carName":"volvo diesel"
   },
   {
@@ -3978,7 +3978,7 @@
     "weight":2900,
     "acceleration":12.6,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota cressida"
   },
   {
@@ -3989,7 +3989,7 @@
     "weight":2930,
     "acceleration":13.8,
     "modelYear":81,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 810 maxima"
   },
   {
@@ -4000,7 +4000,7 @@
     "weight":3415,
     "acceleration":15.8,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick century"
   },
   {
@@ -4011,7 +4011,7 @@
     "weight":3725,
     "acceleration":19,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile cutlass ls"
   },
   {
@@ -4022,7 +4022,7 @@
     "weight":3060,
     "acceleration":17.1,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford granada gl"
   },
   {
@@ -4033,7 +4033,7 @@
     "weight":3465,
     "acceleration":16.6,
     "modelYear":81,
-    "origin":1,
+    "origin":"USA",
     "carName":"chrysler lebaron salon"
   },
   {
@@ -4044,7 +4044,7 @@
     "weight":2605,
     "acceleration":19.6,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet cavalier"
   },
   {
@@ -4055,7 +4055,7 @@
     "weight":2640,
     "acceleration":18.6,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet cavalier wagon"
   },
   {
@@ -4066,7 +4066,7 @@
     "weight":2395,
     "acceleration":18,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet cavalier 2-door"
   },
   {
@@ -4077,7 +4077,7 @@
     "weight":2575,
     "acceleration":16.2,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac j2000 se hatchback"
   },
   {
@@ -4088,7 +4088,7 @@
     "weight":2525,
     "acceleration":16,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge aries se"
   },
   {
@@ -4099,7 +4099,7 @@
     "weight":2735,
     "acceleration":18,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"pontiac phoenix"
   },
   {
@@ -4110,7 +4110,7 @@
     "weight":2865,
     "acceleration":16.4,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford fairmont futura"
   },
   {
@@ -4121,7 +4121,7 @@
     "weight":3035,
     "acceleration":20.5,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"amc concord dl"
   },
   {
@@ -4132,7 +4132,7 @@
     "weight":1980,
     "acceleration":15.3,
     "modelYear":82,
-    "origin":2,
+    "origin":"EU",
     "carName":"volkswagen rabbit l"
   },
   {
@@ -4143,7 +4143,7 @@
     "weight":2025,
     "acceleration":18.2,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda glc custom l"
   },
   {
@@ -4154,7 +4154,7 @@
     "weight":1970,
     "acceleration":17.6,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"mazda glc custom"
   },
   {
@@ -4165,7 +4165,7 @@
     "weight":2125,
     "acceleration":14.7,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"plymouth horizon miser"
   },
   {
@@ -4176,7 +4176,7 @@
     "weight":2125,
     "acceleration":17.3,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"mercury lynx l"
   },
   {
@@ -4187,7 +4187,7 @@
     "weight":2160,
     "acceleration":14.5,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"nissan stanza xe"
   },
   {
@@ -4198,7 +4198,7 @@
     "weight":2205,
     "acceleration":14.5,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda accord"
   },
   {
@@ -4209,7 +4209,7 @@
     "weight":2245,
     "acceleration":16.9,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota corolla"
   },
   {
@@ -4220,7 +4220,7 @@
     "weight":1965,
     "acceleration":15,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic"
   },
   {
@@ -4231,7 +4231,7 @@
     "weight":1965,
     "acceleration":15.7,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"honda civic (auto)"
   },
   {
@@ -4242,7 +4242,7 @@
     "weight":1995,
     "acceleration":16.2,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"datsun 310 gx"
   },
   {
@@ -4253,7 +4253,7 @@
     "weight":2945,
     "acceleration":16.4,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"buick century limited"
   },
   {
@@ -4264,7 +4264,7 @@
     "weight":3015,
     "acceleration":17,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"oldsmobile cutlass ciera (diesel)"
   },
   {
@@ -4275,7 +4275,7 @@
     "weight":2585,
     "acceleration":14.5,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"chrysler lebaron medallion"
   },
   {
@@ -4286,7 +4286,7 @@
     "weight":2835,
     "acceleration":14.7,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford granada l"
   },
   {
@@ -4297,7 +4297,7 @@
     "weight":2665,
     "acceleration":13.9,
     "modelYear":82,
-    "origin":3,
+    "origin":"ASIA",
     "carName":"toyota celica gt"
   },
   {
@@ -4308,7 +4308,7 @@
     "weight":2370,
     "acceleration":13,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge charger 2.2"
   },
   {
@@ -4319,7 +4319,7 @@
     "weight":2950,
     "acceleration":17.3,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevrolet camaro"
   },
   {
@@ -4330,7 +4330,7 @@
     "weight":2790,
     "acceleration":15.6,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford mustang gl"
   },
   {
@@ -4341,7 +4341,7 @@
     "weight":2130,
     "acceleration":24.6,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"vw pickup"
   },
   {
@@ -4352,7 +4352,7 @@
     "weight":2295,
     "acceleration":11.6,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"dodge rampage"
   },
   {
@@ -4363,7 +4363,7 @@
     "weight":2625,
     "acceleration":18.6,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"ford ranger"
   },
   {
@@ -4374,7 +4374,7 @@
     "weight":2720,
     "acceleration":19.4,
     "modelYear":82,
-    "origin":1,
+    "origin":"USA",
     "carName":"chevy s-10"
   }
 ]

@@ -8,9 +8,9 @@ function mainMenu(position){
   d3.selectAll("#mainMenu > p")
     .on("click",function(d)
     {
-      if(this.id=="Add Db") dbAddMenu(d3.mouse(this));
-      else if (this.id=="Create New Graph") dbListMenu(d3.mouse(this));
-      else if (this.id=="Minimize") minimize(d3.mouse(this));
+      if(this.id=="Add Db") dbAddMenu(d3.mouse(d3.select("#applicationArea").node()));
+      else if (this.id=="Create New Graph") dbListMenu(d3.mouse(d3.select("#applicationArea").node()));
+      else if (this.id=="Minimize") minimize(d3.mouse(d3.select("#applicationArea").node()));
     });
 }
 
@@ -24,7 +24,7 @@ function dbAddMenu(position){
   d3.selectAll("#dbAddMenu > p")
     .on("click",function(d)
     {
-      loadDb(this.id,databasesObjects.length);
+      loadDb(this.id,databasesObjects.length,position);
       d3.selectAll("#dbAddMenu").remove();
     });
 }
@@ -40,7 +40,7 @@ function dbListMenu(position){
     .on("click",function(d)
     {
       d3.selectAll("#dbListMenu").remove();
-      attrMenu(d3.mouse(this),selectDb(this.id))
+      attrMenu(d3.mouse(d3.select("#applicationArea").node()),selectDb(this.id))
     });
 }
 
@@ -61,7 +61,7 @@ function attrMenu(position,db){
         selected.pop(this.id);
       }
       d3.selectAll("#graphsMenu").remove();
-      graphsMenu(d3.mouse(this),selected.length,selected);
+      graphsMenu(d3.mouse(d3.select("#applicationArea").node()),selected.length,selected);
     });
 }
 
@@ -138,7 +138,7 @@ function minimize(position){
 }
 
 //Fills in menu
-function fillmenu (menuItems,position,name,area){
+function fillmenu (menuItems,menuPos,name,area){
   //d3.select(".btn-group-vertical").remove();
   var attrBox = d3.select("body").append("div")
           .attr({
@@ -146,8 +146,8 @@ function fillmenu (menuItems,position,name,area){
             id: name + "Menu",
             "role":"group"
           })
-          .style("left", position[0] + "px")     
-          .style("bottom", position[1] -50 + "px");
+          .style("left", menuPos[0] + "px")     
+          .style("top", menuPos[1]  + "px");
     for (value in menuItems){
       attrBox.append("p")
              .attr({

@@ -100,7 +100,7 @@ function lassoFunction (svg,color,area){
       		})
       .classed("selectedData",true)
       .on("click",function(d){
-        operationsMenu(d3.mouse(this),thisArea);  
+        operationsMenu(d3.mouse(d3.select("#applicationArea").node()),thisArea);  
       });
 
     // Reset the style of the not selected dots

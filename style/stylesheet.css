@@ -1,21 +1,14 @@
 /*Menu Style*/
 .btn-group-vertical{
   position: absolute;
-  width: 100px;
   border-style:solid;
   border-width:5px;
   padding: 2px 0px 2px 0px;
+  text-align: center;
 }
 
 .btn-group-vertical > p {
   padding: 5px 10px 2px 5px;
-}
-
-#menu{
-  width: 300px;
-  border-style:solid;
-  border-width:5px;
-  padding: 2px 0px 2px 0px;
 }
 
 .selected{
@@ -28,14 +21,21 @@
 /******* END Menu Style  **********/
 /******* Chart Area Style *********/
 .chartArea {
- border: 10px solid;
+ border-right: 5px solid;
+ border-bottom: 5px solid;
 }
 /******* END Chart Area Style *********/
 /****** DataBase KW Card **************/
 .dbKwCard{
+  position:absolute;
   border-style:solid;
   border-width:5px;
-  padding: 5px;
+  padding: 2px;
+}
+
+.dbKwCardTitle{
+  font-size: 250%;
+  text-align: center;
 }
 
 

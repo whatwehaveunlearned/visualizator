@@ -1,5 +1,5 @@
 //load db from list of db and added to databasesObjects
-function loadDb(name,id){
+function loadDb(name,id,menuPos){
 	if(name.split(".")[1]=="csv"){
 		d3.csv("datasets/" + name,function(data){
 			var attrTypes = [];
@@ -35,7 +35,7 @@ function loadDb(name,id){
 			}
 	        databasesObjects.push(db);
 	        //dbDimensionOrMeasure(db);
-	        dbKwCard(db);
+	        dbKwCard(db,menuPos);
 			//dbNormalize(db);
 			dbCounter=dbCounter+1; 
 		});
@@ -69,7 +69,7 @@ function loadDb(name,id){
 	        databasesObjects.push(db);
 	        //NEED SOME PREPROCESSING TO ADD DIMENSIONORMEASURE AND NORMALIZE AT THIS POINT
 	        //dbDimensionOrMeasure(db);
-	        dbKwCard(db);
+	        dbKwCard(db,menuPos);
 			//dbNormalize(db);
 			dbCounter=dbCounter+1;  
 		});
@@ -106,7 +106,7 @@ function loadDb(name,id){
 }
 
 //Constructs dbKWCard  (databaseKnowledgeCard)
-function dbKwCard(db){
+function dbKwCard(db,menuPos){
 	var attrSelection=[];
 	var graphTypeSelection="Histogram";
 	var attrs = Object.keys(db.data[0]);
@@ -120,13 +120,18 @@ function dbKwCard(db){
 	  				"id":"dbKwCard-"+dbCounter,
 	  				"class":"dbKwCard"
 	  			 })
-	  			 .style("width","1000px");
+	  			 .style("width","1300px")
+	  			 .style("left", menuPos[0] + "px")     
+          		 .style("top", menuPos[1]  + "px");
 	var cardTitle = card.append("div")
 						.attr("id","dbKwCardTitle"+dbCounter)
+						.attr("class","dbKwCardTitle")
 	cardTitle.append("p")
 	  		.text(db.name);
 	cardTitle.append("span")
 			 .attr("class","glyphicon glyphicon-remove")
+			 .style("position","absolute")
+			 .style("right","0px")
 			 .on("click",function()
     		{
     			$("#dbKwCard-"+this.parentElement.parentElement.id.split("-")[1]).remove();
