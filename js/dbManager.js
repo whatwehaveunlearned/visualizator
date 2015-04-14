@@ -192,10 +192,6 @@ function dbKwCard(db,menuPos){
     						 			
 	 			fieldset.append("label")
 	 					.attr("for","graphType"+dbCounter)
-	 					.style({
-							"position":"absolute",
-							"top":"-50px"
-						})
 	 					.text("Select Type")
 	 			var dropdown = fieldset.append("select")
 	 								   .attr({
@@ -268,7 +264,8 @@ function dbKwCard(db,menuPos){
 			data:db.data,
 			columns:columnsData,
 			scrollY: 300,
-			"scrollX": true
+			"scrollX": true,
+			"lengthMenu": [ 25, 50, 75, 100 ]
 		});
 		console.log("stop");
 	}
@@ -277,7 +274,8 @@ function dbKwCard(db,menuPos){
 	 	var table= d3.select("#"+"dbKwCard-"+dbCounter)
 	  			 .append("table")
 	  			 .attr({
-	  				 "id":"typeTable"+dbCounter
+	  				 "id":"typeTable"+dbCounter,
+	  				 "class":"typeTable"
 	  			 })
 	  			 .style("height","100px");
 	  	var theadTr = table.append("thead")
@@ -293,10 +291,10 @@ function dbKwCard(db,menuPos){
 	  	}
 	  	var tbody2= table.append("tbody")
 	  					 .append("tr")
-	  	for (each in attrs){
+	  	/*for (each in attrs){
 	  		var td = tbody2.append("td")
 	  		dataType(td,each,attrs);
-	  	}
+	  	}*/
 	  	$('#typeTable'+dbCounter).dataTable({
 	  		paging: false,
 	  		searching: false,

@@ -3,13 +3,13 @@
 function mainMenu(position){
   d3.select("#start").remove();
   d3.select("#mainMenu").remove();
-  var menu = ["Add Db","Create New Graph","Minimize"];
+  var menu = ["Add Db","Open Db Card"];
   fillmenu(menu,position,"main","general")
   d3.selectAll("#mainMenu > p")
     .on("click",function(d)
     {
       if(this.id=="Add Db") dbAddMenu(d3.mouse(d3.select("#applicationArea").node()));
-      else if (this.id=="Create New Graph") dbListMenu(d3.mouse(d3.select("#applicationArea").node()));
+      else if (this.id=="Open Db Card") dbListMenu(d3.mouse(d3.select("#applicationArea").node()));
       else if (this.id=="Minimize") minimize(d3.mouse(d3.select("#applicationArea").node()));
     });
 }
@@ -40,7 +40,8 @@ function dbListMenu(position){
     .on("click",function(d)
     {
       d3.selectAll("#dbListMenu").remove();
-      attrMenu(d3.mouse(d3.select("#applicationArea").node()),selectDb(this.id))
+      //attrMenu(d3.mouse(d3.select("#applicationArea").node()),selectDb(this.id))
+      dbKwCard(db,position);
     });
 }
 
