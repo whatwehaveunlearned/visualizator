@@ -6,7 +6,7 @@ function loadDb(name,id,menuPos){
 			//ADD UNIQUE KEY FOR EACH DB ELEMENT
 			myId(data);
 			for (each in Object.keys(data[0])){
-				attrTypes.push({attr:Object.keys(data[0])[each],type:"Number (Hole)"})
+				attrTypes.push({attr:Object.keys(data[0])[each],type:"Integer"})
 			};
 			if (data instanceof Array){
 				db =  {
@@ -45,7 +45,7 @@ function loadDb(name,id,menuPos){
 			myId(data);
 			var attrTypes = []
 			for (each in Object.keys(data[0])){
-				attrTypes.push({attr:Object.keys(data[0])[each],type:"Number (Hole)"})
+				attrTypes.push({attr:Object.keys(data[0])[each],type:"Integer"})
 			};
 			if (data instanceof Array){
 				db =  {
@@ -205,13 +205,6 @@ function dbKwCard(db,menuPos){
 	    		//Create New Graph
 	    		cardMenu.append("button")
 	    				.attr("id","create")
-	    				.style({
-							"position":"absolute",
-							"left":"87%",
-							"bottom":"10px",
-							"width" : "100px",
-							"height": "50px"
-						})
 	    				.on("click",function()
 	    				{
 	    					var dataToRender = [];
@@ -226,7 +219,8 @@ function dbKwCard(db,menuPos){
 							    yAxisName = attrSelection[1];
 							    title = db.name + " " + attrSelection[0] + "/" +attrSelection[1];
 							}
-							dataObjects = peter._('tr', {"filter":"applied"}); 
+							//Gets the elements filtered from the table
+							dataObjects = dataTableAttr._('tr', {"filter":"applied"}); 
 	    					selectData(db,db.data,attrSelection,graphTypeSelection,dataToRender,dataObjects);
       						areaCreator (title,db,xAxisName,yAxisName,dataToRender,dataObjects,graphTypeSelection);
 	    				})
@@ -247,7 +241,8 @@ function dbKwCard(db,menuPos){
 		var table= d3.select("#"+"dbKwCard-"+dbCounter)
 		  			 .append("table")
 		  			 .attr({
-		  				 "id":"attrTable"+dbCounter
+		  				 "id":"attrTable"+dbCounter,
+		  				 "class":"attrTable compact order-column row-border"
 		  			 })
 		var theadTr = table.append("thead")
 						 .append("tr");
@@ -260,14 +255,13 @@ function dbKwCard(db,menuPos){
 				columnsData.push({data : attrs[each]})
 			}
 		//Convert to dataTable
-		peter=$('#attrTable'+dbCounter).dataTable({
+		dataTableAttr=$('#attrTable'+dbCounter).dataTable({
 			data:db.data,
 			columns:columnsData,
 			scrollY: 300,
 			"scrollX": true,
 			"lengthMenu": [ 25, 50, 75, 100 ]
 		});
-		console.log("stop");
 	}
 	//Fill table of attributes Types
 	function fillTypeTable (attrs){
@@ -275,7 +269,7 @@ function dbKwCard(db,menuPos){
 	  			 .append("table")
 	  			 .attr({
 	  				 "id":"typeTable"+dbCounter,
-	  				 "class":"typeTable"
+	  				 "class":"typeTable typeTable compact dt-head-left dt-body-center"
 	  			 })
 	  			 .style("height","100px");
 	  	var theadTr = table.append("thead")
@@ -306,7 +300,7 @@ function dbKwCard(db,menuPos){
 	}
 	//Create dropdown menu for attributes Types
 	function dataType(element,each,attrs){
-		var dataTypes =["Number (Hole)","Number (Decimal)","Date or Time","String","Coordinate"];
+		var dataTypes =["Integer","Decimal","Date/Time","String","Coord"];
 		//Read types from db in order to fill table
 		var actualType = [];
 		for (attr in attrs){
@@ -385,11 +379,11 @@ function dbKwCard(db,menuPos){
 }
 //Normalize dates and map features
 function dbNormalize(db,type,keyValue){
-	if(type=="Date or Time"){
+	if(type=="Date/Time"){
 		normalizeTime(keyValue)
-	}else if(type=="Coordinate"){
+	}else if(type=="Coord"){
 		normalizeCoordinate(keyValue)
-	}else if(type=="Number (Decimal)"){
+	}else if(type=="Decimal"){
 		for(each in db.data){
 			//Check if it has a comma
 			if(db.data[each][keyValue].indexOf(',') > -1){
@@ -403,7 +397,7 @@ function dbNormalize(db,type,keyValue){
 			}
 			db.data[each][keyValue] = parseFloat(db.data[each][keyValue]);
 		}
-	}else if(type=="Number (Hole)"){
+	}else if(type=="Integer"){
 		for(each in db.data){
 			db.data[each][keyValue] = parseInt(db.data[each][keyValue]);
 		}
@@ -515,7 +509,7 @@ function selectData(db,data,attrs,type,dataToRender,dataObjects){
     }else if(type=="Linechart"){
     	var dateAttr;
     	for(i=0; i<db.metadata.infered.attrTypes.length; i++){
-    		if(db.metadata.infered.attrTypes[i].type=="Date or Time"){
+    		if(db.metadata.infered.attrTypes[i].type=="Date/Time"){
     			dateAttr=db.metadata.infered.attrTypes[i].attr;
     			i=db.metadata.infered.attrTypes.length;
     		}

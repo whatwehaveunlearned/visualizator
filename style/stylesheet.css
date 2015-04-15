@@ -4,7 +4,8 @@
   border-style:solid;
   border-width:0.2em;
   border-top-width: 2em;
-  background-color:rgba(252,255,245,0.5);
+  border-color:rgba(248,148,6);
+  background-color:rgba(253,227,167,0.5);
   padding: 1em 0.7em 0.7em 1em;
 }
 
@@ -24,8 +25,17 @@
 /******* END Menu Style  **********/
 /******* Chart Area Style *********/
 .chartArea {
- border: 5px solid;
- box-shadow: 10px 10px 5px #888888;
+ border-style:solid;
+ border-width:0.3em;
+ border-top-width:2em;
+ /*box-shadow: 10px 10px 5px #888888;*/
+ border-color:rgba(78,205,196,0.3);
+ background-color:rgba(162,222,208,0.3);
+}
+
+.chartAreaTitle {
+  font-family: sans-serif;
+  font-size:4em;
 }
 /******* END Chart Area Style *********/
 /****** DataBase KW Card **************/
@@ -34,18 +44,34 @@
   border-style:solid;
   border-width:0.3em;
   border-top-width:2em;
+  border-color:rgba(0,51,102,0.8);
   padding: 2em;
-  background-color:rgba(126,138,162,0.5);
+  background-color:rgba(89,171,227,0.5);
   font-size: 2em;
 }
 
-.dbKwCard .typeTable td{
-  background-color:rgba(252,255,245,0.5);
+.dbKwCard .dataTables_scroll{
+  padding: 2em 0em 0em 0em;
 }
 
-.dataTables_scroll{
+.dbKwCard .dataTables_wrapper{
+  padding: 1em;
+}
+
+.dbKwCard .dataTables_scroll:nth-of-type(1){
   position: relative;
-  top: 1em;
+  left: -1em;
+  padding: 0em;
+}
+
+.dbKwCard .dataTables_scroll th{
+  text-align: center;
+  padding: 1em;
+}
+
+.dbKwCard .dataTables_scroll td{
+  text-align: center;
+  background-color:rgba(228,241,254,0.5);
 }
 
 .dataTables_info{
@@ -59,27 +85,37 @@
 }
 
 .dbKwCard td {
-  background-color:rgba(252,255,245,0.8);
+  background-color:rgba(228,241,254,0.5);
 }
 
 #newGraph{
   font-size: 1.5em;
   margin-top: 1em;
-  padding: 0.2em
+  padding: 1em;
+  line-height: 2em;
+  background-color:rgba(228,241,254,0.5);
 }
 
 .dbKwCard button {
-  background-color:rgba(252,255,245,0.5);
-  -moz-box-shadow: 0px 3px 8px rgb(100,100,100);
+  background-color:rgba(89,171,227,0.5);
+ /* -moz-box-shadow: 0px 3px 8px rgb(100,100,100);
   -webkit-box-shadow: 0px 3px 8px rgb(100,100,100);
-  box-shadow: 0px 3px 8px rgb(100,100,100);
+  box-shadow: 0px 3px 8px rgb(100,100,100);*/
   font-size: 1em;
   border-radius: 5px;
+  border-color:rgba(89,171,227,0.5);
+  position:relative;
+  float: center;
 }
 
-.dbKwCard .glyphicon{
-  font-size: 0.5em;
+.dbKwCardMenu .glyphicon{
+  float:right;
+  position: relative;
+  top:-0.8em;
+  left:0.6em;
   padding: 0.2em;
+  font-size: 2em;
+  padding: 0.4em;
 }
 
 .dbKwCardTitle{
@@ -91,30 +127,37 @@
 
 .dbKwCardMenu{
   position: relative;
-  top: 3em;
-  height: 15em;
+  top: 1em;
+  padding: 1em;
+  height: 18em;
+  border-radius: 5px;
+  background-color:rgba(228,241,254,0.8);
 }
 
 .dbKwCardMenu label{
   position: relative;
   float: left;
-  top:0em;
+  top:-2em;
+  font-size: 1.5em;
 }
 
-.dbKwCardMenu .dbKwCardMenugraphType {position:absolute;left:40em;top:2em;}
-.dbKwCardMenu #create{position:absolute;left:87%;width : 100px;height: 50px;font-size: 150%}
+.dbKwCardMenu .ui-selectmenu-menu{font-size: 1.5em;}
+.ui-selectmenu-button {background-color:rgba(228,241,254,0.8);}
+.dbKwCardMenu .dbKwCardMenugraphType {position:absolute;left:28em;top:4.5em;}
+.dbKwCardMenu .dbKwCardMenugraphType .ui-selectmenu-button {position:relative;left:-7em;top:-1em;font-size: 1.2em}
+.dbKwCardMenu #create{position:relative;left:18em;font-size: 2.5em;top:-3.5em;padding: 1em;}
 
-.dbKwCardMenu .selectable { margin:0.4em; list-style-type: none; padding: 0; width: 60%; max-height: 250px; overflow-y: scroll; border-style:solid; border-width:0.4em; }
+.dbKwCardMenu .selectable { margin:0.4em; list-style-type: none; padding: 0; margin:2em,0em,0em,0em; width: 25em; max-height: 16em; overflow-y: scroll; border-style:solid; border-width:0.4em; }
 .dbKwCardMenu .selectable .ui-selecting { background: #FECA40; }
 .dbKwCardMenu .selectable .ui-selected { background: #F39814; color: white; }
-.dbKwCardMenu .selectable li { font-size: 1.5em; text-align:center  }
+.dbKwCardMenu .selectable li { font-size: 1.5em; text-align:center; line-height:1em; background-color:rgba(228,241,254,0.8); }
+
+.dbKwCardMenu select {
+  width:15em;
+}
 
 fieldset {
   border: 0;
-}
-
-select {
-  width: 200px;
 }
 .overflow {
   height: 200px;

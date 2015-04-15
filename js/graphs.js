@@ -69,12 +69,14 @@ function addTitle(svg,plot){
   svg.append("text")
      .text(plot.title)
      .attr({
+       class:"chartAreaTitle",
        x: 500,
-       y: -50, 
-       "font-family": "sans-serif",
+       y: -50,
+       "text-anchor":"middle" 
+       /*"font-family": "sans-serif",
        "font-size": 30,
        fill: "black",
-       "text-anchor":"middle"
+       "text-anchor":"middle"*/
     })
     .on("mouseover",function(d,i){
       $(this.parentElement.parentElement.parentElement).draggable();

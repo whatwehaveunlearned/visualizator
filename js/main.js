@@ -9,7 +9,7 @@ var margin = {top: 80, right: 30, bottom: 20, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.bottom;
 
-var svgAttr = {width:960,height:600}
+var svgAttr = {width:980,height:580}
 
 //Used to dynamically name the areas
 var graphCounter=0;
