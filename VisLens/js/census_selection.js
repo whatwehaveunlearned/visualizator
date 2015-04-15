@@ -71,7 +71,6 @@ SelectionBox.prototype.updateSize = function(mouse)
 				})
 				.on("dblclick", function()
 				{
-					console.log("double clicked lens");
 					thisBox.toggleLensVisibility();
 				});
 			})(this)
@@ -239,13 +238,11 @@ SelectionBox.prototype.getLensBounds = function()
 
 SelectionBox.prototype.hideLens = function()
 {
-	//console.log("hidding element: " + this.lensGrid.getToplevelGroup());
 	this.lensGroup.attr("visibility", "hidden");
 }
 
 SelectionBox.prototype.isLensVisible = function()
 {
-	//console.log("hidding element: " + this.lensGrid.getToplevelGroup());
 	var visible = this.lensGroup.attr("visibility");
 	if (visible == "visible")
 		return true;
@@ -301,7 +298,7 @@ function SelectionBoxes(svg, brushGroup)
 		.attr("id", "selection_lenses");
 
 	// create a new similarity matrix element
-	this.similarityMatrix = new SimilarityMatrix(svg);
+	this.similarityMatrix = new SimilarityMatrix(svg, this);
 
 	
 	(function(thisObject) {

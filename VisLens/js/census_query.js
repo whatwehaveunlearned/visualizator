@@ -107,6 +107,24 @@ var state_to_num_abbr = {
 		"WY": "56",
 		"PR": "72"
 }
+
+function getStates() {
+	return [
+	"AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN",
+	"IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", 
+	"NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", 
+	"VT", "VA", "WA", "WV", "WI", "WY", "PR"
+	];
+}
+function getStateNumbers() 
+{
+	var states = getStates();
+	var codes = [];
+	for (var i=0; i < states.length; i++)
+		codes.push(state_to_num_abbr[states[i]]);
+	return codes;
+}
+
 var num_to_state = null;
 var num_to_state_abbr = null;
 

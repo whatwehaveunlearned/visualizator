@@ -68,20 +68,16 @@ Histogram.prototype.remove = function()
 	chartGroup.remove();
 }
 
-function LensGrid(svg, mapProjection, lensOffsetX, lensOffsetY)
-{
-	this.selection = [];
-	this.selectionMap = d3.map();
 
-	this.svg = svg;
-	this.toplevelGroup = svg.append("g");
-	this.pathGenerator = d3.geo.path(d3.geo.albersUsa().translate([0,0]));
-	this.mapProjection = mapProjection;
-	this.lensOffset = [lensOffsetX, lensOffsetY];
-
-	// these are the mini charts that we will display in each cell
-	this.charts = [
+/* ==============================================
+ * Charts and VisualFeature
+ * ==============================================
+ */
+var DEFAULT_CHARTS = 
+[
+		
 		{
+			label: "Races",
 			type: "histogram",
 			variables: [
 				"P0060002",
@@ -90,6 +86,7 @@ function LensGrid(svg, mapProjection, lensOffsetX, lensOffsetY)
 				"P0040003"
 			]
 		},
+		/*
 		{
 			label: "Male age distribution",
 			type: "histogram",
@@ -119,6 +116,7 @@ function LensGrid(svg, mapProjection, lensOffsetX, lensOffsetY)
 				"P0120025"		// male 85 and over
 			]
 		},
+		*/
 		{
 			label: "Female age distribution",
 			type: "histogram",
@@ -149,7 +147,84 @@ function LensGrid(svg, mapProjection, lensOffsetX, lensOffsetY)
 			]
 		}
 
-	];
+];
+
+function VisualFeature(chartSpecs, chartData)
+{
+	this.data = [];
+	this.dataMax = Number.MIN_VALUE;
+	this.dataMin = Number.MAX_VALUE;
+
+	for (var i = 0, len = chartSpecs.variables.length; i < len; i++) 
+	{
+		var d = +chartData[ chartSpecs.variables[i] ];
+		this.data.push(d);
+		
+		if (this.dataMax < d) 
+		{
+			this.dataMax = d;
+		}
+
+		if (this.dataMin > d) 
+		{
+			this.dataMin = d;
+		}
+	}
+
+	if (chartSpecs.type == "histogram")
+	{
+		for (var i = 0, len = this.data.length; i < len; i++) {
+			this.data[i] /= this.dataMax;
+		}
+	}
+}
+
+VisualFeature.prototype.distance = function(other) 
+{
+	var d = 0;
+	for (var i = 0, len = this.data.length; i < len; i++)
+	{
+		var dd = this.data[i] - other.data[i];
+		d += dd * dd;
+	}
+	return Math.sqrt(d);
+}
+
+function VisualLens()
+{
+	this.features = [];
+}
+VisualLens.prototype.addFeature = function(feature) 
+{
+	this.features.push(feature)
+}
+
+VisualLens.prototype.distance = function(other)
+{
+	var combinedDistance = 0;
+	var len = this.features.length;
+	for (var i = 0; i < len; i++)
+		combinedDistance += this.features[i].distance(other.features[i]);
+	return len > 0 ? combinedDistance / len : 0;
+}
+/* ==============================================
+ * LensGrid
+ * ==============================================
+ */
+
+
+function LensGrid(svg, mapProjection, lensOffsetX, lensOffsetY, charts)
+{
+	this.selection = [];
+	this.selectionMap = d3.map();
+
+	this.svg = svg;
+	this.toplevelGroup = svg.append("g");
+	this.mapProjection = mapProjection;
+	this.lensOffset = [lensOffsetX ? lensOffsetX : 0, lensOffsetY ? lensOffsetY : 0];
+
+	// these are the mini charts that we will display in each cell
+	this.charts = charts ? charts : DEFAULT_CHARTS;
 }
 
 LensGrid.prototype.updateOffset = function(xOffset, yOffset)
@@ -162,128 +237,142 @@ LensGrid.prototype.getToplevelGroup = function()
 	return this.toplevelGroup;
 }
 
-LensGrid.prototype.addCounty = function(countyNum, stateAbbr, countyPath, _countyCallback)
+LensGrid.prototype.addCounty = function(countyNum, stateAbbr, countyPath, _countyCallback, variables)
 {
 	var geoid = +(getStateNumber(stateAbbr) + "" + countyNum);
 
 	var existingSelection = this.selectionMap.get(geoid)
 	if (existingSelection)
 	{
-		console.log("skipping county: " + countyNum);
 		// already selected, do nothing
 		existingSelection.countyPath.style("fill", "red");
-		existingSelection.countyPath.transition().duration(0 /*750*/).style("fill", LENS_COLOR);
+		existingSelection.countyPath.transition().style("fill", LENS_COLOR);
 		return;
 	}
 	
 
 	// figure the bounds
-	var thisLens = this;
-
-
-	// make the charts
-	var q = queue(1);
-	var cq = new CensusQuery();
+	(function(thisLens, theVariables) 
+	{
 	
-	for (var c=0; c < this.charts.length; c++)
-	{
-		var chart = this.charts[c];
-		var chartVariables = chart.variables;
-		q.defer(function(theVars, _stateAbbr, _countyNum, _callback) 
+		if (!theVariables)
 		{
-			cq.getCounties(_callback, theVars, _stateAbbr, _countyNum)
-		 }, chartVariables, stateAbbr, countyNum);
-	}
+			// make the charts
+			var q = queue(1);
+			var cq = new CensusQuery();
 
-	// wait for all the jobs to be finished
-	q.awaitAll(function(error, results)
-	{
-		if (error)
+			for (var c=0; c < thisLens.charts.length; c++)
+			{
+				var chart = thisLens.charts[c];
+				var chartVariables = chart.variables;
+				q.defer(function(theVars, _stateAbbr, _countyNum, _callback) 
+				{
+					cq.getCounties(_callback, theVars, _stateAbbr, _countyNum)
+				 }, chartVariables, stateAbbr, countyNum);
+			}
+			q.awaitAll(resultsReady)
+		}
+		else
 		{
-			console.warn("\t error: " + error + ", results: " + (error ? " ERRORED " : results.length));
-			return;
+			resultsReady(null, theVariables);
 		}
 
-		var rowNum = thisLens.selection.length;
-		var group = thisLens.toplevelGroup.append("g")
-			.attr("id", "row_group_" + geoid)
-			.attr("transform", "translate(0," + rowNum * (CELL_H + PADDING_V) + ")");
-
-		var lensRow = {
-			rowNum: rowNum,
-			charts: [],
-			group: null,
-			countyGroup: null
-		};
-		thisLens.selection.push( lensRow );
-
-		// add a representation of the county
-		var bounds = thisLens.pathGenerator.bounds(countyPath);
-		var countyLen = [bounds[1][0]-bounds[0][0], bounds[1][1]-bounds[0][1]];
-		var countyScale = Math.min(CELL_W / countyLen[0], CELL_H / countyLen[1]);
-		var scaledCountyLen = [countyScale*countyLen[0], countyScale*countyLen[1]];
-
-		var countyGroup = group.append("g")
-			.attr("id", "county_group_" + geoid)
-			.attr("transform", "translate(" + (CELL_W-scaledCountyLen[0])/2 + "," + (CELL_H-scaledCountyLen[1])/2 + ") " +
-				"scale(" + countyScale + "," + countyScale + ") " + 
-				"translate(-"+bounds[0][0]+",-"+bounds[0][1]+")");
-
-		lensRow.countyPath = countyGroup.append("path")
-			.attr("id", "selection_county_" + geoid)
-			//.style("fill", "red")
-			.style("fill", LENS_COLOR)
-			.style("stroke", "white")
-			.attr("d", thisLens.pathGenerator(countyPath));
-
-		group
-			.on("mouseover", function()
-			{
-				var geoid = d3.select(this).attr("id").split("_")[2];
-				thisLens.addSelectionLink(geoid);
-			})
-			.on("mouseout", function()
-			{
-				var geoid = d3.select(this).attr("id").split("_")[2];
-				thisLens.removeSelectionLink(geoid);
-			});
-		//lensRow.countyPath.transition().duration(0/*750*/).style("fill", LENS_COLOR);
-
-
-		// append all chart groups
-		lensRow.group = group;
-		lensRow.countyGroup = countyGroup;
-
-
-		for (var c=0; c < thisLens.charts.length; c++)
+		function resultsReady(error, results)
 		{
-			var chart = thisLens.charts[c];
-			var chartGroup = group.append("g")
-				.attr("transform", "translate(" + (CELL_W+PADDING_H)*(c+1) + ",0)");
-
-			var chartData = [];
-			var chartResults = results[c][0];
-			for (var d=0, len=chart.variables.length; d<len; d++) 
+			if (error)
 			{
-				var varName = chart.variables[d];
-				var varValue = chartResults[varName];
-				chartData.push(+varValue);
+				console.warn("\t error: " + error + ", results: " + (error ? " ERRORED " : results.length));
+				return;
 			}
 
-			var histogram = new Histogram(chartData, CELL_W, CELL_H, chartGroup);
-			lensRow.charts.push(histogram);
+			var rowNum = thisLens.selection.length;
+			var group = thisLens.toplevelGroup.append("g")
+				.attr("id", "row_group_" + geoid)
+				.attr("transform", "translate(0," + rowNum * (CELL_H + PADDING_V) + ")");
+
+			var lensRow = {
+				rowNum: rowNum,
+				charts: [],
+				group: null,
+				countyGroup: null
+			};
+			thisLens.selection.push( lensRow );
+
+			// add a representation of the county
+			if (countyPath)
+			{
+				if (!thisLens.pathGenerator)
+					thisLens.pathGenerator = d3.geo.path(d3.geo.albersUsa().translate([0,0]));
+				var bounds = thisLens.pathGenerator.bounds(countyPath);
+				var countyLen = [bounds[1][0]-bounds[0][0], bounds[1][1]-bounds[0][1]];
+				var countyScale = Math.min(CELL_W / countyLen[0], CELL_H / countyLen[1]);
+				var scaledCountyLen = [countyScale*countyLen[0], countyScale*countyLen[1]];
+
+				var countyGroup = group.append("g")
+					.attr("id", "county_group_" + geoid)
+					.attr("transform", "translate(" + (CELL_W-scaledCountyLen[0])/2 + "," + (CELL_H-scaledCountyLen[1])/2 + ") " +
+						"scale(" + countyScale + "," + countyScale + ") " + 
+						"translate(-"+bounds[0][0]+",-"+bounds[0][1]+")");
+
+				lensRow.countyPath = countyGroup.append("path")
+					.attr("id", "selection_county_" + geoid)
+					//.style("fill", "red")
+					.style("fill", LENS_COLOR)
+					.style("stroke", "white")
+					.attr("d", thisLens.pathGenerator(countyPath));
+			}
+
+			if (thisLens.mapProjection)
+			{
+				group
+					.on("mouseover", function()
+					{
+						var geoid = d3.select(this).attr("id").split("_")[2];
+						thisLens.addSelectionLink(geoid);
+					})
+					.on("mouseout", function()
+					{
+						var geoid = d3.select(this).attr("id").split("_")[2];
+						thisLens.removeSelectionLink(geoid);
+					});
+			}
+
+			// append all chart groups
+			lensRow.group = group;
+			lensRow.countyGroup = countyGroup;
+
+			for (var c=0; c < thisLens.charts.length; c++)
+			{
+				var chart = thisLens.charts[c];
+				var chartGroup = group.append("g")
+					.attr("transform", "translate(" + (CELL_W+PADDING_H)*(c+(countyPath ? 1 : 0)) + ",0)");
+
+				var chartData = [];
+				var chartResults = results[c][0];
+				for (var d=0, len=chart.variables.length; d<len; d++) 
+				{
+					var varName = chart.variables[d];
+					var varValue = chartResults[varName];
+					chartData.push(+varValue);
+				}
+				
+				var histogram = new Histogram(chartData, CELL_W, CELL_H, chartGroup);
+				lensRow.charts.push(histogram);
+			}
+			thisLens.selectionMap.set( geoid, lensRow );
+			if (_countyCallback) _countyCallback();
 		}
-		thisLens.selectionMap.set( geoid, lensRow );
-		if (_countyCallback) _countyCallback();
-	});
+	})(this, variables);
 }
 
 LensGrid.prototype.getBounds = function()
 {
-	var rows = this.selection.length
+	var rows = this.selection.length;
+	var width = this.charts.length + (this.countyPath ? 1 : 0);
+
 	return [
-		this.charts.length * (CELL_W+PADDING_H) + CELL_W,
-		rows * CELL_H + (rows > 0 ? rows-1 : 0) * PADDING_V
+		width * CELL_W + (width > 0 ? width-1 : 0) * PADDING_H,
+		rows  * CELL_H + (rows > 0 ? rows-1 : 0)   * PADDING_V
 	];
 }
 
