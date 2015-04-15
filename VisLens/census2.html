@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+	<script  type="text/javascript" src="js/d3.js"></script>
+	<script type="text/javascript" src="js/census_query.js"></script>
+	<script type="text/javascript" src="js/census_charts.js"></script>
+	<script type="text/javascript" src="js/sim_matrix.js"></script>
+	<script type="text/javascript" src="js/topojson.v1.min.js"></script>
+	<script type="text/javascript" src="js/queue.v1.min.js"></script>
+
+	<!-- canvg includes -->
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
+	<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
+	<style>
+	.countyPath {
+		fill: #cccccc;
+		stroke-width: 0.5px;
+		stroke: #999999;
+	}
+	</style>
+</head>
+<body>
+
+	<svg id="svgCanvas" width="1600" height="1200" style="border: dashed 1px black"></svg>
+	<script type="text/javascript">
+
+	
+
+		var MAX_COUNTIES = 500;
+
+		var dataQ = queue(10);
+		var states = getStates();
+		var countyMap = d3.map();
+		var countyList = [];
+
+		// concatinate all variables
+		var variables = [];
+		for (var c = 0, len = DEFAULT_CHARTS.length; c < len; c++)
+		{
+			var chartVars = DEFAULT_CHARTS[c].variables;
+			for (var v = 0, vLen = chartVars.length; v < vLen; v++)
+				variables.push(chartVars[v]);
+		}
+
+		// get data for all states / counties
+		var cq = new CensusQuery();
+		for (var s = 0, len = states.length; s < len; s++)
+		{
+			// make a query
+			dataQ.defer(function(state, _variables, _cq, _callback) 
+			{
+				_cq.getCounties(function(err, results) 
+				{
+					_callback(err, results);
+				}, _variables, state);
+			}, states[s], variables, cq);
+		}
+
+		// data should be ready here
+		var lenses = [];
+
+		dataQ.awaitAll(function(error, results)
+		{
+			if (error) {
+				console.warn("\t error: " + error);
+			}
+			// break down results into arrays
+			for (var r = 0, len = results.length; r < len && countyList.length < MAX_COUNTIES; r++)
+			{
+				var resultBlock = results[r];
+				for (var county = 0, cCount = resultBlock.length; county < cCount && countyList.length < MAX_COUNTIES; county++)
+				{
+					var lens = new VisualLens();
+					for (var c = 0, cLen = DEFAULT_CHARTS.length; c < cLen; c++) 
+					{
+						var curChartVars = DEFAULT_CHARTS[c].variables;
+						var chartData = {};
+						for (var v = 0, vLen = curChartVars.length; v < vLen; v++)
+						{
+							var varName = curChartVars[v];
+							var varValue = resultBlock[county][varName];
+							chartData[ varName ] = varValue;
+						}
+						lens.addFeature( new VisualFeature(DEFAULT_CHARTS[c], chartData) );
+
+					}
+					var geoid = +(resultBlock[county].state_num) + "" + resultBlock[county].county;
+					countyList.push(geoid);
+					countyMap.set(geoid, lens);
+				}
+			}
+
+			calcMatrix();
+		});
+
+		// geo features
+		var featureMap = null;
+		var features = null;
+
+		function calcMatrix()
+		{
+			console.log("calculating similarity matrix...");
+			var minSim = Number.MAX_VALUE;
+			var similarityMatrix = [];
+			for (var i = 0, len = countyList.length; i < len; i++) 
+			{
+				similarityMatrix.push([]);
+				var row = similarityMatrix[i];
+				for (var j = 0; j < i; j++) {
+					var sim = 1.0 - countyMap.get(countyList[i]).distance(countyMap.get(countyList[j]));
+					row[j] = sim;
+					if (minSim > sim) minSim = sim;
+				}
+				row[i] = 1.0;
+
+			}
+
+			// refill the other half of the matrix
+			for (var i = 0, len = countyList.length; i < len; i++)
+				for (var j = i+1; j < len; j++)
+					similarityMatrix[i][j] = similarityMatrix[j][i];
+			console.log("Done...");
+
+			// figure out right dimensions
+			SIMMAT_ELEMENT_SIZE = 1;
+			SIMMAT_ELEMENT_BORDER = "none";
+			DENDOGRAM_NODE_HEIGHT = SIMMAT_ELEMENT_SIZE/2 + 2;
+			
+			var simMatrix = new SimilarityMatrix(d3.select("#svgCanvas"));
+			simMatrix.dendogramLimit = 3;
+			simMatrix.updateMatrix(similarityMatrix, minSim);
+
+
+			// set brush/unbrush callbacks
+			var brushCallback = function(cluster) {
+				console.log("brushed: " + cluster.members.length);
+				for (var i = 0, len = cluster.members.length; i < len; i++)
+				{
+					var countyGeoid = countyList[cluster.members[i]];
+					var sel = d3.select("#county_" + countyGeoid);
+					if (sel.size() == 0)
+						console.log("can't select geoid: " + countyGeoid);
+					else
+						sel.style("fill", "red");
+				}
+			}
+			var unbrushCallback = function(cluster) {
+				for (var i = 0, len = cluster.members.length; i < len; i++)
+				{
+					var countyGeoid = countyList[cluster.members[i]];
+					d3.select("#county_" + countyGeoid).style("fill", "");
+				}
+			}
+			simMatrix.setClusterBrushCallback(brushCallback, unbrushCallback);
+
+
+			drawMap();
+		}
+
+		function drawMap()
+		{
+			var w = 400, h = 400;
+			var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(500);
+			var pathGenerator = d3.geo.path().projection(projection);	
+
+			readMap();
+
+			function readMap()
+			{
+				// read US counties topoplogy
+				d3.json("datasets/us-counties.json", function(error, topology)
+				{
+					if (error) {
+						alert("Error getting US counties data: " + error);
+						return;
+					}
+					features = topojson.feature(topology, topology.objects.counties).features;
+					
+					// make a feature map indexed by county id
+					featureMap = d3.map();
+					for (var i=0, len=features.length; i < len; i++) {
+						featureMap.set(features[i].id, features[i]);
+					}
+					
+					d3.select("svg").append("g").selectAll("path")
+						.data(features)
+						.enter().append("path")
+						.classed("countyPath", true)
+						.attr("d", pathGenerator)
+						.attr("id", function(d) {return "county_" + d.id;});
+
+				});
+			}
+
+		}
+
+	</script>
+</body>
+</html>
