@@ -114,7 +114,7 @@ function dbKwCard(db,menuPos){
 	var temp = attrs[0];
 	attrs[0]=attrs[(attrs.length-1)];
 	attrs[(attrs.length-1)]=temp;
-	var card = d3.select( "body" )
+	var card = d3.select( "#applicationArea" )
 	  			 .append("div")
 	  			 .attr({
 	  				"id":"dbKwCard-"+dbCounter,
@@ -205,7 +205,7 @@ function dbKwCard(db,menuPos){
 	    				.attr("id","create")
 	    				.on("click",function()
 	    				{	
-	    					var mousePos = d3.mouse(d3.select("body").node());
+	    					var mousePos = d3.mouse(d3.select("#applicationArea").node());
 	    					var dataToRender = [];
 	    					var dataObjects;
 	    					if (attrSelection.length==1){
