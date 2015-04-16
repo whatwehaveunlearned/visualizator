@@ -16,8 +16,8 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
             .style({
                 "width": areaWidth + "px",
                 "position":"absolute",
-                "top":position[0]+"px",
-                "left":position[1]+"px"
+                "top":position[1]+"px",
+                "left":position[0]+"px"
                 }); 
   var plot =  {
               name: "graphArea"+graphCounter,

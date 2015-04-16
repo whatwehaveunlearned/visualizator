@@ -205,7 +205,8 @@ function dbKwCard(db,menuPos){
 	    				.attr("id","create")
 	    				.on("click",function()
 	    				{	
-	    					var mousePos = d3.mouse(d3.select("#"+this.parentElement.id).node());
+	    					//var mousePos = d3.mouse(d3.select("#"+this.parentElement.id).node());
+	    					var mousePos = d3.mouse(d3.select("#applicationArea").node());
 	    					var dataToRender = [];
 	    					var dataObjects;
 	    					if (attrSelection.length==1){
