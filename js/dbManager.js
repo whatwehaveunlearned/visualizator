@@ -129,9 +129,7 @@ function dbKwCard(db,menuPos){
 	cardTitle.append("p")
 	  		.text(db.name);
 	cardTitle.append("span")
-			 .attr("class","glyphicon glyphicon-remove")
-			 .style("position","absolute")
-			 .style("right","0px")
+			 .attr("class","glyphicon glyphicon-remove removeCard")
 			 .on("click",function()
     		{
     			$("#dbKwCard-"+this.parentElement.parentElement.id.split("-")[1]).remove();

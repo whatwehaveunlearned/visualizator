@@ -158,4 +158,10 @@ function fillmenu (menuItems,menuPos,name,area){
             .text(menuItems[value])
     }
   $( ".btn-group-vertical" ).draggable({revert: "valid"});
+  attrBox.append("span")
+       .attr("class","glyphicon glyphicon-remove menuRemove")
+       .on("click",function()
+        {
+          $("#"+name+"Menu").remove();
+        });
 }
