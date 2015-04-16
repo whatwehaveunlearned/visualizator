@@ -2,9 +2,9 @@
 .menuRemove{
   position: absolute;
   right: 0em;
-  top:-1.9em;
+  top:-1em;
   color: white;
-  font-size:0.4;
+  font-size: 1.6em;
 }
 .btn-group-vertical{
   position: absolute;
@@ -117,9 +117,9 @@
 
 .removeCard{
   position:absolute;
-  right:-1.1em;
-  top:-1.2em;
-  font-size:0.7em;
+  right:-1.2em;
+  top:-1.3em;
+  font-size:0.6em;
   color:white;
 }
 

@@ -5,8 +5,8 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
   var childrenList=[];
   var areaWidth = width + margin.left + margin.right + 30;
   //If we have a parent argument we added to the parent List (children will always have to be added dynamically)
-  if(arguments[7]!=undefined){
-    parentList.push(arguments[7]);
+  if(arguments[8]!=undefined){
+    parentList.push(arguments[8]);
   }
   var area = d3.select("#applicationArea").append("div")
             .attr({

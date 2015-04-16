@@ -1,5 +1,5 @@
 //Adds 2 sets together to draw a new graph
-function extract (area){ //Add needs to know the attrs in his parent.
+function extract (area,position){ //Add needs to know the attrs in his parent.
   var dataset = [];
   var parents = [];
   //Parent selection
@@ -10,7 +10,7 @@ function extract (area){ //Add needs to know the attrs in his parent.
   for (each in selectedItems){
     dataset.push([eval("selectedItems[each]."+ area.xAxis),eval("selectedItems[each]."+ area.yAxis),selectedItems[each].myId]);
   }
-  areaCreator (area.title,area.database,area.xAxis,area.yAxis,dataset,selectedItems,area.type,parents);
+  areaCreator (area.title,area.database,area.xAxis,area.yAxis,dataset,selectedItems,area.type,position,parents);
   selectedItems = [];
   parentsOfSelection = [];
   //add child to parent
@@ -24,12 +24,26 @@ function extract (area){ //Add needs to know the attrs in his parent.
 }
 
 //Changes the type of graph
-function changeType(){ //Needs to know what graph is changing to and the attrs of his parent
+function changeType(area,position){ //Needs to know what graph is changing to and the attrs of his parent
 	dataset = [];
+  var parents = [];
 	for (item in selectedItems){
-    dataset.push([selectedItems[item].carName,selectedItems[item].weight]);
+    dataset.push(eval("selectedItems[item]."+area.xAxis));
   }
-  areaCreator (plot.title,"carName","weight",dataset,"barChart");
+  for (parent in parentsOfSelection){
+    parents.push(searchArea(parentsOfSelection[parent]));
+  }
+  areaCreator (area.database.name+" "+area.xAxis,area.database,area.xAxis,area.yAxis,dataset,selectedItems,"Histogram",position,parents);
+  selectedItems = [];
+  parentsOfSelection = [];
+  //add child to parent
+  var child = searchArea("graphArea"+eval(graphCounter-1));
+  area.children.push(child);
+  d3.selectAll(".selectedData")
+    .attr({
+          "r":3.5,
+        })
+    .classed("selectedData",false);
 }
 
 //Changes the Attrs

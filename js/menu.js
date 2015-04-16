@@ -105,8 +105,8 @@ function operationsMenu(position,thisArea){
   d3.selectAll("#operationsMenu > p")
     .on("click",function(d)
     {
-      if(this.id=="Extract") extract(thisArea);
-      else if (this.id=="chage Graph Type") changeType();  
+      if(this.id=="Extract") extract(thisArea,position);
+      else if (this.id=="Change Graph Type") changeType(thisArea,position);  
     });
 }
 
