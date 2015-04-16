@@ -1,6 +1,6 @@
 //Area Creator.
 //Creates a visual Area. Creates a model of the view. Launches the proper graph.
-function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObjects,type){
+function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObjects,type,position){
   var parentList=[];
   var childrenList=[];
   var areaWidth = width + margin.left + margin.right + 30;
@@ -13,7 +13,12 @@ function areaCreator (title,database,xAxisName,yAxisName,dataToRender,dataObject
               class:"chartArea",
               "id":"graphArea"+graphCounter
             })
-            .style("width",areaWidth + "px"); 
+            .style({
+                "width": areaWidth + "px",
+                "position":"absolute",
+                "top":position[0]+"px",
+                "left":position[1]+"px"
+                }); 
   var plot =  {
               name: "graphArea"+graphCounter,
               title:title,

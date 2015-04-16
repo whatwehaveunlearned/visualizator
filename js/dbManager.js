@@ -204,7 +204,8 @@ function dbKwCard(db,menuPos){
 	    		cardMenu.append("button")
 	    				.attr("id","create")
 	    				.on("click",function()
-	    				{
+	    				{	
+	    					var mousePos = d3.mouse(d3.select("body").node());
 	    					var dataToRender = [];
 	    					var dataObjects;
 	    					if (attrSelection.length==1){
@@ -220,7 +221,7 @@ function dbKwCard(db,menuPos){
 							//Gets the elements filtered from the table
 							dataObjects = dataTableAttr._('tr', {"filter":"applied"}); 
 	    					selectData(db,db.data,attrSelection,graphTypeSelection,dataToRender,dataObjects);
-      						areaCreator (title,db,xAxisName,yAxisName,dataToRender,dataObjects,graphTypeSelection);
+      						areaCreator (title,db,xAxisName,yAxisName,dataToRender,dataObjects,graphTypeSelection,mousePos);
 	    				})
 	    				.text("create")
 	    		$("#graphType-"+dbCounter).selectmenu({
