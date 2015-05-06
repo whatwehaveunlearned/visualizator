@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="js/sim_matrix.js"></script>
 	<script type="text/javascript" src="js/topojson.v1.min.js"></script>
 	<script type="text/javascript" src="js/queue.v1.min.js"></script>
+	<script type="text/javascript" src="js/lens_tree_vis.js"></script>
 
 	<!-- canvg includes -->
 	<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
@@ -15,25 +16,32 @@
 	<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
 	<style>
 	.countyPath {
-		fill: #cccccc;
+		fill: #eeeeee;
 		stroke-width: 0.5px;
-		stroke: #999999;
+		stroke: #cccccc;
 	}
 	</style>
 </head>
 <body>
+	<svg id="svgCanvas" width="1800" height="700" style="border: dashed 1px #cccccc; position: absolute; left: 0px; top: 0px"></svg>
 
-	<svg id="svgCanvas" width="1600" height="1200" style="border: dashed 1px black"></svg>
+	<svg id="mapCanvas" width="650" height="650" style="position: absolute; left: 725px; top: 700px"></svg>
+	<canvas id="matrixCanvas" width="650" height="650" style="position: absolute; left: 75px; top: 700px"></canvas>
+	<svg id="dendogramCanvas" width="75" height="650" style="position: absolute; left: 0px; top: 700px"></svg>
+	
 	<script type="text/javascript">
 
-	
-
-		var MAX_COUNTIES = 500;
+		var MAX_COUNTIES = 5000;
+		var TREE_DEPTH_CULL = 6;
+		var BRUSH_COLOR = "#FF7070";
+		var FULL_MATRIX = true;
 
 		var dataQ = queue(10);
 		var states = getStates();
 		var countyMap = d3.map();
 		var countyList = [];
+
+		drawMap();
 
 		// concatinate all variables
 		var variables = [];
@@ -124,45 +132,151 @@
 			console.log("Done...");
 
 			// figure out right dimensions
-			SIMMAT_ELEMENT_SIZE = 1;
+			SIMMAT_ELEMENT_SIZE = .20;
 			SIMMAT_ELEMENT_BORDER = "none";
 			DENDOGRAM_NODE_HEIGHT = SIMMAT_ELEMENT_SIZE/2 + 2;
 			
-			var simMatrix = new SimilarityMatrix(d3.select("#svgCanvas"));
+			var matrixGroup = d3.select("#dendogramCanvas").append("g");
+			matrixGroup.attr("transform", "translate(" + d3.select("#dendogramCanvas").attr("width") + ",0)");
+			var simMatrix = new SimilarityMatrix(matrixGroup);
+			simMatrix.setLensAccessor( getLens );
 			simMatrix.dendogramLimit = 3;
+			simMatrix.setMatrixVisibility(false);
+			simMatrix.setDendogramVisibility(true);
+
+			/*
+			clusterEvents = d3.map();
+			clusterEvents.set("dblclick", function(cluster) 
+			{
+				if (!cluster.lens) return;
+				if (cluster.lens.vis) {
+					cluster.lens.unvisualize();
+				}
+				else
+				{
+					var svg = d3.select("#svgCanvas");
+					var mouse = d3.mouse(svg.node());
+					var g = cluster.lens.visualize(svg);
+					g.attr("transform", "translate(" + (mouse[0]-300) + "," + mouse[1] + ")");
+				}
+			});
+			simMatrix.setDendogramEvents(clusterEvents)
+			*/
+			
 			simMatrix.updateMatrix(similarityMatrix, minSim);
+
+			// create and render to an offscreen-canvas
+			var canvasQ = queue();
+			var actualCanvas = document.getElementById('matrixCanvas');
+			var offscreenCanvas = document.createElement('canvas');
+			offscreenCanvas.width = actualCanvas.width;
+			offscreenCanvas.height = actualCanvas.height;			
+			canvasQ.defer(function(_callback) 
+			{
+				console.log("rendering matrix to canvas...");
+				var startTime = new Date();
+				simMatrix.drawToCanvas( offscreenCanvas, null, FULL_MATRIX );
+
+				// measure time
+				var endTime = new Date();
+				var processTime = (endTime.getTime() - startTime.getTime())/1000;
+				console.log("rendering took: " + processTime.toFixed(1) + " seconds.");
+				actualCanvas.getContext("2d").drawImage(offscreenCanvas, 0, 0);
+				_callback(null);
+			});
+			
+			// now create a lens visualization tree and vis it
+			console.log("rendering tree of patterns...");
+			var treeVis = d3.select("#svgCanvas").append("g").attr("transform", "translate(0, 0)").attr("id", "treeVis");
+			var patternVis = new LensTreeVis(simMatrix, treeVis);
+			patternVis.setBrushCallback(brushCluster, unbrushCluster);
+			patternVis.visualize(TREE_DEPTH_CULL);
+
+			// register zoom
+			var svgZoomer = d3.behavior.zoom().on("zoom", function zoom() {
+				svgTranslate = "" + d3.event.translate;
+				svgScale = "" + d3.event.scale;
+				d3.select("#treeVis").attr("transform", "translate(" + svgTranslate + ")scale(" + svgScale + ")");
+			});
+			svgZoomer( d3.select("#svgCanvas") );
+
+			function getLens(i)
+			{
+				var geoid = countyList[i];
+				var lens = countyMap.get(geoid);
+
+				return lens;
+			}
 
 
 			// set brush/unbrush callbacks
-			var brushCallback = function(cluster) {
-				console.log("brushed: " + cluster.members.length);
+			function brushCluster(cluster) 
+			{
 				for (var i = 0, len = cluster.members.length; i < len; i++)
 				{
 					var countyGeoid = countyList[cluster.members[i]];
 					var sel = d3.select("#county_" + countyGeoid);
-					if (sel.size() == 0)
-						console.log("can't select geoid: " + countyGeoid);
-					else
-						sel.style("fill", "red");
+					sel.style("fill", BRUSH_COLOR);
+				}
+				cluster.lens.highlight(BRUSH_COLOR);
+				
+				// draw rectangle around
+				var r = simMatrix.getSize();
+				var s = -1;
+				for (var k=0, len=cluster.members.length; k<len; k++)
+				{
+					var i = simMatrix.data2ij[cluster.members[k]];
+					if (r > i) r=i;
+					if (s < i) s=i;
+				}
+				r *= SIMMAT_ELEMENT_SIZE;
+				s *= SIMMAT_ELEMENT_SIZE;
+
+				if (!offscreenCanvas) return;
+				var ctx = document.getElementById("matrixCanvas").getContext("2d");
+				ctx.strokeStyle = "black";
+				ctx.lineWidth = 3.5;
+				
+				if (FULL_MATRIX) 
+				{
+					ctx.strokeRect(r, r, s-r, s-r);
+				}
+				else
+				{
+					ctx.beginPath();
+					ctx.moveTo(r, r);
+					ctx.lineTo(r, s);
+					ctx.lineTo(s, s);
+					ctx.closePath();
+					ctx.stroke();
 				}
 			}
-			var unbrushCallback = function(cluster) {
+			function unbrushCluster(cluster) 
+			{
 				for (var i = 0, len = cluster.members.length; i < len; i++)
 				{
 					var countyGeoid = countyList[cluster.members[i]];
 					d3.select("#county_" + countyGeoid).style("fill", "");
 				}
+				cluster.lens.unhighlight();
+
+				// redraw matrix from offscreen buffer
+				if (offscreenCanvas) {
+					var matrixCanvas = document.getElementById("matrixCanvas");
+					var context = matrixCanvas.getContext("2d");
+					context.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+					context.drawImage(offscreenCanvas, 0, 0);
+				}
 			}
-			simMatrix.setClusterBrushCallback(brushCallback, unbrushCallback);
+			simMatrix.setClusterBrushCallback(brushCluster, unbrushCluster);
 
-
-			drawMap();
 		}
 
 		function drawMap()
 		{
-			var w = 400, h = 400;
-			var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(500);
+			var svgMap = d3.select("#mapCanvas");
+			var w = +svgMap.attr("width"), h = +svgMap.attr("height");
+			var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(900);
 			var pathGenerator = d3.geo.path().projection(projection);	
 
 			readMap();
@@ -184,7 +298,7 @@
 						featureMap.set(features[i].id, features[i]);
 					}
 					
-					d3.select("svg").append("g").selectAll("path")
+					d3.select("#mapCanvas").append("g").selectAll("path")
 						.data(features)
 						.enter().append("path")
 						.classed("countyPath", true)
@@ -193,7 +307,6 @@
 
 				});
 			}
-
 		}
 
 	</script>
