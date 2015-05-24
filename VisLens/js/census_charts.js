@@ -15,7 +15,7 @@ function Histogram(theData, w, h, chartGroup, dataMax)
 	
 	var bins = theData.length;
 	var spaceForBars = bins * BAR_WIDTH;
-	var outterPadding = ((w - spaceForBars) / 2) / spaceForBars;
+	var outterPadding = spaceForBars < w ? ((w - spaceForBars) / 2) / spaceForBars : 0;
 	outterPadding = Math.min(1, Math.max(0, outterPadding));
 
 	var xScale, yScale;
@@ -117,6 +117,7 @@ var DEFAULT_CHARTS =
 			]
 		},
 		*/
+		
 		{
 			label: "Female age distribution",
 			type: "histogram",
@@ -146,6 +147,7 @@ var DEFAULT_CHARTS =
 				"P0120049"		// female 85 and over
 			]
 		}
+		
 
 ];
 

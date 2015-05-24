@@ -20,21 +20,40 @@
 		stroke-width: 0.5px;
 		stroke: #cccccc;
 	}
+	.node circle {
+		fill: steelblue;
+		stroke: steelblue;
+		stroke-width: 1.5px;
+	}
+	/*
+	.node circle:hover {
+		fill: red;
+		stroke: red;
+		stroke-width: 1.5px;
+	}
+	*/
+	.link {
+		fill: none;
+		stroke: #ccc;
+		stroke-width: 1.5px;
+	}
 	</style>
 </head>
 <body>
-	<svg id="svgCanvas" width="1800" height="700" style="border: dashed 1px #cccccc; position: absolute; left: 0px; top: 0px"></svg>
+	<svg id="svgCanvas" width="1800" height="1200" style="border: dashed 1px #cccccc; position: absolute; left: 0px; top: 0px"></svg>
 
-	<svg id="mapCanvas" width="650" height="650" style="position: absolute; left: 725px; top: 700px"></svg>
-	<canvas id="matrixCanvas" width="650" height="650" style="position: absolute; left: 75px; top: 700px"></canvas>
-	<svg id="dendogramCanvas" width="75" height="650" style="position: absolute; left: 0px; top: 700px"></svg>
+	<svg id="mapCanvas" width="650" height="650" style="position: absolute; left: 725px; top: 1200px"></svg>
+	<canvas id="matrixCanvas" width="650" height="650" style="position: absolute; left: 75px; top: 1200px"></canvas>
+	<svg id="dendogramCanvas" width="75" height="650" style="position: absolute; left: 0px; top: 1200px"></svg>
 	
 	<script type="text/javascript">
 
 		var MAX_COUNTIES = 5000;
-		var TREE_DEPTH_CULL = 6;
+		var TREE_DEPTH_CULL = 8;
+		var TREE_SIZE_CULL = false;
 		var BRUSH_COLOR = "#FF7070";
-		var FULL_MATRIX = true;
+		var TREE_COLOR = "steelblue";
+		var FULL_MATRIX = false;
 
 		var dataQ = queue(10);
 		var states = getStates();
@@ -109,7 +128,6 @@
 
 		function calcMatrix()
 		{
-			console.log("calculating similarity matrix...");
 			var minSim = Number.MAX_VALUE;
 			var similarityMatrix = [];
 			for (var i = 0, len = countyList.length; i < len; i++) 
@@ -129,7 +147,7 @@
 			for (var i = 0, len = countyList.length; i < len; i++)
 				for (var j = i+1; j < len; j++)
 					similarityMatrix[i][j] = similarityMatrix[j][i];
-			console.log("Done...");
+			console.log("Clustering...");
 
 			// figure out right dimensions
 			SIMMAT_ELEMENT_SIZE = .20;
@@ -173,24 +191,29 @@
 			offscreenCanvas.height = actualCanvas.height;			
 			canvasQ.defer(function(_callback) 
 			{
-				console.log("rendering matrix to canvas...");
+				console.log("rendering matrix...");
 				var startTime = new Date();
 				simMatrix.drawToCanvas( offscreenCanvas, null, FULL_MATRIX );
 
 				// measure time
 				var endTime = new Date();
 				var processTime = (endTime.getTime() - startTime.getTime())/1000;
-				console.log("rendering took: " + processTime.toFixed(1) + " seconds.");
+				console.log("matrix rendering took: " + processTime.toFixed(1) + " seconds.");
 				actualCanvas.getContext("2d").drawImage(offscreenCanvas, 0, 0);
 				_callback(null);
 			});
 			
 			// now create a lens visualization tree and vis it
-			console.log("rendering tree of patterns...");
-			var treeVis = d3.select("#svgCanvas").append("g").attr("transform", "translate(0, 0)").attr("id", "treeVis");
+			var treeSVG = d3.select("#svgCanvas");
+			var treeVis = treeSVG.append("g").attr("transform", "translate(0, 0)").attr("id", "treeVis");
+
 			var patternVis = new LensTreeVis(simMatrix, treeVis);
 			patternVis.setBrushCallback(brushCluster, unbrushCluster);
-			patternVis.visualize(TREE_DEPTH_CULL);
+			//patternVis.visualize(TREE_DEPTH_CULL, TREE_SIZE_CULL);
+			//patternVis.visualize_D3Layout(/*null, null, +treeSVG.attr("width"), +treeSVG.attr("height")*/);
+			
+			//patternVis.foldUpToDepth(3);
+			patternVis.visualize_D3Layout_collapsable(+treeSVG.attr("width"), +treeSVG.attr("height"));
 
 			// register zoom
 			var svgZoomer = d3.behavior.zoom().on("zoom", function zoom() {
@@ -212,15 +235,25 @@
 			// set brush/unbrush callbacks
 			function brushCluster(cluster) 
 			{
+				// highlight counties in map
 				for (var i = 0, len = cluster.members.length; i < len; i++)
 				{
 					var countyGeoid = countyList[cluster.members[i]];
 					var sel = d3.select("#county_" + countyGeoid);
 					sel.style("fill", BRUSH_COLOR);
 				}
+
+				// highlight the lens in the tree visualization
 				cluster.lens.highlight(BRUSH_COLOR);
 				
-				// draw rectangle around
+				// highlight corresponding branch in the tree
+				//patternVis.highlightBranch(cluster, BRUSH_COLOR);
+
+				// brush the cluster
+				cluster.recursiveBrush(BRUSH_COLOR, "4px", BRUSH_COLOR);
+
+
+				// draw rectangle around the cluster in the matrix view
 				var r = simMatrix.getSize();
 				var s = -1;
 				for (var k=0, len=cluster.members.length; k<len; k++)
@@ -250,15 +283,26 @@
 					ctx.closePath();
 					ctx.stroke();
 				}
+
+				// brush dendogram
+				simMatrix.highlightCluster(cluster, "red");
 			}
 			function unbrushCluster(cluster) 
 			{
+				// remove highlight from counties in the map
 				for (var i = 0, len = cluster.members.length; i < len; i++)
 				{
 					var countyGeoid = countyList[cluster.members[i]];
 					d3.select("#county_" + countyGeoid).style("fill", "");
 				}
+
+				// remove highlight from the lens in the tree visualization
 				cluster.lens.unhighlight();
+
+				// unhighlight corresponding branch in the tree
+				//patternVis.unhighlightBranch(cluster);
+
+				cluster.recursiveBrush(TREE_COLOR);
 
 				// redraw matrix from offscreen buffer
 				if (offscreenCanvas) {
@@ -267,6 +311,9 @@
 					context.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
 					context.drawImage(offscreenCanvas, 0, 0);
 				}
+
+				// unbrush dendogram
+				simMatrix.unhighlightCluster(cluster);
 			}
 			simMatrix.setClusterBrushCallback(brushCluster, unbrushCluster);
 

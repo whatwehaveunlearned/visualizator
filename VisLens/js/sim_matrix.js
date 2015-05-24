@@ -96,6 +96,53 @@ SimilarityMatrix.prototype.draw = function()
 	this.brushGroup = this.g.append("g").attr("id", "matrixBrush").html(brushCode);
 }
 
+
+// *****************************************
+// Cluster
+// -----------------------------------------
+
+function Cluster(members)
+{
+	this.members = members;
+}
+
+Cluster.prototype.getChildren = function() 
+{
+	if (this._children) {
+		return this._children;
+	} else {
+		return this.children;
+	}
+}
+Cluster.prototype.isExpanded = function()
+{
+	return this.children || !this._children;
+}
+
+Cluster.prototype.recursiveBrush = function(color, strokeWidth, linkColor)
+{
+	d3.select(this.nodeCircle)
+		.style("stroke", color)
+		.style("fill", this.isExpanded() ? "#fff" : color)
+		.style("stroke-width", strokeWidth ? strokeWidth : "");
+	
+
+	if (this.children) 
+	{
+		this.children[0].recursiveBrush(color, strokeWidth, linkColor);
+		this.children[1].recursiveBrush(color, strokeWidth, linkColor);
+
+		// color links
+		d3.select(this.links[0]).style("stroke", linkColor ? linkColor : "");
+		d3.select(this.links[1]).style("stroke", linkColor ? linkColor : "");
+	}
+}
+
+
+// *****************************************
+// SimilarityMatrix
+// -----------------------------------------
+
 SimilarityMatrix.prototype.clusterMatrix = function()
 {
 	function selectMin(distance)
@@ -119,7 +166,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	}
 
 	// this assumes i is larger than j
-	function removeColumn(m, i, j)
+	function removeTwoColumn(m, i, j)
 	{
 		for (var k = j+1, len = m.length; k < len; k++) 
 		{
@@ -138,7 +185,11 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	var startTime = new Date();
 	for (var i = 0, len = this.matrix.length; i < len; i++)
 	{
-		clusterList.push({l: 0, members: [i], lens: lensAccessor ? lensAccessor(i) : undefined });
+		var C = new Cluster([i]);
+		C.l = 0; 
+		C.lens = lensAccessor ? lensAccessor(i) : undefined;
+
+		clusterList.push( C );
 		clusterDistance.push([]);
 		for (var j = 0; j < i; j++)
 		{
@@ -186,7 +237,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 		}
 
 		// remove two old columns
-		removeColumn(clusterDistance, i, j);
+		removeTwoColumn(clusterDistance, i, j);
 
 		// remove two old rows from distance matrix
 		clusterDistance.splice(i, 1);
@@ -200,11 +251,8 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 		var c2 = clusterList.splice(j, 1)[0];
 		
 		// add newly created cluster
-		var newCluster = 
-		{ 
-			members: [], 
-			l: iteration++
-		};
+		var newCluster = new Cluster([]);
+		newCluster.l = iteration++;
 		clusterList.push(newCluster);
 
 		// mark parent / child relationship between newly formed clusters and its predecessors
@@ -413,7 +461,6 @@ SimilarityMatrix.prototype.drawMatrix = function()
 			this.dendogramGroup.remove();
 			this.dendogramGroup = undefined;
 		}
-		console.log("drawing dendogram...");
 		this.dendogramGroup = this.g.append("g")
 			.attr("transform", "translate(" + ((-this.clusters.dendogram.depth-.5)*DENDOGRAM_NODE_HEIGHT) + ",0)");
 		this.drawDendogram(this.clusters, this.dendogramLimit)[0];
@@ -425,10 +472,12 @@ SimilarityMatrix.prototype.layoutMatrix = function(cluster, order)
 {
 	if (cluster.lens)
 		cluster.lens.normalize();
-	if (cluster.children)
+	
+	var children = cluster.getChildren();
+	if (children)
 	{
 		// layout my children
-		return this.layoutMatrix(cluster.children[1], this.layoutMatrix(cluster.children[0], order));
+		return this.layoutMatrix(children[1], this.layoutMatrix(children[0], order));
 	}
 	else
 	{
@@ -447,12 +496,19 @@ SimilarityMatrix.prototype.highlightCluster = function(cluster, theColor)
 		cluster.dendogram.circle.attr("fill", theColor);
 
 	// do my children
-	if (cluster.children) 
+	var children = cluster.getChildren();
+	if (children) 
 	{
-		this.highlightCluster(cluster.children[0], theColor);
-		this.highlightCluster(cluster.children[1], theColor);
+		this.highlightCluster(children[0], theColor);
+		this.highlightCluster(children[1], theColor);
 	}
 }
+
+SimilarityMatrix.prototype.unhighlightCluster = function(cluster)
+{
+	this.highlightCluster(cluster, DENDOGRAM_COLOR);
+}
+
 SimilarityMatrix.prototype.setClusterBrushCallback = function(brush, unbrush)
 {
 	this.clusterBrushCallback = brush;
@@ -480,15 +536,15 @@ SimilarityMatrix.prototype.drawDendogram = function(cluster, limit)
 	if (limit !== null && limit !== undefined && cluster.dendogram.depth <= limit)
 		return [myX, myY];
 
-	if (cluster.children)
+	if (cluster.getChildren())
 	{
 		// append an invisible rectangle for events
 		
 		(function(thisCluster, thisMatrix, _myX)
 		{
-
-			var child1 = thisCluster.children[0];
-			var child2 = thisCluster.children[1];
+			var children = thisCluster.getChildren();
+			var child1 = children[0];
+			var child2 = children[1];
 
 			var cc1 = [
 				(overallDepth - child1.dendogram.depth) * DENDOGRAM_NODE_HEIGHT,
@@ -510,16 +566,21 @@ SimilarityMatrix.prototype.drawDendogram = function(cluster, limit)
 				.attr("fill", "rgba(255, 255, 255, 0.0)")
 				.on("mouseover", function() 
 				{
+					/*
 					thisMatrix.highlightCluster(thisCluster, "red");
 					thisMatrix.brushCluster(thisCluster);
+					*/
 
 					if (thisMatrix.clusterBrushCallback) {
 						thisMatrix.clusterBrushCallback(thisCluster);
 					}
 				})
-				.on("mouseout", function() {
+				.on("mouseout", function() 
+				{
+					/*
 					thisMatrix.highlightCluster(thisCluster, DENDOGRAM_COLOR);
 					thisMatrix.unbrushCluster();
+					*/
 
 					if (thisMatrix.clusterUnbrushCallback) {
 						thisMatrix.clusterUnbrushCallback(thisCluster);
@@ -540,8 +601,9 @@ SimilarityMatrix.prototype.drawDendogram = function(cluster, limit)
 		})(cluster, this, myX);
 		
 		// draw my children
-		var c1 = this.drawDendogram(cluster.children[0], limit);
-		var c2 = this.drawDendogram(cluster.children[1], limit);
+		var children = cluster.getChildren()
+		var c1 = this.drawDendogram(children[0], limit);
+		var c2 = this.drawDendogram(children[1], limit);
 
 		var lines = [
 			{x1: myX, y1: c1[1], x2: c1[0], y2: c1[1]},
@@ -569,10 +631,11 @@ SimilarityMatrix.prototype.drawDendogram = function(cluster, limit)
 
 SimilarityMatrix.prototype.layoutDendogram = function(cluster, depth)
 {
-	if (cluster.children)
+	var children = cluster.getChildren();
+	if (children)
 	{
-		var c1 = this.layoutDendogram(cluster.children[0], depth);
-		var c2 = this.layoutDendogram(cluster.children[1], depth);
+		var c1 = this.layoutDendogram(children[0], depth);
+		var c2 = this.layoutDendogram(children[1], depth);
 		cluster.dendogram = {
 			centroid: (c1.centroid + c2.centroid) / 2, 
 			depth: Math.max(c1.depth, c2.depth)+1
