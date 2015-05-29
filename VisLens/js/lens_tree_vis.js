@@ -108,7 +108,7 @@ LensTreeVis.prototype.updateTree = function(source)
 		})
 		.remove();
 
-	nodeExit
+	nodeExit.select("g")
 		.attr("transform", "scale(" + 1e-6 + ")");
 
 	// Update the links…

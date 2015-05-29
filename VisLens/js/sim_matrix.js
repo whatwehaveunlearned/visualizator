@@ -165,10 +165,11 @@ Cluster.prototype.removeLinks = function()
 
 Cluster.prototype.recursiveBrush = function(color, strokeWidth, linkColor)
 {
-	d3.select(this.nodeCircle)
-		.style("stroke", color)
-		.style("fill", this.isExpanded() ? "#fff" : color)
-		.style("stroke-width", strokeWidth ? strokeWidth : "");
+	if (this.nodeCircle)
+		d3.select(this.nodeCircle)
+			.style("stroke", color)
+			.style("fill", this.isExpanded() ? "#fff" : color)
+			.style("stroke-width", strokeWidth ? strokeWidth : "");
 	
 	if (this.children) 
 	{

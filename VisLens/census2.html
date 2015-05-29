@@ -141,6 +141,8 @@
 
 		// pattern visualizer (i.e., tree)
 		var patternVis = null;
+		var simMatrix = null;
+		var offscreenCanvas = null;
 
 		function calcMatrix()
 		{
@@ -172,7 +174,7 @@
 			
 			var matrixGroup = d3.select("#dendogramCanvas").append("g");
 			matrixGroup.attr("transform", "translate(" + d3.select("#dendogramCanvas").attr("width") + ",0)");
-			var simMatrix = new SimilarityMatrix(matrixGroup);
+			simMatrix = new SimilarityMatrix(matrixGroup);
 			simMatrix.setLensAccessor( getLens );
 			simMatrix.dendogramLimit = 3;
 			simMatrix.setMatrixVisibility(false);
@@ -184,7 +186,7 @@
 			// create and render to an offscreen-canvas
 			var canvasQ = queue();
 			var actualCanvas = document.getElementById('matrixCanvas');
-			var offscreenCanvas = document.createElement('canvas');
+			offscreenCanvas = document.createElement('canvas');
 			offscreenCanvas.width = actualCanvas.width;
 			offscreenCanvas.height = actualCanvas.height;			
 			canvasQ.defer(function(_callback) 
@@ -227,110 +229,119 @@
 				return lens;
 			}
 
-			// set brush/unbrush callbacks
-			function brushCluster(cluster) 
-			{
-				// highlight counties in map
-				for (var i = 0, len = cluster.members.length; i < len; i++)
-				{
-					var countyGeoid = countyList[cluster.members[i]];
-					var sel = d3.select("#county_" + countyGeoid);
-					sel.style("fill", BRUSH_COLOR);
-				}
-
-				// highlight the lens in the tree visualization
-				cluster.lens.highlight(BRUSH_COLOR);
-				
-				// highlight corresponding branch in the tree
-				//patternVis.highlightBranch(cluster, BRUSH_COLOR);
-
-				// brush the cluster
-				cluster.recursiveBrush(BRUSH_COLOR, "4px", BRUSH_COLOR);
-
-
-				// draw rectangle around the cluster in the matrix view
-				var r = simMatrix.getSize();
-				var s = -1;
-				for (var k=0, len=cluster.members.length; k<len; k++)
-				{
-					var i = simMatrix.data2ij[cluster.members[k]];
-					if (r > i) r=i;
-					if (s < i) s=i;
-				}
-				r *= SIMMAT_ELEMENT_SIZE;
-				s *= SIMMAT_ELEMENT_SIZE;
-
-				if (!offscreenCanvas) return;
-				var ctx = document.getElementById("matrixCanvas").getContext("2d");
-				ctx.strokeStyle = "black";
-				ctx.lineWidth = 3.5;
-				
-				if (FULL_MATRIX) 
-				{
-					ctx.strokeRect(r, r, s-r, s-r);
-				}
-				else
-				{
-					ctx.beginPath();
-					ctx.moveTo(r, r);
-					ctx.lineTo(r, s);
-					ctx.lineTo(s, s);
-					ctx.closePath();
-					ctx.stroke();
-				}
-
-				// brush dendogram
-				simMatrix.highlightCluster(cluster, "red");
-			}
-			function unbrushCluster(cluster) 
-			{
-				// remove highlight from counties in the map
-				for (var i = 0, len = cluster.members.length; i < len; i++)
-				{
-					var countyGeoid = countyList[cluster.members[i]];
-					d3.select("#county_" + countyGeoid).style("fill", "");
-				}
-
-				// remove highlight from the lens in the tree visualization
-				cluster.lens.unhighlight();
-
-				// unhighlight corresponding branch in the tree
-				//patternVis.unhighlightBranch(cluster);
-
-				cluster.recursiveBrush(TREE_COLOR);
-
-				// redraw matrix from offscreen buffer
-				if (offscreenCanvas) {
-					var matrixCanvas = document.getElementById("matrixCanvas");
-					var context = matrixCanvas.getContext("2d");
-					context.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-					context.drawImage(offscreenCanvas, 0, 0);
-				}
-
-				// unbrush dendogram
-				simMatrix.unhighlightCluster(cluster);
-			}
 			simMatrix.setClusterBrushCallback(brushCluster, unbrushCluster);
-			simMatrix.setClusterDblClickCallback( expandClusterFromBottom );
+			simMatrix.setClusterDblClickCallback( toggleClusterFromBottom );
 		}
 
-		function expandClusterFromBottom(cluster)
+		// set brush/unbrush callbacks
+		function brushCluster(cluster) 
 		{
-			var needUpdate = false;
-			var lastParent = null;
-
-			parent = cluster.getParent();
-			while (parent && !parent.isExpanded()) 
+			// highlight counties in map
+			for (var i = 0, len = cluster.members.length; i < len; i++)
 			{
-				parent.expand();
-				lastParent = parent;
-				parent = parent.getParent();
-				needUpdate = true;
+				var countyGeoid = countyList[cluster.members[i]];
+				var sel = d3.select("#county_" + countyGeoid);
+				sel.style("fill", BRUSH_COLOR);
 			}
-			if (needUpdate) 
+
+			// highlight the lens in the tree visualization
+			cluster.lens.highlight(BRUSH_COLOR);
+
+			// brush the cluster in the pattern tree
+			cluster.recursiveBrush(BRUSH_COLOR, "4px", BRUSH_COLOR);
+
+
+			// draw rectangle around the cluster in the matrix view
+			var r = simMatrix.getSize();
+			var s = -1;
+			for (var k=0, len=cluster.members.length; k<len; k++)
 			{
-				patternVis.updateTree(lastParent);
-				brushCluster(cluster);
+				var i = simMatrix.data2ij[cluster.members[k]];
+				if (r > i) r=i;
+				if (s < i) s=i;
+			}
+			r *= SIMMAT_ELEMENT_SIZE;
+			s *= SIMMAT_ELEMENT_SIZE;
+
+			if (!offscreenCanvas) return;
+			var ctx = document.getElementById("matrixCanvas").getContext("2d");
+			ctx.strokeStyle = "black";
+			ctx.lineWidth = 3.5;
+				
+			if (FULL_MATRIX) 
+			{
+				ctx.strokeRect(r, r, s-r, s-r);
+			}
+			else
+			{
+				ctx.beginPath();
+				ctx.moveTo(r, r);
+				ctx.lineTo(r, s);
+				ctx.lineTo(s, s);
+				ctx.closePath();
+				ctx.stroke();
+			}
+
+			// brush dendogram
+			simMatrix.highlightCluster(cluster, "red");
+		}
+		function unbrushCluster(cluster) 
+		{
+				// remove highlight from counties in the map
+			for (var i = 0, len = cluster.members.length; i < len; i++)
+			{
+				var countyGeoid = countyList[cluster.members[i]];
+				d3.select("#county_" + countyGeoid).style("fill", "");
+			}
+
+			// remove highlight from the lens in the tree visualization
+			cluster.lens.unhighlight();
+
+			// unhighlight corresponding branch in the pattern tree
+			cluster.recursiveBrush(TREE_COLOR);
+
+			// redraw matrix from offscreen buffer
+			if (offscreenCanvas) {
+				var matrixCanvas = document.getElementById("matrixCanvas");
+				var context = matrixCanvas.getContext("2d");
+				context.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+				context.drawImage(offscreenCanvas, 0, 0);
+			}
+
+			// unbrush dendogram
+			simMatrix.unhighlightCluster(cluster);
+		}
+
+		function toggleClusterFromBottom(cluster)
+		{
+			if (cluster.lastExpandOnDblClick && cluster.lastExpandOnDblClick.isExpanded()) 
+			{
+				cluster.lastExpandOnDblClick.toggleNode();		
+				patternVis.updateTree(cluster.lastExpandOnDblClick);
+				cluster.lastExpandOnDblClick = undefined;
+			}
+			else
+			{
+				var needUpdate = false;
+				var lastParent = null;
+
+				parent = cluster.getParent();
+				while (parent) 
+				{
+					if (!parent.isExpanded()) {
+						needUpdate = true;
+						parent.expand();
+						lastParent = parent;
+					}
+					parent = parent.getParent();
+
+				}
+				if (needUpdate) 
+				{
+					cluster.lastExpandOnDblClick = lastParent;
+					patternVis.updateTree(lastParent);
+					brushCluster(cluster);
+				}
 			}
 		}
 
