@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+	<script  type="text/javascript" src="js/d3.js"></script>
+	<script type="text/javascript" src="js/census_query.js"></script>
+	<script type="text/javascript" src="js/census_charts.js"></script>
+	<script type="text/javascript" src="js/sim_matrix.js"></script>
+	<script type="text/javascript" src="js/topojson.v1.min.js"></script>
+	<script type="text/javascript" src="js/queue.v1.min.js"></script>
+	<script type="text/javascript" src="js/lens_tree_vis.js"></script>
+
+	<!-- FFT lib -->
+	<script type="text/javascript" src="js/complex_array.js"></script>
+	<script type="text/javascript" src="js/fft.js"></script>
+
+	<!-- jQuery UI -->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/sunny/jquery-ui.css">
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+
+	<style>
+		.label {
+			font-family: sans-serif;
+			font-size: 21px;
+		}
+		.countyPath {
+			fill: #eeeeee;
+			stroke-width: 0.5px;
+			stroke: #cccccc;
+		}
+
+		.countyPath path:hover {
+			fill: #FF7070;
+		}
+
+		.line {
+			stroke: black;
+			stroke-width: 2.5px;
+			fill: none;
+		}
+			body
+		{
+			font-family: sans-serif;
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+	<svg id="svgCanvas" width="800" height="1300" style="border: dashed 1px #cccccc"></svg>
+	<svg id="mapCanvas" width="700" height="700" style="position: absolute; left: 810px; top: 10px"></svg>
+	<div style="position: absolute; left: 840px; top: 720px; width: 400px; height: 300px; background: #cccccc; border: solid 1px black; padding: 30px 30px">
+		<p>frequency filter: <span id="labelFreq"></span>
+		<br><div id="sliderFreq" style="width: 300px"></div>
+
+		<p>epsilon: <span id="labelEpsilon"></span>
+		<br><div id="sliderSimplify" style="width: 300px"></div>
+
+	</div>
+	<script type="text/javascript">
+		var MAX_COUNTIES = 400;
+		var BRUSH_COLOR = "#FF7070";
+		var TREE_COLOR = "steelblue";
+
+		var dataQ = queue(10);
+		var states = getStates();
+		var countyMap = d3.map();
+		var countyList = [];
+
+		// set lens width / height
+		CELL_W = 120;
+		CELL_H = 50;
+		var LENS_PAD = 15;
+
+		// initial frequency cut levels
+		var FREQ_CUT1 = 0;
+		var FREQ_CUT2 = 0.8;
+
+
+		var EXAMPLE_CHARTS = 
+		[
+				
+				/*
+				{
+					label: "Races",
+					type: "histogram",
+					variables: [
+						"P0060002",
+						"P0060003",
+						"P0060005",
+						"P0040003"
+					]
+				},
+				{
+					label: "Male age distribution",
+					type: "histogram",
+					variables: [
+						"P0120003",		// male under 5
+						"P0120004",		// male 5-9
+						"P0120005",
+						"P0120006",
+						"P0120007",
+						"P0120008",
+						"P0120009",
+						"P0120010",
+						"P0120011",
+						"P0120012",
+						"P0120013",
+						"P0120014",
+						"P0120015",
+						"P0120016",
+						"P0120017",
+						"P0120018",
+						"P0120019",
+						"P0120020",
+						"P0120021",
+						"P0120022",
+						"P0120023",		// male 75-79
+						"P0120024",		// male 80-84
+						"P0120025"		// male 85 and over
+					]
+				},
+				*/
+				
+				{
+					label: "Female age distribution",
+					type: "histogram",
+					variables: [
+						"P0120027",		// female under 5
+						"P0120028",		// female 5-9
+						"P0120029",
+						"P0120030",
+						"P0120031",
+						"P0120032",
+						"P0120033",
+						"P0120034",
+						"P0120035",
+						"P0120036",
+						"P0120037",
+						"P0120038",
+						"P0120039",
+						"P0120040",
+						"P0120041",
+						"P0120042",
+						"P0120043",
+						"P0120044",
+						"P0120045",
+						"P0120046",
+						"P0120047",		// female 75-79
+						"P0120048",		// female 80-84
+						"P0120049"		// female 85 and over
+					]
+				}
+				
+
+		];
+
+
+		// concatinate all variables
+		var variables = [];
+		var labels = [];
+
+		for (var c = 0, len = EXAMPLE_CHARTS.length; c < len; c++)
+		{
+			var chartVars = EXAMPLE_CHARTS[c].variables;
+			for (var v = 0, vLen = chartVars.length; v < vLen; v++)
+				variables.push(chartVars[v]);
+		}
+
+		// get data for all states / counties
+		var cq = new CensusQuery();
+		for (var s = 0, len = states.length; s < len; s++)
+		{
+			// make a query
+			dataQ.defer(function(state, _variables, _cq, _callback) 
+			{
+				_cq.getCounties(function(err, results) 
+				{
+					_callback(err, results);
+				}, _variables, state);
+			}, states[s], variables, cq);
+		}
+	
+		// load and wait for all the data to arrive
+		dataQ.awaitAll(function(error, results)
+		{
+			if (error) {
+				console.warn("\t error: " + error);
+			}
+			// break down results into arrays
+			for (var r = 0, len = results.length; r < len && countyList.length < MAX_COUNTIES; r++)
+			{
+				var resultBlock = results[r];
+				for (var county = 0, cCount = resultBlock.length; county < cCount && countyList.length < MAX_COUNTIES; county++)
+				{
+					var lens = new VisualLens();
+					for (var c = 0, cLen = EXAMPLE_CHARTS.length; c < cLen; c++) 
+					{
+						var curChartVars = EXAMPLE_CHARTS[c].variables;
+						var chartData = {};
+						for (var v = 0, vLen = curChartVars.length; v < vLen; v++)
+						{
+							var varName = curChartVars[v];
+							var varValue = resultBlock[county][varName];
+							chartData[ varName ] = varValue;
+						}
+						lens.addFeature( new VisualFeature(EXAMPLE_CHARTS[c], chartData) );
+					}
+					var geoid = +(resultBlock[county].state_num) + "" + resultBlock[county].county;
+					countyList.push(geoid);
+					countyMap.set(geoid, lens);
+
+					// make a label for the county (county name, state)
+					labels.push(resultBlock[county].NAME + ", " + resultBlock[county].state);
+
+				}
+			}
+
+			makeVis();
+			drawMap();
+			makeUI();
+
+		});
+
+
+		var lensOriginal = [];
+		var lensTransformed = [];
+
+		function makeVis() {
+			// now add histogram for all the lenses
+			var X_OFFSET = 430;
+			var Y_OFFSET = 30;
+
+			var svg = d3.select("#svgCanvas").append("g").attr("transform", "translate(0,0)");
+
+			// make rows
+			svg.selectAll("rect").data(countyList).enter().append("rect")
+				.style("fill", function(d, i) { return i % 2 > 0 ? "#eeeeee" : "white";})
+				.attr("id", function(geoid) { return "rect_" + geoid; })
+				.attr("x", "0")
+				.attr("y", function(d, i) { return Y_OFFSET + i*(CELL_H+LENS_PAD);})
+				.attr("width", "800")
+				.attr("height", CELL_H+LENS_PAD)
+				.on("mouseover", function(geoid, i) 
+				{ 
+					d3.select("#county_" + geoid).style("fill", BRUSH_COLOR);
+					d3.select(this).style("fill", BRUSH_COLOR);
+				})
+				.on("mouseout", function(geoid, i) 
+				{ 
+					d3.select("#county_" + geoid).style("fill", "");
+					d3.select(this).style("fill", i % 2 > 0 ? "#eeeeee" : "white");
+				})
+
+
+
+			var groupOriginal = svg.append("g").attr("transform", "translate(" + X_OFFSET +"," + Y_OFFSET+")");
+			var groupTransformed = svg.append("g").attr("transform", "translate(" + (X_OFFSET+CELL_W + LENS_PAD*3) + "," + Y_OFFSET + ")");
+
+			for (var i = 0, len = countyList.length; i < len; i++)
+			{
+				var geoid = countyList[i];
+				var lens = countyMap.get(geoid);
+				lens.index = i;
+
+				lensOriginal.push( lens );
+				lensTransformed.push( lens.replicate().featurize() );
+
+				var g1 = groupOriginal.append("g").attr("transform", "translate(0," + i*(CELL_H+LENS_PAD) + ")");
+				var g2 = groupTransformed.append("g").attr("transform", "translate(0," + i*(CELL_H+LENS_PAD) + ")");
+
+				lensOriginal[i].visualize(g1);
+				lensTransformed[i].visualize(g2);
+
+				lensOriginal[i].makeTransparent();
+				lensTransformed[i].makeTransparent();
+			}
+
+			// append labels
+			svg.selectAll("text.label").data(labels).enter().append("text")
+				.attr("y", function(d, i) { return Y_OFFSET + i*(CELL_H+LENS_PAD) + CELL_H/2;})
+				.attr("x", "30").html(function(d) { return d; }).attr("class", "label");
+
+			// register scroll function
+			d3.select(document)
+			  .on("wheel.zoom",pan) 
+			  .on("mousewheel.zoom", pan)
+			  .on("DOMMouseScroll.zoom", pan)
+
+			function pan() 
+			{
+				current_translate = d3.transform(svg.attr("transform")).translate;
+				dx = d3.event.wheelDeltaX + current_translate[0];
+				dy = d3.event.wheelDeltaY + current_translate[1];
+				svg.attr("transform", "translate(" + [0,Math.max(-1*(countyList.length-1)*(CELL_H+LENS_PAD), Math.min(0,dy))] + ")");
+				d3.event.stopPropagation();
+			}
+
+		}
+
+		function makeUI()
+		{
+			$( "#sliderFreq" ).slider({
+				range: true,
+				min: 0,
+				max: 1,
+				step: 0.001,
+				values: [ FREQ_CUT1, FREQ_CUT2 ],
+				slide: function( event, ui ) {
+					$( "#labelFreq" ).html( " " + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+					recomputeDFT(ui.values[0], ui.values[1]);
+				}
+			});
+
+			$( "#sliderSimplify" ).slider({
+				range: false,
+				min: 0,
+				max: 1,
+				step: 0.001,
+				value: 0.1,
+				slide: function( event, ui ) {
+					$( "#labelEpsilon" ).html( " " + ui.value );
+					simplifyFeatures(ui.value);
+				}
+			});
+
+		}
+
+		function simplifyFeatures(epsilon)
+		{
+			for (var i=0, len=lensOriginal.length; i < len; i++) 
+			{
+				var l = lensTransformed[i];
+				for (var f=0; f < l.features.length; f++) 
+				{
+					var feature = l.features[f];
+					feature.computeSignature(epsilon);
+				}
+				l.redrawLens();
+			}
+		}
+
+		function recomputeDFT(freq_cut1, freq_cut2)
+		{
+			for (var i=0, len=lensOriginal.length; i < len; i++) 
+			{
+				var l1 = lensOriginal[i];
+				var l2 = lensTransformed[i];
+
+				for (var f=0; f < l1.features.length; f++) 
+				{
+					var feature = l1.features[f];
+					var c1 = Math.floor( feature.data.length * freq_cut1 );
+					var c2 = Math.ceil( feature.data.length * freq_cut2 );
+
+					(function(input, output, cut1, cut2) 
+					{
+						var data = new complex_array.ComplexArray(input.length);
+						data.map(function(value, i, n) { value.real = input[i]; });
+
+						// compute FFT
+						data.FFT();
+
+						
+						// filter
+						data.map(function(freq, i, n) 
+						{
+							if (i < cut1 || i > cut2) 
+							{
+								freq.real = 0;
+								freq.imag = 0;
+							}
+						});
+						
+
+						// inverse FFT
+						data.InvFFT();
+
+						// copy to putput
+						data.map(function(value, i, n) { output[i] = value.real; });
+
+					})(l1.features[f].data, l2.features[f].data, c1, c2);
+					l2.features[f].normalize();
+				}
+
+				// redraw lens
+				l2.redrawLens();
+			}
+
+
+		}
+
+		function drawMap()
+		{
+			var svgMap = d3.select("#mapCanvas");
+			var w = +svgMap.attr("width"), h = +svgMap.attr("height");
+			var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(900);
+			var pathGenerator = d3.geo.path().projection(projection);	
+
+			readMap();
+
+			function readMap()
+			{
+				// read US counties topoplogy
+				d3.json("datasets/us-counties.json", function(error, topology)
+				{
+					if (error) {
+						alert("Error getting US counties data: " + error);
+						return;
+					}
+					features = topojson.feature(topology, topology.objects.counties).features;
+					
+					// make a feature map indexed by county id
+					featureMap = d3.map();
+					reverseFeatureMap = d3.map();
+					for (var i=0, len=features.length; i < len; i++) 
+					{
+						var lens = countyMap.get(features[i].id);
+						featureMap.set(features[i].id, features[i]);
+						
+						if (lens)
+							reverseFeatureMap.set(features[i].id, lens.index);
+					}
+					
+					d3.select("#mapCanvas").append("g").selectAll("path")
+						.data(features)
+						.enter().append("path")
+						.classed("countyPath", true)
+						.attr("d", pathGenerator)
+						.attr("id", function(d) {return "county_" + d.id;})
+						.on('mouseover', function(d) 
+						{
+							d3.select(this).style("fill", BRUSH_COLOR);
+							d3.select("#rect_" + d.id).style("fill", BRUSH_COLOR);
+						})
+						.on('mouseout', function(d) 
+						{
+							var lens = countyMap.get(d.id);
+							d3.select(this).style("fill", "");
+							if (lens)
+								d3.select("#rect_" + d.id).style("fill", lens.index % 2 > 0 ? "#eeeeee" : "white");
+						});
+
+				});
+			}
+		}
+
+	</script>
+
+</body>
+</html>
+

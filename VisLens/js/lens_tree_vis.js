@@ -45,45 +45,133 @@ LensTreeVis.prototype.visualize_D3Layout = function(depthCull, sizeCull, w, h)
 	node.append("circle").attr("r", 1);
 }
 
-/*
-LensTreeVis.prototype.foldUpToDepth = function(depth, cluster)
+LensTreeVis.prototype.updateTree = function(source)
 {
-	if (!cluster) { cluster = this.getRootCluster(); }
-	if (depth > 0)
-	{
-		cluster.children = cluster._children;
-	}
-	else {
-		cluster.children = undefined;
-	}
+	var UPDATE_DURATION = 750;
+	var treeVis = this;
+	var root = this.getRootCluster();
+	var svg = this.group;
 
-	var children = cluster.getChildren();
-	if (children) 
-	{
-		this.foldUpToDepth(depth-1, children[0]);
-		this.foldUpToDepth(depth-1, children[1]);
-	}
+	// Compute the new tree layout.
+	var nodes = this.treeLayout.nodes(root).reverse();
+	var links = this.treeLayout.links(nodes);
+	var lensBounds = root.getLens().getBounds();
+
+	// spline generator for links
+	var diagonal = d3.svg.diagonal()
+		.projection(function(d) { return [d.x, d.y]; });
+
+	// Normalize for fixed-depth.
+	nodes.forEach(function(d) { d.y = d.depth * 150; });
+
+	// Update the nodes…
+	var node = svg.selectAll("g.node")
+		.data(nodes, function(d) { return d.id || (d.id = ++treeVis.i); });
+
+	// Enter any new nodes at the parent's previous position.
+	var nodeEnter = node.enter().append("g")
+		.attr("class", "node")
+		.attr("transform", function(cluster) 
+		{ 
+			cluster.getLens().featurize().visualize(d3.select(this));
+			return "translate(" + source.x0 + "," + source.y0 + ")"; 
+		})
+		.on("click", function(cluster) {
+			cluster.toggleNode();
+			treeVis.updateTree(cluster);
+		})
+		.on('mouseover', function(clusterNode) {
+			if (treeVis.brushCallback) {
+				treeVis.brushCallback(clusterNode);
+			}
+		})
+		.on('mouseout', function(clusterNode) 
+		{
+			if (treeVis.unbrushCallback) {
+				treeVis.unbrushCallback(clusterNode);
+			}
+		});
+
+	var nodeGs = nodeEnter.select("g").attr("transform", "scale(" + (1e-6) + ")");
+	nodeGs.transition().duration(UPDATE_DURATION).attr("transform", "scale(1)");
+	
+	// Transition nodes to their new position.
+	var nodeUpdate = node.transition()
+		.duration(UPDATE_DURATION)
+		.attr("transform", function(d) { return "translate(" + (d.x-lensBounds[0]/2) + "," + (d.y-lensBounds[1]/2) + ")"; });
+
+	// Transition exiting nodes to the parent's new position.
+	var nodeExit = node.exit().transition()
+		.duration(UPDATE_DURATION)
+		.attr("transform", function(d) { 
+			return "translate(" + (source.x) + "," + (source.y) + ")"; 
+		})
+		.remove();
+
+	nodeExit
+		.attr("transform", "scale(" + 1e-6 + ")");
+
+	// Update the links…
+	var link = svg.selectAll("path.link")
+		.data(links, function(d) { return d.target.id; });
+
+	// Enter any new links at the parent's previous position.
+	link.enter().insert("path", "g")
+		.attr("class", "link")
+		.attr("d", function(d) 
+		{
+			var o = {x: source.x0, y: source.y0};
+			return diagonal({source: o, target: o});
+		})
+		.style("stroke-width", function(d) 
+		{
+			var t = d.target.members.length / treeVis.maxClusterMembership;
+			if (!d.source.links)
+				d.source.links = [this];
+			else
+				d.source.links.push(this);
+			return (t *(MAX_THICKNESS - MIN_THICKNESS) + MIN_THICKNESS) + "px";
+		});
+
+	// Transition links to their new position.
+	link.transition()
+		.duration(UPDATE_DURATION)
+		.attr("d", diagonal);
+
+	// Transition exiting nodes to the parent's new position.
+	link.exit().transition()
+		.duration(UPDATE_DURATION)
+		.attr("d", function(d) 
+		{
+			var o = {x: source.x, y: source.y};
+			return diagonal({source: o, target: o});
+		})
+		.remove();
+
+		// Stash the old positions for transition.
+	nodes.forEach(function(d) {
+		d.x0 = d.x;
+		d.y0 = d.y;
+	});	
 }
-*/
 
 LensTreeVis.prototype.visualize_D3Layout_collapsable = function(width, height)
 {
 	var margin = {top: 20, right: 120, bottom: 20, left: 120},
-    width = 960 - margin.right - margin.left,
-    height = 800 - margin.top - margin.bottom;
+    width = width - margin.right - margin.left,
+    height = height - margin.top - margin.bottom;
     
-	var i = 0, duration = 750, root = this.getRootCluster();
+	var root = this.getRootCluster();
+	this.i = 0;
 
-	var tree = d3.layout.tree()
-		.size([height, width]);
+	// create tree layout
+	this.treeLayout = d3.layout.tree().size([width, height]);
 
-	var diagonal = d3.svg.diagonal()
-		.projection(function(d) { return [d.x, d.y]; });
-
-	var svg = this.group;
-
-	root.x0 = height / 2;
+	root.x0 = width / 2;
 	root.y0 = 0;
+
+	collapse(root);
+	this.updateTree(root);
 
 	function collapse(d) 
 	{
@@ -99,139 +187,6 @@ LensTreeVis.prototype.visualize_D3Layout_collapsable = function(width, height)
 		}
 	}
 
-	var treeVis = this;
-	var rootChildren = root.getChildren();
-	collapse(root);
-	update(root);
-
-	function update(source) 
-	{
-		// Compute the new tree layout.
-		var nodes = tree.nodes(root).reverse();
-		var links = tree.links(nodes);
-
-		// Normalize for fixed-depth.
-		nodes.forEach(function(d) { d.y = d.depth * 75; });
-
-		// Update the nodes…
-		var node = svg.selectAll("g.node")
-			.data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-		// Enter any new nodes at the parent's previous position.
-		var nodeEnter = node.enter().append("g")
-			.attr("class", "node")
-			.attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-			.on("click", expandNode);
-
-		nodeEnter.append("circle")
-			.attr("r", 1e-6)
-			.style("fill", function(d) 
-			{
-				d.nodeCircle = this;	
-				return d._children ? "steelblue" : "#fff"; 
-
-			})
-			.on('mouseover', function(clusterNode) {
-				if (treeVis.brushCallback) {
-					treeVis.brushCallback(clusterNode);
-				}
-			})
-			.on('mouseout', function(clusterNode) 
-			{
-				if (treeVis.unbrushCallback) {
-					treeVis.unbrushCallback(clusterNode);
-				}
-			})
-
-		// Transition nodes to their new position.
-		var nodeUpdate = node.transition()
-			.duration(duration)
-			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-		nodeUpdate.select("circle")
-			.attr("r", 6)
-			.style("fill", function(d) { return d._children ? "steelblue" : "#fff"; });
-
-
-		// Transition exiting nodes to the parent's new position.
-		var nodeExit = node.exit().transition()
-			.duration(duration)
-			.attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
-			.remove();
-
-		nodeExit.select("circle")
-			.attr("r", 1e-6);
-
-		// Update the links…
-		var link = svg.selectAll("path.link")
-			.data(links, function(d) { return d.target.id; });
-
-		// Enter any new links at the parent's previous position.
-		link.enter().insert("path", "g")
-			.attr("class", "link")
-			.attr("d", function(d) 
-			{
-				var o = {x: source.x0, y: source.y0};
-				return diagonal({source: o, target: o});
-			})
-			.style("stroke-width", function(d) 
-			{
-				var t = d.target.members.length / treeVis.maxClusterMembership;
-				if (!d.source.links)
-					d.source.links = [this];
-				else
-					d.source.links.push(this);
-				return (t *(MAX_THICKNESS - MIN_THICKNESS) + MIN_THICKNESS) + "px";
-			});
-
-		// Transition links to their new position.
-		link.transition()
-			.duration(duration)
-			.attr("d", diagonal);
-
-		// Transition exiting nodes to the parent's new position.
-		link.exit().transition()
-			.duration(duration)
-			.attr("d", function(d) 
-			{
-				var o = {x: source.x, y: source.y};
-				return diagonal({source: o, target: o});
-			})
-			.remove();
-
-		// Stash the old positions for transition.
-		nodes.forEach(function(d) {
-			d.x0 = d.x;
-			d.y0 = d.y;
-		});
-	}
-
-	// Toggle children on click.
-	function removeLinks(cluster)
-	{
-		if (cluster.links) {
-			var children = cluster.getChildren();
-			removeLinks(children[0]);
-			removeLinks(children[1]);
-			cluster.links = undefined;
-		}
-
-	}
-
-	function expandNode(d) 
-	{
-		if (d.children) {
-			d._children = d.children;
-			d.children = null;
-			removeLinks(d);
-		} 
-		else 
-		{
-			d.children = d._children;
-			d._children = null;
-		}
-		update(d);
-	}
 }
 
 LensTreeVis.prototype.visualize = function(depthCull, sizeCull)

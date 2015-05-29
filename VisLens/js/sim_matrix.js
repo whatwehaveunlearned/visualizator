@@ -106,6 +106,11 @@ function Cluster(members)
 	this.members = members;
 }
 
+Cluster.prototype.getParent = function()
+{
+	return this.parent;
+}
+
 Cluster.prototype.getChildren = function() 
 {
 	if (this._children) {
@@ -119,6 +124,45 @@ Cluster.prototype.isExpanded = function()
 	return this.children || !this._children;
 }
 
+Cluster.prototype.expand = function()
+{
+	if (this._children) {
+		this.children = this._children;
+		this._children = null;
+	}
+}
+
+Cluster.prototype.toggleNode = function() 
+{
+	if (this.children) 
+	{
+		// collapse node and remove its links
+		this._children = this.children;
+		this.children = null;
+		this.removeLinks();
+	} 
+	else 
+	{
+		this.children = this._children;
+		this._children = null;
+	}
+}
+
+Cluster.prototype.removeLinks = function()
+{
+	if (this.links) 
+	{
+		d3.select(this.links[0]).remove();
+		d3.select(this.links[1]).remove();
+		this.links = false;
+
+		var children = this.getChildren();
+		children[0].removeLinks();
+		children[1].removeLinks();
+	}
+}
+
+
 Cluster.prototype.recursiveBrush = function(color, strokeWidth, linkColor)
 {
 	d3.select(this.nodeCircle)
@@ -126,18 +170,37 @@ Cluster.prototype.recursiveBrush = function(color, strokeWidth, linkColor)
 		.style("fill", this.isExpanded() ? "#fff" : color)
 		.style("stroke-width", strokeWidth ? strokeWidth : "");
 	
-
 	if (this.children) 
 	{
 		this.children[0].recursiveBrush(color, strokeWidth, linkColor);
 		this.children[1].recursiveBrush(color, strokeWidth, linkColor);
 
 		// color links
-		d3.select(this.links[0]).style("stroke", linkColor ? linkColor : "");
-		d3.select(this.links[1]).style("stroke", linkColor ? linkColor : "");
+		if (this.links) {
+			d3.select(this.links[0]).style("stroke", linkColor ? linkColor : "");
+			d3.select(this.links[1]).style("stroke", linkColor ? linkColor : "");
+		}
 	}
 }
 
+Cluster.prototype.getLens = function()
+{
+	return this.lens;
+}
+
+Cluster.prototype.featurizeAll = function()
+{
+	if (this.lens) {
+		this.lens.normalize();
+		this.lens.featurize();
+	}
+
+	var children = this.getChildren();
+	if (children) {
+		children[0].featurizeAll();
+		children[1].featurizeAll();
+	}
+}
 
 // *****************************************
 // SimilarityMatrix
@@ -513,7 +576,9 @@ SimilarityMatrix.prototype.setClusterBrushCallback = function(brush, unbrush)
 {
 	this.clusterBrushCallback = brush;
 	this.clusterUnbrushCallback = unbrush;
-
+}
+SimilarityMatrix.prototype.setClusterDblClickCallback = function(callback) {
+	this.clusterDblClickCallback = callback;
 }
 
 SimilarityMatrix.prototype.drawDendogram = function(cluster, limit)
@@ -523,23 +588,12 @@ SimilarityMatrix.prototype.drawDendogram = function(cluster, limit)
 	var myX = (overallDepth - cluster.dendogram.depth) * DENDOGRAM_NODE_HEIGHT;
 	var myY = cluster.dendogram.centroid * SIMMAT_ELEMENT_SIZE + SIMMAT_ELEMENT_SIZE/2;
 
-	/*
-	// add a circle
-	cluster.dendogram.circle = this.dendogramGroup.append("circle")
-		.attr("cx", myX)
-		.attr("cy", myY)
-		.attr("fill", DENDOGRAM_COLOR)
-		.attr("stroke", "none")
-		.attr("r", "2.5px");
-	*/
-
 	if (limit !== null && limit !== undefined && cluster.dendogram.depth <= limit)
 		return [myX, myY];
 
 	if (cluster.getChildren())
 	{
 		// append an invisible rectangle for events
-		
 		(function(thisCluster, thisMatrix, _myX)
 		{
 			var children = thisCluster.getChildren();
@@ -566,26 +620,20 @@ SimilarityMatrix.prototype.drawDendogram = function(cluster, limit)
 				.attr("fill", "rgba(255, 255, 255, 0.0)")
 				.on("mouseover", function() 
 				{
-					/*
-					thisMatrix.highlightCluster(thisCluster, "red");
-					thisMatrix.brushCluster(thisCluster);
-					*/
-
 					if (thisMatrix.clusterBrushCallback) {
 						thisMatrix.clusterBrushCallback(thisCluster);
 					}
 				})
 				.on("mouseout", function() 
 				{
-					/*
-					thisMatrix.highlightCluster(thisCluster, DENDOGRAM_COLOR);
-					thisMatrix.unbrushCluster();
-					*/
-
 					if (thisMatrix.clusterUnbrushCallback) {
 						thisMatrix.clusterUnbrushCallback(thisCluster);
 					}
-
+				})
+				.on("dblclick", function() {
+					if (thisMatrix.clusterDblClickCallback) {
+						thisMatrix.clusterDblClickCallback(thisCluster);
+					}
 				});
 
 			if (thisMatrix.dendogramEvents) 

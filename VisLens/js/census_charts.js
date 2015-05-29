@@ -1,9 +1,42 @@
 var BAR_WIDTH = 10;			// width of a single bar, in pixels
-var CELL_W = 23*1.5;
+var CELL_W = 39*1.5;
 var CELL_H = 25/2*1.9;
 var PADDING_V = 0; //5/2;
 var PADDING_H = 0; //5/2;
 var LENS_COLOR = "#555555";
+var CHART_TRANSITION = 250;
+
+// for featurization and simplification
+var DEFAULT_ASPECT = 2;
+var SIMPLIFICATION_TOLERANCE = 0.015;
+
+function Linechart(theData, w, h, chartGroup, yMax)
+{
+	this.data = theData;
+	this.chartGroup = chartGroup;
+
+	this.yMax = yMax ? yMax : d3.max( theData );	
+
+	var xScale = d3.scale.linear().domain([0, theData[theData.length-1][0]]).range([0, w]);
+	var yScale = d3.scale.linear().domain([0, this.yMax]).range([h, 0]);
+
+	this.yScale = yScale;
+	this.xScale = xScale;
+
+	var line = d3.svg.line()
+		.x(function(d, i) { return xScale(d[0]); })
+		.y(function(d, i) { return yScale(d[1]); });
+	this.lineGenerator = line;
+	this.theLine = chartGroup.append("path").datum(theData).attr("class", "line").attr("d", line);
+
+}
+
+Linechart.prototype.update = function(theData)
+{
+	this.theLine.datum(theData)
+		.transition().duration(CHART_TRANSITION)
+		.attr("d", this.lineGenerator);	
+}
 
 function Histogram(theData, w, h, chartGroup, dataMax)
 {
@@ -19,9 +52,13 @@ function Histogram(theData, w, h, chartGroup, dataMax)
 	outterPadding = Math.min(1, Math.max(0, outterPadding));
 
 	var xScale, yScale;
+	this.xScale = xScale;
+	this.w = w;
+	this.h = h;
 
 	xScale = d3.scale.ordinal().domain(d3.range(bins)).rangeRoundBands([0, w], 0, outterPadding);
 	yScale = d3.scale.linear().domain([0, this.yMax]).range([h, 0]);
+	this.yScale = yScale;
 	
 	var updateSelection = chartGroup.selectAll("rect").data(theData);
 	updateSelection.enter().append("rect").classed("histogramBar", true)
@@ -31,7 +68,7 @@ function Histogram(theData, w, h, chartGroup, dataMax)
 		.attr("height", "0px")
 		.style("fill", LENS_COLOR);
 
-	updateSelection //.transition().duration(300)
+	updateSelection //.transition().duration(CHART_TRANSITION)
 		//.attr("x", function(d, i) { return xScale(i)})
 		.attr("y", function(d, i) { return yScale(d)})
 		.attr("width", xScale.rangeBand() + "px")
@@ -68,6 +105,18 @@ Histogram.prototype.remove = function()
 	chartGroup.remove();
 }
 
+Histogram.prototype.update = function(theData)
+{
+	//this.yMax = this.dataMax ? this.dataMax : d3.max( theData );
+	var updateSelection = this.chartGroup.selectAll("rect").data(theData);
+	var yScale = this.yScale;
+	var h = this.h;
+
+	updateSelection.transition().duration(CHART_TRANSITION)
+		.attr("y", function(d, i) { return yScale(d)})
+		.attr("height", function(d, i) { return h-yScale(d) + "px"});
+
+}
 
 /* ==============================================
  * Charts and VisualFeature
@@ -75,7 +124,6 @@ Histogram.prototype.remove = function()
  */
 var DEFAULT_CHARTS = 
 [
-		
 		{
 			label: "Races",
 			type: "histogram",
@@ -86,6 +134,7 @@ var DEFAULT_CHARTS =
 				"P0040003"
 			]
 		},
+		
 		/*
 		{
 			label: "Male age distribution",
@@ -168,6 +217,7 @@ function VisualFeature(chartSpecs, chartData)
 		var d = +chartData[ chartSpecs.variables[i] ];
 		this.data.push(d);
 		
+		/*
 		if (this.dataMax < d) 
 		{
 			this.dataMax = d;
@@ -177,15 +227,110 @@ function VisualFeature(chartSpecs, chartData)
 		{
 			this.dataMin = d;
 		}
+		*/
 	}
 
 	if (chartSpecs.type == "histogram")
 	{
-		for (var i = 0, len = this.data.length; i < len; i++) {
-			this.data[i] /= this.dataMax;
-		}
+		this.normalize();
 		this.featureType = "histogram";
 	}
+}
+
+VisualFeature.prototype.getFeatureType = function()
+{
+	return this.featureType;
+}
+
+VisualFeature.prototype.lowpassFilter = function(freq_cut1, freq_cut2)
+{
+	var cut1 = Math.floor( (this.data.length-1) * freq_cut1 );
+	var cut2 = Math.ceil( (this.data.length-1) * freq_cut2 );
+
+	var input = this.data;
+	var output = this.data;
+
+	// prepare a complex array
+	var data = new complex_array.ComplexArray(input.length);
+	data.map(function(value, i, n) { value.real = input[i]; });
+
+	// compute FFT
+	data.FFT();
+						
+	// lowpass filter
+	data.map(function(freq, i, n) 
+	{
+		if (i < cut1 || i > cut2) 
+		{
+			freq.real = 0;
+			freq.imag = 0;
+		}
+	});
+						
+	// inverse FFT
+	data.InvFFT();
+
+	// copy to putput
+	data.map(function(value, i, n) { output[i] = value.real; });
+
+	// normalize
+	this.normalize();
+}
+
+
+VisualFeature.prototype.getNormalizedData = function()
+{
+	return this.data;
+}
+
+VisualFeature.prototype.featurize = function(aspect)
+{
+	if (!this.vFeature) 
+	{
+		if (!aspect) aspect = DEFAULT_ASPECT;
+		this.aspect = aspect;
+		this.vFeature = [];
+		for (var i=0, len=this.data.length, lenMinus=this.data.length-1; i < len; i++) 
+		{
+			this.vFeature.push( [aspect * (i/lenMinus), this.data[i]] );
+		}
+		this.featureType = "featurized";
+	}
+	return this;
+}
+
+VisualFeature.prototype.computeSignature = function(tolerance)
+{
+	if (!this.vFeature) {
+		this.featurize();
+	}
+
+	// calculate a simplified shape
+	this.signature = DouglasPeucker(this.vFeature, 0, this.vFeature.length-1, tolerance ? tolerance : SIMPLIFICATION_TOLERANCE);
+	
+	return this;
+}
+
+VisualFeature.prototype.getSignature = function()
+{
+	if (!this.signature) {
+		this.computeSignature();
+	}
+	return this.signature;
+}
+VisualFeature.prototype.getAspect = function()
+{
+	return this.aspect;
+}
+
+VisualFeature.prototype.replicate = function()
+{
+	var clone = new VisualFeature();
+	clone.dataMin = this.dataMin;
+	clone.dataMax = this.dataMax;
+	clone.data = this.data.slice(0);
+	clone.featureType = this.getFeatureType();
+	return clone;
 }
 
 VisualFeature.prototype.add = function(other)
@@ -211,18 +356,83 @@ VisualFeature.prototype.distance = function(other)
 
 VisualFeature.prototype.normalize = function()
 {
-	var dataMax = d3.max(this.data);
+	var e = d3.extent(this.data);
+	var dataMax = e[1];
+	var dataMin = e[0];
+	var diff = dataMax - dataMin;
+
 	for (var i = 0, len = this.data.length; i < len; i++) 
 	{
-		this.data[i] /= dataMax;
+		this.data[i] = (this.data[i] - dataMin) / diff;
 	}
 	this.dataMax = dataMax;
+	this.dataMin = dataMin;
 }
 
 VisualFeature.prototype.getDataMax = function() 
 {
 	return this.dataMax;
 }
+
+VisualFeature.prototype.getDataMin = function() 
+{
+	return this.dataMin;
+}
+
+
+/* ================================================
+ * Segment & DouglasPeucker
+ * ------------------------------------------------
+ */
+
+function Segment(p1, p2)
+{
+	this.dy = p2[1] - p1[1];
+	this.dx = p2[0] - p1[0];
+	this.nominator = p2[0]*p1[1]-p2[1]*p1[0];
+	this.denominator = Math.sqrt(this.dy * this.dy + this.dx * this.dx);
+}
+
+Segment.prototype.distanceToPoint = function(p)
+{
+	return Math.abs( this.dy*p[0] - this.dx*p[1] + this.nominator) / this.denominator;
+}
+
+function DouglasPeucker(points, r0, r1, tolerance)
+{
+	var index = r0;
+	var dmax = 0;
+	var segment = r0+1 <= r1-1 ? new Segment( points[r0], points[r1] ) : undefined;
+
+	for (var i = r0+1, len=r1-1; i <= len; i++) 
+	{
+		var d = segment.distanceToPoint( points[i] );
+		if (d > dmax) 
+		{
+			index = i;
+			dmax = d;
+		}
+	}
+	segment = undefined;
+
+	if ( dmax > tolerance ) 
+	{
+		var recResults1 = DouglasPeucker(points, r0, index, tolerance); 
+		var recResults2 = DouglasPeucker(points, index, r1, tolerance);	
+
+		recResults1.pop();
+		return recResults1.concat(recResults2);
+	}
+	else
+	{
+		return [ points[r0], points[r1] ];
+	}
+}
+
+/* ================================================
+ * VisualLens
+ * ------------------------------------------------
+ */
 
 function VisualLens()
 {
@@ -260,6 +470,19 @@ VisualLens.prototype.normalize = function()
 	}
 }
 
+VisualLens.prototype.featurize = function(aspect)
+{
+	for (var i = 0, len = this.features.length; i < len; i++) {
+		this.features[i].featurize(aspect);
+	}
+	return this;
+}
+VisualLens.prototype.makeTransparent = function(svg)
+{
+	if (this.vis)
+		this.vis.rect.style("fill", "rgba(255, 255, 255, 0)");
+}
+
 VisualLens.prototype.visualize = function(svg)
 {
 	this.unvisualize();
@@ -272,7 +495,7 @@ VisualLens.prototype.visualize = function(svg)
 	
 	var bounds = this.getBounds();
 
-	this.vis.group.append("rect")
+	this.vis.rect = this.vis.group.append("rect")
 		.attr("width", CELL_W * bounds[2] + (bounds[2] > 1 ? (bounds[2]-1)*PADDING_H : 0))
 		.attr("height", CELL_H * bounds[3] + (bounds[3] > 1 ? (bounds[3]-1)*PADDING_V : 0))
 		.attr("x", "0")
@@ -282,18 +505,43 @@ VisualLens.prototype.visualize = function(svg)
 	var cols = Math.ceil(Math.sqrt(featureLen));
 	for (var i=0; i < featureLen; i++)
 	{
+		// figure out x/y offset of this chart within the lens
 		var row = Math.floor(i / cols);
 		var col = i % cols;
 		var x = (CELL_W+PADDING_H) * col;
 		var y = (CELL_H+PADDING_V) * row;
 
-		var feature = this.features[i];
-		var chartGroup = this.vis.group.append("g")
-			.attr("transform", "translate(" + x + "," + y + ")");
-		var histogram = new Histogram(feature.data, CELL_W, CELL_H, chartGroup, 1);
-		this.vis.charts.push(histogram);
+		// make a new SVG group, position it, and put the chart under it
+		var chartGroup = this.vis.group.append("g").attr("transform", "translate(" + x + "," + y + ")");		
+		this.vis.charts.push(this.makeChart(this.features[i], chartGroup));
 	}
 	return this.vis.group;
+}
+
+VisualLens.prototype.makeChart = function(feature, chartGroup)
+{
+	var theChart;
+	if (feature.getFeatureType() == "histogram") {
+		theChart = new Histogram(feature.data, CELL_W, CELL_H, chartGroup, 1);
+	}
+	else if (feature.getFeatureType() == "featurized")
+	{
+		theChart = new Linechart(feature.getSignature(), CELL_W, CELL_H, chartGroup, 1);
+	}
+	return theChart;
+}
+VisualLens.prototype.redrawLens = function()
+{
+	if (this.vis)
+	{
+		for (var i=0, len=this.features.length; i < len; i++) {
+			var feature = this.features[i];
+			this.vis.charts[i].update(
+				feature.getFeatureType() == "featurized" ? feature.getSignature() : 
+				feature.getNormalizedData()
+			);
+		}
+	}
 }
 
 VisualLens.prototype.highlight = function(highlightColor)
@@ -325,6 +573,15 @@ VisualLens.prototype.unvisualize = function()
 		this.vis.group.remove();
 	}
 	this.vis = undefined;
+}
+
+VisualLens.prototype.replicate = function()
+{
+	var clone = new VisualLens();
+	for (var i=0, len=this.features.length; i < len; i++) {
+		clone.features.push( this.features[i].replicate() );
+	}
+	return clone;
 }
 /* ==============================================
  * LensGrid

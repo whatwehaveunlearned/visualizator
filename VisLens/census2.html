@@ -10,6 +10,10 @@
 	<script type="text/javascript" src="js/queue.v1.min.js"></script>
 	<script type="text/javascript" src="js/lens_tree_vis.js"></script>
 
+	<!-- FFT lib -->
+	<script type="text/javascript" src="js/complex_array.js"></script>
+	<script type="text/javascript" src="js/fft.js"></script>
+
 	<!-- canvg includes -->
 	<script type="text/javascript" src="http://gabelerner.github.io/canvg/rgbcolor.js"></script> 
 	<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
@@ -36,6 +40,13 @@
 		fill: none;
 		stroke: #ccc;
 		stroke-width: 1.5px;
+	}
+
+	.line {
+		stroke: black;
+		stroke-width: 2.5px;
+		fill: none;
+
 	}
 	</style>
 </head>
@@ -110,7 +121,9 @@
 							var varValue = resultBlock[county][varName];
 							chartData[ varName ] = varValue;
 						}
-						lens.addFeature( new VisualFeature(DEFAULT_CHARTS[c], chartData) );
+						var visualFeature = new VisualFeature(DEFAULT_CHARTS[c], chartData);
+						//visualFeature.lowpassFilter(0, 0.234);
+						lens.addFeature( visualFeature );
 
 					}
 					var geoid = +(resultBlock[county].state_num) + "" + resultBlock[county].county;
@@ -125,6 +138,9 @@
 		// geo features
 		var featureMap = null;
 		var features = null;
+
+		// pattern visualizer (i.e., tree)
+		var patternVis = null;
 
 		function calcMatrix()
 		{
@@ -149,7 +165,7 @@
 					similarityMatrix[i][j] = similarityMatrix[j][i];
 			console.log("Clustering...");
 
-			// figure out right dimensions
+			// set dimensions for matrix elements / dendogram
 			SIMMAT_ELEMENT_SIZE = .20;
 			SIMMAT_ELEMENT_BORDER = "none";
 			DENDOGRAM_NODE_HEIGHT = SIMMAT_ELEMENT_SIZE/2 + 2;
@@ -161,26 +177,8 @@
 			simMatrix.dendogramLimit = 3;
 			simMatrix.setMatrixVisibility(false);
 			simMatrix.setDendogramVisibility(true);
-
-			/*
-			clusterEvents = d3.map();
-			clusterEvents.set("dblclick", function(cluster) 
-			{
-				if (!cluster.lens) return;
-				if (cluster.lens.vis) {
-					cluster.lens.unvisualize();
-				}
-				else
-				{
-					var svg = d3.select("#svgCanvas");
-					var mouse = d3.mouse(svg.node());
-					var g = cluster.lens.visualize(svg);
-					g.attr("transform", "translate(" + (mouse[0]-300) + "," + mouse[1] + ")");
-				}
-			});
-			simMatrix.setDendogramEvents(clusterEvents)
-			*/
 			
+			// update the similarity matrix 
 			simMatrix.updateMatrix(similarityMatrix, minSim);
 
 			// create and render to an offscreen-canvas
@@ -207,10 +205,8 @@
 			var treeSVG = d3.select("#svgCanvas");
 			var treeVis = treeSVG.append("g").attr("transform", "translate(0, 0)").attr("id", "treeVis");
 
-			var patternVis = new LensTreeVis(simMatrix, treeVis);
+			patternVis = new LensTreeVis(simMatrix, treeVis);
 			patternVis.setBrushCallback(brushCluster, unbrushCluster);
-			//patternVis.visualize(TREE_DEPTH_CULL, TREE_SIZE_CULL);
-			//patternVis.visualize_D3Layout(/*null, null, +treeSVG.attr("width"), +treeSVG.attr("height")*/);
 			
 			//patternVis.foldUpToDepth(3);
 			patternVis.visualize_D3Layout_collapsable(+treeSVG.attr("width"), +treeSVG.attr("height"));
@@ -230,7 +226,6 @@
 
 				return lens;
 			}
-
 
 			// set brush/unbrush callbacks
 			function brushCluster(cluster) 
@@ -316,7 +311,27 @@
 				simMatrix.unhighlightCluster(cluster);
 			}
 			simMatrix.setClusterBrushCallback(brushCluster, unbrushCluster);
+			simMatrix.setClusterDblClickCallback( expandClusterFromBottom );
+		}
 
+		function expandClusterFromBottom(cluster)
+		{
+			var needUpdate = false;
+			var lastParent = null;
+
+			parent = cluster.getParent();
+			while (parent && !parent.isExpanded()) 
+			{
+				parent.expand();
+				lastParent = parent;
+				parent = parent.getParent();
+				needUpdate = true;
+			}
+			if (needUpdate) 
+			{
+				patternVis.updateTree(lastParent);
+				brushCluster(cluster);
+			}
 		}
 
 		function drawMap()
