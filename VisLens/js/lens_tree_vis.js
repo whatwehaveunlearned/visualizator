@@ -1,7 +1,7 @@
 var TREE_PADDING_H = 5;
 var TREE_PADDING_V = 90;
-var MAX_THICKNESS = 12;
-var MIN_THICKNESS = 2.5;
+var MAX_THICKNESS = 20;
+var MIN_THICKNESS = 5.5;
 var PATH_COLOR = "#cccccc";
 
 function LensTreeVis(simMatrix, svg)
@@ -18,6 +18,10 @@ function LensTreeVis(simMatrix, svg)
 LensTreeVis.prototype.getRootCluster = function()
 {
 	return this.clusters;
+}
+
+LensTreeVis.prototype.setClickCallback = function(_callback) {
+	this.clickCallback = _callback;
 }
 
 LensTreeVis.prototype.visualize_D3Layout = function(depthCull, sizeCull, w, h)
@@ -76,20 +80,31 @@ LensTreeVis.prototype.updateTree = function(source)
 			cluster.getLens().featurize().visualize(d3.select(this));
 			return "translate(" + source.x0 + "," + source.y0 + ")"; 
 		})
-		.on("click", function(cluster) {
+		.on("dblclick", function(cluster) {
+			if (d3.event.shiftKey) return;
 			cluster.toggleNode();
 			treeVis.updateTree(cluster);
-		})
-		.on('mouseover', function(clusterNode) {
-			if (treeVis.brushCallback) {
-				treeVis.brushCallback(clusterNode);
+			
+			if (cluster.isExpanded()) {
+				cluster.restoreChildrenColor("");
 			}
 		})
-		.on('mouseout', function(clusterNode) 
+		.on('mouseover', function(cluster) {
+			if (treeVis.brushCallback) {
+				treeVis.brushCallback(cluster);
+			}
+		})
+		.on('mouseout', function(cluster) 
 		{
 			if (treeVis.unbrushCallback) {
-				treeVis.unbrushCallback(clusterNode);
+				treeVis.unbrushCallback(cluster);
 			}
+		})
+		.on('click', function(cluster) 
+		{
+			if (treeVis.clickCallback) {
+				treeVis.clickCallback(cluster);
+			};
 		});
 
 	var nodeGs = nodeEnter.select("g").attr("transform", "scale(" + (1e-6) + ")");
@@ -103,7 +118,9 @@ LensTreeVis.prototype.updateTree = function(source)
 	// Transition exiting nodes to the parent's new position.
 	var nodeExit = node.exit().transition()
 		.duration(UPDATE_DURATION)
-		.attr("transform", function(d) { 
+		.attr("transform", function(d) 
+		{
+			d.lens.vis = undefined; 
 			return "translate(" + (source.x) + "," + (source.y) + ")"; 
 		})
 		.remove();
@@ -123,13 +140,18 @@ LensTreeVis.prototype.updateTree = function(source)
 			var o = {x: source.x0, y: source.y0};
 			return diagonal({source: o, target: o});
 		})
+		/*
+		.style("stroke", function(d) {
+			return d.source.getLinkColor();
+		})
+		*/
 		.style("stroke-width", function(d) 
 		{
 			var t = d.target.members.length / treeVis.maxClusterMembership;
 			if (!d.source.links)
-				d.source.links = [this];
+				d.source.links = [d3.select(this)];
 			else
-				d.source.links.push(this);
+				d.source.links.push(d3.select(this));
 			return (t *(MAX_THICKNESS - MIN_THICKNESS) + MIN_THICKNESS) + "px";
 		});
 
@@ -162,10 +184,16 @@ LensTreeVis.prototype.visualize_D3Layout_collapsable = function(width, height)
     height = height - margin.top - margin.bottom;
     
 	var root = this.getRootCluster();
+	var lensBounds = root.getLens().getBounds();
 	this.i = 0;
 
 	// create tree layout
-	this.treeLayout = d3.layout.tree().size([width, height]);
+	if (width && height) {
+		this.treeLayout = d3.layout.tree().size([width, height]);
+	}
+	else {
+		this.treeLayout.nodeSize([lensBounds[0]+lensBounds[0]/5, lensBounds[1]]);
+	}
 
 	root.x0 = width / 2;
 	root.y0 = 0;

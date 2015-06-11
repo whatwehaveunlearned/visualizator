@@ -200,6 +200,11 @@ var DEFAULT_CHARTS =
 
 ];
 
+/* ================================================
+ *  VisualFeature
+ * ------------------------------------------------
+ */
+
 function VisualFeature(chartSpecs, chartData)
 {
 
@@ -381,7 +386,7 @@ VisualFeature.prototype.getDataMin = function()
 
 
 /* ================================================
- * Segment & DouglasPeucker
+ *  Segment & DouglasPeucker
  * ------------------------------------------------
  */
 
@@ -430,7 +435,7 @@ function DouglasPeucker(points, r0, r1, tolerance)
 }
 
 /* ================================================
- * VisualLens
+ *  VisualLens
  * ------------------------------------------------
  */
 
@@ -483,24 +488,37 @@ VisualLens.prototype.makeTransparent = function(svg)
 		this.vis.rect.style("fill", "rgba(255, 255, 255, 0)");
 }
 
-VisualLens.prototype.visualize = function(svg)
+VisualLens.prototype.visualize = function(svg, cellDimensions, padding)
 {
-	this.unvisualize();
+	//this.unvisualize();
 	
 	var featureLen = this.features.length;	
-	this.vis = {
+	var vis = {
 		group: svg ? svg.append("g") : d3.select(document.createElement("g")),
 		charts: []
 	};
 	
 	var bounds = this.getBounds();
+	var cell_w = CELL_W, cell_h = CELL_H, padding_h = PADDING_H, padding_v = PADDING_V;
 
-	this.vis.rect = this.vis.group.append("rect")
-		.attr("width", CELL_W * bounds[2] + (bounds[2] > 1 ? (bounds[2]-1)*PADDING_H : 0))
-		.attr("height", CELL_H * bounds[3] + (bounds[3] > 1 ? (bounds[3]-1)*PADDING_V : 0))
-		.attr("x", "0")
-		.attr("y", "0")
-		.style("fill", "white");
+	if (cellDimensions) {
+		cell_w = cellDimensions[0];
+		cell_h = cellDimensions[1];
+	}
+	if (padding) {
+		padding_h = padding[0];
+		padding_v = padding[1];
+	}
+
+	vis.rect = vis.group.append("rect")
+		.attr("width",  20 + cell_w * bounds[2] + (bounds[2] > 1 ? (bounds[2]-1) * padding_h : 0))
+		.attr("height", 20 + cell_h * bounds[3] + (bounds[3] > 1 ? (bounds[3]-1) * padding_v : 0))
+		.attr("x", "-10")
+		.attr("y", "-10")
+		.attr("rx", 10)
+		.attr("ry", 10)
+		.style("fill", "white")
+		.style("stroke-width", "4.5px").style("stroke", "");
 	
 	var cols = Math.ceil(Math.sqrt(featureLen));
 	for (var i=0; i < featureLen; i++)
@@ -508,25 +526,36 @@ VisualLens.prototype.visualize = function(svg)
 		// figure out x/y offset of this chart within the lens
 		var row = Math.floor(i / cols);
 		var col = i % cols;
-		var x = (CELL_W+PADDING_H) * col;
-		var y = (CELL_H+PADDING_V) * row;
+		var x = (cell_w + padding_h) * col;
+		var y = (cell_h + padding_v) * row;
 
 		// make a new SVG group, position it, and put the chart under it
-		var chartGroup = this.vis.group.append("g").attr("transform", "translate(" + x + "," + y + ")");		
-		this.vis.charts.push(this.makeChart(this.features[i], chartGroup));
+		var chartGroup = vis.group.append("g").attr("transform", "translate(" + x + "," + y + ")");		
+		vis.charts.push(this.makeChart(this.features[i], chartGroup, cellDimensions));
 	}
-	return this.vis.group;
+
+	if (svg && !this.vis) {
+		this.vis = vis;
+	}
+	return vis.group;
 }
 
-VisualLens.prototype.makeChart = function(feature, chartGroup)
+VisualLens.prototype.makeChart = function(feature, chartGroup, cellDimensions)
 {
 	var theChart;
+	var cell_w = CELL_W, cell_h = CELL_H;
+
+	if (cellDimensions) {
+		cell_w = cellDimensions[0];
+		cell_h = cellDimensions[1];
+	}
+
 	if (feature.getFeatureType() == "histogram") {
-		theChart = new Histogram(feature.data, CELL_W, CELL_H, chartGroup, 1);
+		theChart = new Histogram(feature.data, cell_w, cell_h, chartGroup, 1);
 	}
 	else if (feature.getFeatureType() == "featurized")
 	{
-		theChart = new Linechart(feature.getSignature(), CELL_W, CELL_H, chartGroup, 1);
+		theChart = new Linechart(feature.getSignature(), cell_w, cell_h, chartGroup, 1);
 	}
 	return theChart;
 }
@@ -547,13 +576,7 @@ VisualLens.prototype.redrawLens = function()
 VisualLens.prototype.highlight = function(highlightColor)
 {
 	if (this.vis) {
-		this.vis.group.select("rect").style("fill", highlightColor);
-	}
-}
-VisualLens.prototype.unhighlight = function(highlightColor)
-{
-	if (this.vis) {
-		this.vis.group.select("rect").style("fill", "white");
+		this.vis.rect.style("fill", highlightColor);
 	}
 }
 
@@ -583,6 +606,9 @@ VisualLens.prototype.replicate = function()
 	}
 	return clone;
 }
+
+
+
 /* ==============================================
  * LensGrid
  * ==============================================

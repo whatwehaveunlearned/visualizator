@@ -10,6 +10,9 @@
 	<script type="text/javascript" src="js/queue.v1.min.js"></script>
 	<script type="text/javascript" src="js/lens_tree_vis.js"></script>
 
+	<!-- cluster selection -->
+	<script type="text/javascript" src="js/cluster_selection.js"></script>
+
 	<!-- FFT lib -->
 	<script type="text/javascript" src="js/complex_array.js"></script>
 	<script type="text/javascript" src="js/fft.js"></script>
@@ -22,7 +25,7 @@
 	.countyPath {
 		fill: #eeeeee;
 		stroke-width: 0.5px;
-		stroke: #cccccc;
+		stroke: black;
 	}
 	.node circle {
 		fill: steelblue;
@@ -48,23 +51,28 @@
 		fill: none;
 
 	}
+
+	.selectionGroup
+	{
+	}
 	</style>
 </head>
 <body>
-	<svg id="svgCanvas" width="1800" height="1200" style="border: dashed 1px #cccccc; position: absolute; left: 0px; top: 0px"></svg>
+	<svg id="svgCanvas" width="1800" height="1000" style="border: dashed 1px #cccccc; position: absolute; left: 0px; top: 0px"></svg>
+	<svg id="svgSelection" width="550" height="700" style="position: absolute; left: 1800px; top: 0px; border: dashed 1px #cccccc"></svg>
 
-	<svg id="mapCanvas" width="650" height="650" style="position: absolute; left: 725px; top: 1200px"></svg>
-	<canvas id="matrixCanvas" width="650" height="650" style="position: absolute; left: 75px; top: 1200px"></canvas>
-	<svg id="dendogramCanvas" width="75" height="650" style="position: absolute; left: 0px; top: 1200px"></svg>
+	<svg id="mapCanvas" width="1000" height="650" style="position: absolute; left: 800px; top: 1000px"></svg>
+	<canvas id="matrixCanvas" width="650" height="650" style="position: absolute; left: 75px; top: 1000px"></canvas>
+	<svg id="dendogramCanvas" width="75" height="650" style="position: absolute; left: 0px; top: 1000px"></svg>
 	
 	<script type="text/javascript">
 
 		var MAX_COUNTIES = 5000;
 		var TREE_DEPTH_CULL = 8;
 		var TREE_SIZE_CULL = false;
-		var BRUSH_COLOR = "#FF7070";
+		var BRUSH_COLOR = "#f0027f";
 		var TREE_COLOR = "steelblue";
-		var FULL_MATRIX = false;
+		var FULL_MATRIX = true;
 
 		var dataQ = queue(10);
 		var states = getStates();
@@ -143,6 +151,8 @@
 		var patternVis = null;
 		var simMatrix = null;
 		var offscreenCanvas = null;
+		var clusterSelector = new ClusterSelector(d3.select("#svgSelection"));
+		clusterSelector.setBrushCallback( brushCluster, unbrushCluster );
 
 		function calcMatrix()
 		{
@@ -209,9 +219,12 @@
 
 			patternVis = new LensTreeVis(simMatrix, treeVis);
 			patternVis.setBrushCallback(brushCluster, unbrushCluster);
+			patternVis.setClickCallback(selectCluster);
 			
 			//patternVis.foldUpToDepth(3);
-			patternVis.visualize_D3Layout_collapsable(+treeSVG.attr("width"), +treeSVG.attr("height"));
+			var treeW = +treeSVG.attr("width");
+			var treeH = +treeSVG.attr("height");
+			patternVis.visualize_D3Layout_collapsable(treeW, treeH);
 
 			// register zoom
 			var svgZoomer = d3.behavior.zoom().on("zoom", function zoom() {
@@ -220,6 +233,7 @@
 				d3.select("#treeVis").attr("transform", "translate(" + svgTranslate + ")scale(" + svgScale + ")");
 			});
 			svgZoomer( d3.select("#svgCanvas") );
+			d3.select("#svgCanvas").on("dblclick.zoom", null);
 
 			function getLens(i)
 			{
@@ -233,23 +247,51 @@
 			simMatrix.setClusterDblClickCallback( toggleClusterFromBottom );
 		}
 
+		function selectCluster(cluster)
+		{
+			if (!d3.event.shiftKey) {
+				return;
+			}
+
+			if (cluster.isSelected()) 
+			{
+				clusterSelector.remove(cluster);
+				cluster.toggleSelection();
+				colorCounties(cluster);
+			}
+			else
+			{
+				if (clusterSelector.hasColors()) 
+				{
+					var color = clusterSelector.add(cluster);
+					cluster.toggleSelection(color);
+					colorCounties(cluster, color);
+				}
+			}
+		}
+
 		// set brush/unbrush callbacks
 		function brushCluster(cluster) 
 		{
 			// highlight counties in map
+			/*
 			for (var i = 0, len = cluster.members.length; i < len; i++)
 			{
 				var countyGeoid = countyList[cluster.members[i]];
 				var sel = d3.select("#county_" + countyGeoid);
 				sel.style("fill", BRUSH_COLOR);
 			}
+			*/
+			colorCounties(cluster, BRUSH_COLOR);
 
 			// highlight the lens in the tree visualization
-			cluster.lens.highlight(BRUSH_COLOR);
+			cluster.highlightNode(BRUSH_COLOR);
 
 			// brush the cluster in the pattern tree
 			cluster.recursiveBrush(BRUSH_COLOR, "4px", BRUSH_COLOR);
 
+			// highlight selection in the cluster selection widget
+			clusterSelector.highlightSelection(cluster, BRUSH_COLOR);
 
 			// draw rectangle around the cluster in the matrix view
 			var r = simMatrix.getSize();
@@ -287,18 +329,16 @@
 		}
 		function unbrushCluster(cluster) 
 		{
-				// remove highlight from counties in the map
-			for (var i = 0, len = cluster.members.length; i < len; i++)
-			{
-				var countyGeoid = countyList[cluster.members[i]];
-				d3.select("#county_" + countyGeoid).style("fill", "");
-			}
+			colorCounties(cluster);
 
 			// remove highlight from the lens in the tree visualization
-			cluster.lens.unhighlight();
+			cluster.highlightNode();
 
 			// unhighlight corresponding branch in the pattern tree
 			cluster.recursiveBrush(TREE_COLOR);
+
+			// unhighlight selection in the cluster selection widget
+			clusterSelector.highlightSelection(cluster);
 
 			// redraw matrix from offscreen buffer
 			if (offscreenCanvas) {
@@ -310,6 +350,23 @@
 
 			// unbrush dendogram
 			simMatrix.unhighlightCluster(cluster);
+		}
+
+		function colorCounties(cluster, color)
+		{
+			// remove highlight from counties in the map
+			for (var i = 0, len = cluster.members.length; i < len; i++)
+			{
+				var countyGeoid = countyList[cluster.members[i]];
+				d3.select("#county_" + countyGeoid).style("fill", color ? color : cluster.resolveColor());
+				
+			}
+			if (cluster.children && !color) 
+			{
+				var children = cluster.getChildren();
+				colorCounties(children[0]);
+				colorCounties(children[1]);
+			}
 		}
 
 		function toggleClusterFromBottom(cluster)
@@ -324,18 +381,24 @@
 			{
 				var needUpdate = false;
 				var lastParent = null;
+				var expandList = [];
 
 				parent = cluster.getParent();
 				while (parent) 
 				{
 					if (!parent.isExpanded()) {
 						needUpdate = true;
-						parent.expand();
+						//parent.expand();
+						expandList.push(parent);
 						lastParent = parent;
 					}
 					parent = parent.getParent();
 
 				}
+
+				// expand in reverse
+				for (var i=expandList.length-1; i>=0; i--)
+					expandList[i].expand();
 				if (needUpdate) 
 				{
 					cluster.lastExpandOnDblClick = lastParent;
@@ -349,7 +412,7 @@
 		{
 			var svgMap = d3.select("#mapCanvas");
 			var w = +svgMap.attr("width"), h = +svgMap.attr("height");
-			var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(900);
+			var projection = d3.geo.albersUsa().translate([w/2, h/2]).scale(1300);
 			var pathGenerator = d3.geo.path().projection(projection);	
 
 			readMap();

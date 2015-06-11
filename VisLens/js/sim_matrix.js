@@ -100,10 +100,19 @@ SimilarityMatrix.prototype.draw = function()
 // *****************************************
 // Cluster
 // -----------------------------------------
+var CLUSTER_ID = 1;
 
 function Cluster(members)
 {
 	this.members = members;
+	this.clusterID = CLUSTER_ID++;
+	this.linkColor = "";
+	this.nodeColor = null;
+	this.selected = null;
+}
+
+Cluster.prototype.getID = function() {
+	return this.clusterID;
 }
 
 Cluster.prototype.getParent = function()
@@ -119,17 +128,92 @@ Cluster.prototype.getChildren = function()
 		return this.children;
 	}
 }
+
 Cluster.prototype.isExpanded = function()
 {
 	return this.children || !this._children;
 }
 
+
+Cluster.prototype.restoreChildrenColor = function(passedDown)
+{
+
+	if (this.nodeColor) 
+	{
+		this.highlightNode(this.nodeColor);
+		passedDown = this.nodeColor;
+	}
+	else if (passedDown === "") 
+	{
+		passedDown = this.resolveColor();
+	}
+	this.linkColor = passedDown;
+	
+	if (this.children) 
+	{
+		this.children[0].restoreChildrenColor(passedDown);
+		this.children[1].restoreChildrenColor(passedDown);
+		this.links[0].style("stroke", this.linkColor);
+		this.links[1].style("stroke", this.linkColor);
+	}
+
+	if (this.getChildren()) {
+		if (this.lens.vis)
+			this.lens.vis.rect.style("stroke", this.linkColor);
+	}
+}
+
 Cluster.prototype.expand = function()
 {
-	if (this._children) {
+	if (this._children) 
+	{
 		this.children = this._children;
 		this._children = null;
 	}
+}
+
+Cluster.prototype.resolveColor = function()
+{
+	if (this.nodeColor) {
+		return this.nodeColor;
+	}
+	else
+	{
+		var nodeColor = this.nodeColor;
+		var parent = this.getParent();
+		while (parent && !nodeColor) {
+			nodeColor = parent.nodeColor;
+			parent = parent.getParent();
+		}
+		return nodeColor;
+	}
+}
+
+/*
+Cluster.prototype.setNodeColor = function(nodeColor)
+{
+	this.nodeColor = nodeColor;
+	this.linkColor = nodeColor;
+	this.highlightNode(nodeColor);
+*/
+
+Cluster.prototype.getLinkColor = function()
+{
+	return this.linkColor;
+}
+
+Cluster.prototype.getNodeColor = function()
+{
+	return this.nodeColor;
+}
+
+Cluster.prototype.highlightNode = function(color) 
+{
+	if (this.lens) {
+		this.lens.highlight(color ? color : this.nodeColor ? this.nodeColor : "white");
+		if (this.nodeColor)
+			this.lens.vis.rect.style("stroke", this.nodeColor);
+	} 
 }
 
 Cluster.prototype.toggleNode = function() 
@@ -140,21 +224,74 @@ Cluster.prototype.toggleNode = function()
 		this._children = this.children;
 		this.children = null;
 		this.removeLinks();
-	} 
+	}
 	else 
 	{
 		this.children = this._children;
 		this._children = null;
+		this.expand();
 	}
+}
+
+Cluster.prototype.isSelected = function() 
+{
+	return this.selected == true;
+}
+
+Cluster.prototype.toggleSelection = function(selectionColor)
+{
+	if (this.selected) 
+	{
+		// de-activate 
+		this.selected = false;
+		this.nodeColor = null;		
+		this.highlightNode(undefined);
+		this.recursiveSetLinkColor(this.resolveColor());
+	}
+	else
+	{
+		this.selected = true;
+		this.nodeColor = selectionColor;		
+		this.highlightNode(selectionColor)
+		
+		this.linkColor = selectionColor;
+		if (this.children) {
+			this.children[0].recursiveSetLinkColor(selectionColor);
+			this.children[1].recursiveSetLinkColor(selectionColor);
+		}
+	}
+}
+
+Cluster.prototype.recursiveSetLinkColor = function(linkColor)
+{
+	if (this.nodeColor) {
+		return;
+	}
+
+	if (this.children) 
+	{
+		if (this.links) {
+			this.links[0].style("stroke", linkColor);
+			this.links[1].style("stroke", linkColor);
+		}
+
+
+		this.linkColor = linkColor;
+		this.children[0].recursiveSetLinkColor(linkColor);
+		this.children[1].recursiveSetLinkColor(linkColor);
+	}
+	if (this.getChildren() && this.lens.vis)
+		this.lens.vis.rect.style("stroke", linkColor);
+
 }
 
 Cluster.prototype.removeLinks = function()
 {
 	if (this.links) 
 	{
-		d3.select(this.links[0]).remove();
-		d3.select(this.links[1]).remove();
-		this.links = false;
+		this.links[0].remove();
+		this.links[1].remove();
+		this.links = undefined;
 
 		var children = this.getChildren();
 		children[0].removeLinks();
@@ -165,12 +302,6 @@ Cluster.prototype.removeLinks = function()
 
 Cluster.prototype.recursiveBrush = function(color, strokeWidth, linkColor)
 {
-	if (this.nodeCircle)
-		d3.select(this.nodeCircle)
-			.style("stroke", color)
-			.style("fill", this.isExpanded() ? "#fff" : color)
-			.style("stroke-width", strokeWidth ? strokeWidth : "");
-	
 	if (this.children) 
 	{
 		this.children[0].recursiveBrush(color, strokeWidth, linkColor);
@@ -178,9 +309,13 @@ Cluster.prototype.recursiveBrush = function(color, strokeWidth, linkColor)
 
 		// color links
 		if (this.links) {
-			d3.select(this.links[0]).style("stroke", linkColor ? linkColor : "");
-			d3.select(this.links[1]).style("stroke", linkColor ? linkColor : "");
+			this.links[0].style("stroke", linkColor ? linkColor : this.linkColor ? this.linkColor : "");
+			this.links[1].style("stroke", linkColor ? linkColor : this.linkColor ? this.linkColor : "");
 		}
+	}
+	if (this.getChildren() && this.lens.vis) 
+	{
+		this.lens.vis.rect.style("stroke", linkColor ? linkColor : this.linkColor ? this.linkColor : "");
 	}
 }
 
@@ -701,32 +836,4 @@ SimilarityMatrix.prototype.layoutDendogram = function(cluster, depth)
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
