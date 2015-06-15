@@ -221,18 +221,6 @@ function VisualFeature(chartSpecs, chartData)
 	{
 		var d = +chartData[ chartSpecs.variables[i] ];
 		this.data.push(d);
-		
-		/*
-		if (this.dataMax < d) 
-		{
-			this.dataMax = d;
-		}
-
-		if (this.dataMin > d) 
-		{
-			this.dataMin = d;
-		}
-		*/
 	}
 
 	if (chartSpecs.type == "histogram")
@@ -442,6 +430,7 @@ function DouglasPeucker(points, r0, r1, tolerance)
 function VisualLens()
 {
 	this.features = [];
+	this.labels = [];
 }
 VisualLens.prototype.addFeature = function(feature) 
 {
@@ -517,9 +506,9 @@ VisualLens.prototype.visualize = function(svg, cellDimensions, padding)
 		.attr("y", "-10")
 		.attr("rx", 10)
 		.attr("ry", 10)
-		.style("fill", "white")
-		.style("stroke-width", "4.5px").style("stroke", "");
-	
+		.attr("class", "lensRect")
+		.style("fill", "white");
+			
 	var cols = Math.ceil(Math.sqrt(featureLen));
 	for (var i=0; i < featureLen; i++)
 	{
@@ -607,7 +596,26 @@ VisualLens.prototype.replicate = function()
 	return clone;
 }
 
+VisualLens.prototype.addLabel = function(label)
+{
+	this.labels.push(label);
+	return this;
+}
 
+VisualLens.prototype.getLabels = function()
+{
+	return this.labels;
+}
+
+VisualLens.prototype.getFeatures = function()
+{
+	return this.features;
+}
+
+VisualLens.prototype.getFeature = function(index)
+{
+	return this.features[index];
+}
 
 /* ==============================================
  * LensGrid

@@ -106,7 +106,7 @@ function Cluster(members)
 {
 	this.members = members;
 	this.clusterID = CLUSTER_ID++;
-	this.linkColor = "";
+	this.linkColor = null;
 	this.nodeColor = null;
 	this.selected = null;
 }
@@ -127,6 +127,11 @@ Cluster.prototype.getChildren = function()
 	} else {
 		return this.children;
 	}
+}
+
+Cluster.prototype.getMembers = function()
+{
+	return this.members;
 }
 
 Cluster.prototype.isExpanded = function()
@@ -157,10 +162,8 @@ Cluster.prototype.restoreChildrenColor = function(passedDown)
 		this.links[1].style("stroke", this.linkColor);
 	}
 
-	if (this.getChildren()) {
-		if (this.lens.vis)
-			this.lens.vis.rect.style("stroke", this.linkColor);
-	}
+	if (this.lens.vis)
+		this.lens.vis.rect.style("stroke", this.linkColor);
 }
 
 Cluster.prototype.expand = function()
@@ -189,14 +192,6 @@ Cluster.prototype.resolveColor = function()
 	}
 }
 
-/*
-Cluster.prototype.setNodeColor = function(nodeColor)
-{
-	this.nodeColor = nodeColor;
-	this.linkColor = nodeColor;
-	this.highlightNode(nodeColor);
-*/
-
 Cluster.prototype.getLinkColor = function()
 {
 	return this.linkColor;
@@ -209,10 +204,11 @@ Cluster.prototype.getNodeColor = function()
 
 Cluster.prototype.highlightNode = function(color) 
 {
-	if (this.lens) {
+	if (this.lens) 
+	{
 		this.lens.highlight(color ? color : this.nodeColor ? this.nodeColor : "white");
-		if (this.nodeColor)
-			this.lens.vis.rect.style("stroke", this.nodeColor);
+		if (this.lens.vis)
+			this.lens.vis.rect.style("stroke", color ? color : this.nodeColor);
 	} 
 }
 
@@ -274,13 +270,12 @@ Cluster.prototype.recursiveSetLinkColor = function(linkColor)
 			this.links[0].style("stroke", linkColor);
 			this.links[1].style("stroke", linkColor);
 		}
-
-
-		this.linkColor = linkColor;
 		this.children[0].recursiveSetLinkColor(linkColor);
 		this.children[1].recursiveSetLinkColor(linkColor);
 	}
-	if (this.getChildren() && this.lens.vis)
+	this.linkColor = linkColor;
+
+	if (this.lens.vis)
 		this.lens.vis.rect.style("stroke", linkColor);
 
 }
@@ -313,7 +308,7 @@ Cluster.prototype.recursiveBrush = function(color, strokeWidth, linkColor)
 			this.links[1].style("stroke", linkColor ? linkColor : this.linkColor ? this.linkColor : "");
 		}
 	}
-	if (this.getChildren() && this.lens.vis) 
+	if (this.lens.vis) 
 	{
 		this.lens.vis.rect.style("stroke", linkColor ? linkColor : this.linkColor ? this.linkColor : "");
 	}
@@ -335,6 +330,61 @@ Cluster.prototype.featurizeAll = function()
 	if (children) {
 		children[0].featurizeAll();
 		children[1].featurizeAll();
+	}
+}
+
+Cluster.prototype.intraclusterVariability = function( clusterAccessor )
+{
+	if (this.intraclusterVar) {
+		return this.intraclusterVar;
+	}
+	else {
+		var centroid = this.lens;
+		var all_variability = [];
+
+		var features = this.lens.getFeatures();
+		var featureCount = features.length;
+
+		for (var f=0; f < featureCount; f++)
+		{
+			var variability = [];
+			for (var i=0, len=this.members.length; i<len; i++) 
+			{
+				variability.push( features[f].distance( clusterAccessor(this.members[i]).lens.getFeature(f) ) );
+			}
+			all_variability.push( variability );
+		}
+		this.intraclusterVar = all_variability;
+		return all_variability;
+	}
+}
+
+Cluster.prototype.pairwiseVariability = function( clusterAccessor )
+{
+	if (this.pairwiseVar) {
+		return this.pairwiseVar;
+	}
+	else
+	{
+		var all_variability = [];
+		var featureCount = this.lens.getFeatures().length;
+
+		for (var f=0; f < featureCount; f++)
+		{
+			var variability = [];
+			for (var i=1, len=this.members.length; i<len; i++) 
+			{
+				for (var j=0; j<i; j++) 
+				{
+					var fI = clusterAccessor(this.members[i]).lens.getFeature(f);
+					var fJ = clusterAccessor(this.members[j]).lens.getFeature(f);
+					variability.push( fI.distance(fJ) );
+				}
+			}
+			all_variability.push( variability );
+		}
+		this.pairwiseVar = all_variability;
+		return all_variability;
 	}
 }
 
@@ -377,6 +427,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	}
 
 	// initialize cluster matrix at L=0 which shall contain the initial elements
+	var entryClusters = d3.map();
 	var clusterList = [];
 	var clusterDistance = [];
 	var lensAccessor = typeof this.lensAccessor === 'function' ? this.lensAccessor : null;
@@ -385,6 +436,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	for (var i = 0, len = this.matrix.length; i < len; i++)
 	{
 		var C = new Cluster([i]);
+		entryClusters.set(i, C);
 		C.l = 0; 
 		C.lens = lensAccessor ? lensAccessor(i) : undefined;
 
@@ -488,6 +540,7 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 	}
 
 	this.clusters = clusterList[0];
+	this.entryClusters = entryClusters;
 
 	// layout the matrix
 	this.layoutMatrix(this.clusters, 0);
@@ -512,6 +565,10 @@ SimilarityMatrix.prototype.clusterMatrix = function()
 
 SimilarityMatrix.prototype.getClusters = function() {
 	return this.clusters;
+}
+
+SimilarityMatrix.prototype.getEntryClusters = function() {
+	return this.entryClusters;
 }
 
 SimilarityMatrix.prototype.setDendogramEvents = function(_dendogramEvents)

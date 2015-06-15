@@ -1,8 +1,9 @@
 var SEL_CELL_W = 190;
-var SEL_CELL_H = 85;
+var SEL_CELL_H = 75;
 var SEL_PADDING_H = 10;
 var SEL_PADDING_V = 5;
 var SELECTION_PADDING = 10;
+var RECT_EXTRA = 20;
 
 /*
 var COLOR_SELECTION = [
@@ -18,6 +19,7 @@ function ClusterSelection(svg, cluster, color, label)
 	this.cluster = cluster;
 	this.label = label ? label : "";
 	this.color = color;
+	this.selected = false;
 }
 
 ClusterSelection.prototype.visualize = function(group)
@@ -54,6 +56,12 @@ ClusterSelector.prototype.setBrushCallback = function(_brush, _unbrush)
 	this.unbrushCallback = _unbrush;
 }
 
+ClusterSelector.prototype.setSelectCallback = function(_select, _deselect)
+{
+	this.selectCallback = _select;
+	this.deselectCallback = _deselect;
+}
+
 ClusterSelector.prototype.hasColors = function()
 {
 	return COLOR_SELECTION.length > 0;
@@ -74,7 +82,7 @@ ClusterSelector.prototype.updateDisplay = function()
 			selection.selectionGroup = d3.select(this);
 			return "selectionGroup";
 		})
-		.attr("transform", function(d, i) { return 'translate(0,' + i * (lensBounds[1]+SELECTION_PADDING) + ")";})
+		.attr("transform", function(d, i) { return 'translate(0,' + i * (lensBounds[1]+SELECTION_PADDING+RECT_EXTRA) + ")";})
 		.on("mouseover", function(selection) 
 		{
 			if (clusterSelector.brushCallback) {
@@ -87,12 +95,40 @@ ClusterSelector.prototype.updateDisplay = function()
 			{
 				clusterSelector.unbrushCallback(selection.getCluster());
 			}
+		})
+		.on("click", function(selection) 
+		{
+			if (clusterSelector.selectCallback && clusterSelector.deselectCallback) 
+			{
+				if (!clusterSelector.selected) {
+					clusterSelector.selected = selection;
+					selection.selectionGroup.selectAll("rect.selectionRect").style("stroke", "black");
+					clusterSelector.selectCallback(selection);
+
+				}
+				else
+				{
+					// deselect
+					clusterSelector.deselectCallback(clusterSelector.selected);
+					clusterSelector.selected.selectionGroup.selectAll("rect.selectionRect").style("stroke", "");
+
+					var olderSelection = clusterSelector.selected;
+					clusterSelector.selected = null;
+
+					if (olderSelection != selection) {					
+
+						clusterSelector.selected = selection;
+						selection.selectionGroup.selectAll("rect.selectionRect").style("stroke", "black");
+						clusterSelector.selectCallback(selection);
+					}
+				}
+			}
 		});
 
 
 	Gs.append("rect")
-		.attr("width", "500")
-		.attr("height", lensBounds[1])
+		.attr("width", 500 + RECT_EXTRA)
+		.attr("height", lensBounds[1] + RECT_EXTRA)
 		.attr("x", "25")
 		.attr("y", "0")
 		.attr("rx", 10)
@@ -107,8 +143,8 @@ ClusterSelector.prototype.updateDisplay = function()
 	Gs.append("g")
 		.attr('transform', function(selection, i) 
 		{
-			var g = selection.visualize(d3.select(this)).attr("transform", "translate(30,0)");
-			g.select("rect").style("fill", "rgba(255,255,255,0)");
+			var g = selection.visualize(d3.select(this)).attr("transform", "translate(" + (30+RECT_EXTRA/2) + "," + (RECT_EXTRA/2) + ")");
+			g.select("rect").style("fill", "rgba(255,255,255,0)").attr("class", "");
 			//return 'translate(0,' + i * (lensBounds[1]+SELECTION_PADDING) + ")"; 
 			return "";
 		});
@@ -123,7 +159,7 @@ ClusterSelector.prototype.updateDisplay = function()
 		.attr("cy", SEL_CELL_H/2);
 	*/
 
-	updateSelection.transition().attr("transform", function(d, i) { return 'translate(0,' + i * (lensBounds[1]+SELECTION_PADDING) + ")"; });
+	updateSelection.transition().attr("transform", function(d, i) { return 'translate(0,' + i * (lensBounds[1]+SELECTION_PADDING+RECT_EXTRA) + ")"; });
 
 	// update map
 	this.selectionMap = d3.map();

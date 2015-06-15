@@ -22,6 +22,12 @@
 	<script type="text/javascript" src="http://gabelerner.github.io/canvg/StackBlur.js"></script>
 	<script type="text/javascript" src="http://gabelerner.github.io/canvg/canvg.js"></script> 
 	<style>
+	body
+	{
+		font-family: sans-serif;
+		font-size: 13px;
+	}
+
 	.countyPath {
 		fill: #eeeeee;
 		stroke-width: 0.5px;
@@ -32,13 +38,11 @@
 		stroke: steelblue;
 		stroke-width: 1.5px;
 	}
-	/*
-	.node circle:hover {
-		fill: red;
-		stroke: red;
-		stroke-width: 1.5px;
+	.lensRect 
+	{
+		stroke: #ccc;
+		stroke-width: 4.5px;
 	}
-	*/
 	.link {
 		fill: none;
 		stroke: #ccc;
@@ -52,14 +56,45 @@
 
 	}
 
+	.selectionRect
+	{
+		stroke: none;
+		stroke-width: 4.5px;
+	}
 	.selectionGroup
 	{
+	}
+
+	.countyLabel
+	{
+	}
+	.selectedCountyLabel
+	{
+		color: white;
+		border-radius: 3px;
+		border-style: none;
+		padding: 1px;
+	}
+	.statsLabel
+	{
+		font-size: 19px;
 	}
 	</style>
 </head>
 <body>
-	<svg id="svgCanvas" width="1800" height="1000" style="border: dashed 1px #cccccc; position: absolute; left: 0px; top: 0px"></svg>
-	<svg id="svgSelection" width="550" height="700" style="position: absolute; left: 1800px; top: 0px; border: dashed 1px #cccccc"></svg>
+	<svg id="svgCanvas" width="1780" height="990" style="border: dashed 1px #cccccc; position: absolute; left: 0px; top: 0px"></svg>
+	<svg id="svgSelection" width="550" height="650" style="position: absolute; left: 1800px; top: 0px; border: dashed 1px #cccccc"></svg>
+
+
+	<div style="position: absolute; left: 1800px; top: 650px; font-size: 25px; color: #777777">
+	<b>Cluster statistics</b></div>
+	<svg id="svgStats" width="550" height="305" style="position: absolute; left: 1800px; top: 685px; border: solid 1px #cccccc"></svg>
+
+
+	<div style="position: absolute; left: 1800px; top: 1000px; font-size: 25px; color: #777777">
+	<b>Counties</b></div>
+	<div id="countyList" style="position: absolute; left: 1800px; top: 1035px; border: solid 1px #cccccc; overflow-y: scroll; width: 550px; height: 570px; font-size: 22px">
+	</div>
 
 	<svg id="mapCanvas" width="1000" height="650" style="position: absolute; left: 800px; top: 1000px"></svg>
 	<canvas id="matrixCanvas" width="650" height="650" style="position: absolute; left: 75px; top: 1000px"></canvas>
@@ -67,7 +102,7 @@
 	
 	<script type="text/javascript">
 
-		var MAX_COUNTIES = 5000;
+		var MAX_COUNTIES = 500;
 		var TREE_DEPTH_CULL = 8;
 		var TREE_SIZE_CULL = false;
 		var BRUSH_COLOR = "#f0027f";
@@ -136,6 +171,7 @@
 					}
 					var geoid = +(resultBlock[county].state_num) + "" + resultBlock[county].county;
 					countyList.push(geoid);
+					lens.addLabel(resultBlock[county].NAME).addLabel(resultBlock[county].state_abbr)
 					countyMap.set(geoid, lens);
 				}
 			}
@@ -153,6 +189,7 @@
 		var offscreenCanvas = null;
 		var clusterSelector = new ClusterSelector(d3.select("#svgSelection"));
 		clusterSelector.setBrushCallback( brushCluster, unbrushCluster );
+		clusterSelector.setSelectCallback( selectSelection, deselectSelection );
 
 		function calcMatrix()
 		{
@@ -257,7 +294,7 @@
 			{
 				clusterSelector.remove(cluster);
 				cluster.toggleSelection();
-				colorCounties(cluster);
+				highlightCounties(cluster);
 			}
 			else
 			{
@@ -265,7 +302,7 @@
 				{
 					var color = clusterSelector.add(cluster);
 					cluster.toggleSelection(color);
-					colorCounties(cluster, color);
+					highlightCounties(cluster, color);
 				}
 			}
 		}
@@ -282,7 +319,7 @@
 				sel.style("fill", BRUSH_COLOR);
 			}
 			*/
-			colorCounties(cluster, BRUSH_COLOR);
+			highlightCounties(cluster, BRUSH_COLOR);
 
 			// highlight the lens in the tree visualization
 			cluster.highlightNode(BRUSH_COLOR);
@@ -329,7 +366,7 @@
 		}
 		function unbrushCluster(cluster) 
 		{
-			colorCounties(cluster);
+			highlightCounties(cluster);
 
 			// remove highlight from the lens in the tree visualization
 			cluster.highlightNode();
@@ -352,7 +389,66 @@
 			simMatrix.unhighlightCluster(cluster);
 		}
 
-		function colorCounties(cluster, color)
+		function selectSelection(selection)
+		{
+			var members = selection.getCluster().getMembers();
+			var counties = [];
+
+			for (var i=0, len=members.length; i < len; i++) 
+			{
+				var index = members[i];
+				var geoid = countyList[index];
+				var lens = countyMap.get( geoid );	
+				var labels = lens.getLabels();
+
+				counties.push(
+				{
+					index: index,
+					geoid: geoid,
+					countyName: labels[0],
+					state: labels[1]
+				});
+			}
+
+			// sort county list by state and then name
+			counties.sort(function(a, b) 
+			{
+				var state = a.state.localeCompare(b.state);
+				if (state === 0)
+					return a.countyName.localeCompare(b.countyName);
+				else
+					return state;
+			});
+
+			d3.select("#countyList").selectAll("span").data(counties).enter()
+				.append("span")
+				.attr("class", "countyLabel")
+				.html(function(county) { return county.countyName + ", " + county.state + "<br>"; })
+				.on("mouseover", function(county) 
+				{
+					d3.select(this).attr("class", "selectedCountyLabel").style("background-color", BRUSH_COLOR);
+					highlightIndividualCounty(county.index, BRUSH_COLOR);
+				})
+				.on("mouseout", function(county) 
+				{
+					d3.select(this).attr("class", "countyLabel").style("background-color", "");
+					highlightIndividualCounty(county.index);
+				});
+			drawClusterStats(selection);
+		}
+
+		function deselectSelection(selection)
+		{
+			d3.select("#countyList").html("");
+			clearClusterStats();
+		}
+
+		function highlightIndividualCounty(countyNumber, color)
+		{
+			var countyGeoid = countyList[countyNumber];
+			d3.select("#county_" + countyGeoid).style("fill", color ? color : simMatrix.getEntryClusters().get(countyNumber).resolveColor());
+		}
+		function highlightCounties(cluster, color)
 		{
 			// remove highlight from counties in the map
 			for (var i = 0, len = cluster.members.length; i < len; i++)
@@ -364,8 +460,8 @@
 			if (cluster.children && !color) 
 			{
 				var children = cluster.getChildren();
-				colorCounties(children[0]);
-				colorCounties(children[1]);
+				highlightCounties(children[0]);
+				highlightCounties(children[1]);
 			}
 		}
 
@@ -406,6 +502,118 @@
 					brushCluster(cluster);
 				}
 			}
+		}
+
+		var STATS_CHART_W = 180;
+		var STATS_CHART_H = 100;
+		var STATS_LABEL_SIZE = 20;
+		var STATS_PAD_W = 30;
+		var STATS_PAD_H = 20;
+		var STATS_BINS = 60;
+
+		function clearClusterStats()
+		{
+			d3.select("#svgStats").selectAll("g.statsGroup").remove();
+		}
+
+		function drawClusterStats(selection)
+		{
+			var OFFSET = 30;
+
+
+			var statsGroup = d3.select("#svgStats").append("g").attr("class", "statsGroup");
+			
+			var Y = OFFSET;
+			var variabilityChart = drawClusterVariabilityChart(
+				selection, 
+				statsGroup.append("g")
+					.attr("class", "chartGroup")
+					.attr("transform", "translate(" + OFFSET + "," + Y + ")")
+			);
+			
+			statsGroup.append("text")
+				.html("centroid distance variance")
+				.attr("x", (variabilityChart.length*STATS_CHART_W + (variabilityChart.length > 1 ? variabilityChart.length-1 : 0)*STATS_PAD_W)/2)
+				.attr("y", OFFSET+STATS_CHART_H+STATS_LABEL_SIZE)
+				.attr("class", "statsLabel")
+				.attr("text-anchor", "middle");
+
+			Y += STATS_CHART_H + STATS_PAD_H + STATS_LABEL_SIZE;
+			var pairDistanceChart = drawPairDistanceVariabilityChart(
+				selection, 
+				statsGroup.append("g")
+					.attr("class", "chartGroup")
+					.attr("transform", "translate(" + OFFSET + "," + Y + ")")
+			);
+			
+			Y += STATS_CHART_H + STATS_LABEL_SIZE;
+			statsGroup.append("text")
+				.html("pairwise distance variance")
+				.attr("x", (pairDistanceChart.length*STATS_CHART_W + (pairDistanceChart.length > 1 ? variabilityChart.length-1 : 0)*STATS_PAD_W)/2)
+				.attr("y", Y)
+				.attr("class", "statsLabel")
+				.attr("text-anchor", "middle");
+		}
+
+		function drawClusterVariabilityChart(selection, chartGroup)
+		{
+			var entryClusters = simMatrix.getEntryClusters();
+			var all_variability = selection.getCluster().intraclusterVariability(function(memberI) {
+				return entryClusters.get(memberI);
+			});
+
+			var histograms = [];
+			for (var f=0, featureCount = all_variability.length; f < featureCount; f++)
+			{
+				var g = chartGroup.append("g").attr("transform", "translate(" + f*(STATS_CHART_W+STATS_PAD_W) + ",0)");
+				var histogram = plotStatsHistogram(g, all_variability[f]);
+				histograms.push(histogram)
+			}
+			return histograms;
+		}
+		function drawPairDistanceVariabilityChart(selection, chartGroup)
+		{
+			var entryClusters = simMatrix.getEntryClusters();
+			var all_variability = selection.getCluster().pairwiseVariability(function(memberI) {
+				return entryClusters.get(memberI);
+			});
+
+			var histograms = [];
+			for (var f=0, featureCount = all_variability.length; f < featureCount; f++)
+			{
+				var g = chartGroup.append("g").attr("transform", "translate(" + f*(STATS_CHART_W+STATS_PAD_W) + ",0)");
+				var histogram = plotStatsHistogram(g, all_variability[f]);
+				histograms.push(histogram)
+			}
+			return histograms;			
+		}
+
+		function plotStatsHistogram(chartGroup, data)
+		{
+			var minmax = d3.extent(data);
+			var stepSize = (minmax[1]-minmax[0]) / STATS_BINS;
+				
+			var bins = [];
+			for (var i=0; i<STATS_BINS; i++)
+				bins.push(0);
+				
+			var binsMax = 0;
+			for (var i=0, len=data.length; i < len; i++) 
+			{
+				var k = Math.floor((data[i]-minmax[0]) / stepSize);
+				k = Math.max(0, Math.min(k, STATS_BINS-1));
+				var b = ++bins[k];
+				if (binsMax < b) binsMax = b;
+			}
+
+			var histogram = new Histogram(bins, STATS_CHART_W, STATS_CHART_H, chartGroup, binsMax);
+			chartGroup.append("line")
+				.attr("x1", 0).attr("y1", STATS_CHART_H)
+				.attr("x2", STATS_CHART_W).attr("y2", STATS_CHART_H)
+				.style("stroke", "#444444").style("stroke-width", "1px");
+
+			chartGroup.selectAll("rect").style("fill", "#aaaaaa");
+			return histogram
 		}
 
 		function drawMap()
