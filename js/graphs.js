@@ -143,7 +143,7 @@ function Scatterplot(area,plot,svg){
       .style("text-anchor", "end")
       .text(plot.yAxis)
 
-  svg.selectAll(".dot")
+  svg.selectAll("."+plot.name)
       .data(plot.data.toRender)
     .enter().append("circle")
       .attr("class",function(d,i) {
@@ -296,48 +296,47 @@ function Map(area,plot,svg){
 
   var lasso = lassoFunction(svg,"color",area);
 
-  d3.json("datasets/hawaii.json", function(error, hawaii) {
-    if (error) return console.error(error);
+  //d3.json("datasets/hawaii.json", function(error, hawaii) {
+  //  if (error) return console.error(error);
 
     svg.selectAll(".subunit")
-      .data(topojson.feature(hawaii, hawaii.objects.filterMap).features)
+      .data(plot.database.metadata.infered.map)
       .enter().append("path")
       .attr("class", function(d) { 
         return "subunit " + d.id; })
       .attr("d", path);
 
     svg.append("path")
-      .datum(topojson.feature(hawaii, hawaii.objects.hawaiiPlaces))
+      .datum(plot.database.metadata.infered.cities.locations)
       .attr("d", path)
       .attr("class", "place");
 
     svg.selectAll(".place-label")
-      .data(topojson.feature(hawaii, hawaii.objects.hawaiiPlaces).features)
-    .enter().append("text")
+      .data(plot.database.metadata.infered.cities.names)
+      .enter().append("text")
       .attr("class", "place-label")
       .attr("transform", function(d) { return "translate(" + projection(d.geometry.coordinates) + ")"; })
       .attr("dy", "-0.2em")
       .text(function(d) { return d.properties.name; });
-        svg.selectAll(".dot")
+      
+      svg.selectAll(".pin")
         .data(plot.data.toRender)
         .enter().append("circle")
-        .attr("class",function(d,i) {
-            return plot.name + " " + "dot" + d[2];
-        })
+        .attr("class","pin")
         .attr("r", 5)
         .attr("fill","red")
         .attr("fill-opacity",0.2)
         .attr("transform", function(d) {
-        return "translate(" + projection([
+          return "translate(" + projection([
             //coordinates should be passed longitude,latitude
             d[1],
-            d[0]
+           d[0]
           ]) + ")"
         })
-    .style("stroke", "#000")
-    .style("stroke-width", 0.2);
+      .style("stroke", "#000")
+      .style("stroke-width", 0.2);
 
-    lasso.items(d3.selectAll("."+plot.name));
-  });
+    lasso.items(svg.selectAll(".pin"));
+  //});
   addTitle(svg,plot);
 }

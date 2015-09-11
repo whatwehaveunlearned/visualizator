@@ -1,37 +1,51 @@
 //load db from list of db and added to databasesObjects
 function loadDb(name,id,menuPos){
+	var db =  {
+				  id: "id",
+	              name: "name",
+	              metadata : {
+	             				 included :"hasMetadata?",
+	             				 //Added Metadata
+	             				 infered: {
+	             				 			attrTypes:"attrTypes",
+	             				 			mapData: {
+	             				 				map:"mapData",
+	             				 				cities:{
+	             				 					locations: "citiesLocation",
+	             				 					names: "citiesName"
+	             				 				},
+	             				 			},
+	             				 		  },
+	             			},
+	              data:"dataValues"
+	};
+
+	var attrTypes = [];
+	var mapData = [];
+	var citiesLocation = [];
+	var citiesName = [];
 	if(name.split(".")[1]=="csv"){
 		d3.csv("datasets/" + name,function(data){
-			var attrTypes = [];
 			//ADD UNIQUE KEY FOR EACH DB ELEMENT
 			myId(data);
+			//Add Dimension types
 			for (each in Object.keys(data[0])){
 				attrTypes.push({attr:Object.keys(data[0])[each],type:"Integer"})
 			};
+			//Add map Info
+			createMap(mapData,citiesLocation,citiesName,db);
 			if (data instanceof Array){
-				db =  {
-				  id: id,
-	              name: name,
-	             metadata : {
-	             				 included :false,
-	             				 infered: {
-	             				 			attrTypes:attrTypes
-	             				 		  },
-	             			},
-	              data:data
-	            };
+				db.id = id;
+				db.name = name;
+				db.metadata.included = false;
+	            db.metadata.infered.attrTypes=attrTypes; 
+	            db.data=data
 			}else{
-				db =  {
-				  id: id,
-	              name: name,
-	              metadata : { 
-	              				included :data.meta,
-	              				infered: {
-	             				 			attrTypes:attrTypes
-	             				 		 },
-	              			 },
-	              data:data.data
-	            };
+				db.id = id;
+				db.name = name;
+				db.metadata.included = data.meta;
+	            db.metadata.infered.attrTypes=attrTypes;
+	            db.data=data
 			}
 	        databasesObjects.push(db);
 	        //dbDimensionOrMeasure(db);
@@ -43,28 +57,23 @@ function loadDb(name,id,menuPos){
 		d3.json("datasets/" + name,function(data){
 			//ADD UNIQUE KEY FOR EACH DB ELEMENT
 			myId(data);
-			var attrTypes = []
 			for (each in Object.keys(data[0])){
 				attrTypes.push({attr:Object.keys(data[0])[each],type:"Integer"})
 			};
+			//Add map Info
+			createMap(mapData,citiesLocation,citiesName);
 			if (data instanceof Array){
-				db =  {
-				  id: id,
-	              name: name,
-	             metadata : { included :false,
-	             			  infered: {
-	             				 			attrTypes:attrTypes
-	             				 		},
-	             			},
-	              data:data
-	            };
+				db.id= id;
+				db.name=name;
+				db.metadata.included=false;
+	            db.metadata.infered.attrTypes;
+	            db.data=data
 			}else{
-				db =  {
-				  id: id,
-	              name: name,
-	              metadata : { included :data.meta, infered:attrTypes},
-	              data:data.data
-	            };
+				db.id = id;
+				db.name = name;
+				db.metadata.included = data.meta;
+	            db.metadata.infered.attrTypes=attrTypes;
+	            db.data=data
 			}
 	        databasesObjects.push(db);
 	        //NEED SOME PREPROCESSING TO ADD DIMENSIONORMEASURE AND NORMALIZE AT THIS POINT
@@ -83,6 +92,18 @@ function loadDb(name,id,menuPos){
 			data[each]['myId']=counter;
 			counter++; 
 		}
+	}
+
+	function createMap(mapData,citiesLocation,citiesName,db){
+		 d3.json("datasets/hawaii.json", function(error, hawaii) {
+		 	if (error) return console.error(error);
+		 	mapData = topojson.feature(hawaii, hawaii.objects.filterMap).features
+		 	citiesLocation = topojson.feature(hawaii, hawaii.objects.hawaiiPlaces);
+		 	citiesName = topojson.feature(hawaii, hawaii.objects.hawaiiPlaces).features;
+		 	db.metadata.infered.mapData.map = mapData,
+	        db.metadata.infered.mapData.cities.locations = citiesLocation,
+	        db.metadata.infered.mapData.cities.names = citiesName
+		});
 	}
 	function dbDimensionOrMeasure(db){
 		for (var element in db.data){
