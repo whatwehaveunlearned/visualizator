@@ -1,0 +1,298 @@
+/*Menu Style*/
+.menuRemove{
+  position: absolute;
+  right: 0em;
+  top:-1em;
+  color: white;
+  font-size: 1.6em;
+}
+.btn-group-vertical{
+  position: absolute;
+  border-style:solid;
+  border-width:0.2em;
+  border-top-width: 2em;
+  border-color:rgba(248,148,6);
+  background-color:rgba(253,227,167,0.5);
+  padding: 1em 0.7em 0.7em 1em;
+}
+
+.btn-group-vertical > p {
+  font-size: 4em;
+  opacity: 1;
+  text-align: left;
+}
+
+.selected{
+  font-weight:bold;
+}
+
+.notselected{
+  font-weight:normal;
+}
+/******* END Menu Style  **********************************************/
+/******* Chart Area Style *********************************************/
+.chartArea {
+ border-style:solid;
+ border-width:0.3em;
+ border-top-width:2em;
+ /*box-shadow: 10px 10px 5px #888888;*/
+ border-color:rgba(78,205,196,0.3);
+ background-color:rgba(162,222,208,0.3);
+}
+
+.chartAreaTitle {
+  font-family: sans-serif;
+  font-size:4em;
+}
+/******* END Chart Area Style *******************************************/
+/*******  QuerySelector Style *********************************************/
+
+/******* END QuerySelector Style *******************************************/
+/****** DataBase KW Card **************/
+.dbKwCard{
+  position:absolute;
+  border-style:solid;
+  border-width:0.3em;
+  border-top-width:1em;
+  border-color:rgba(0,51,102,0.8);
+  padding: 0.2em;
+  background-color:rgba(89,171,227,0.5);
+  font-size: 1em;
+}
+
+.dbKwCard .dataTables_scroll{
+  padding: 2em 0em 0em 0em;
+}
+
+.dbKwCard .dataTables_wrapper{
+  padding: 1em;
+}
+
+.dbKwCard .dataTables_scroll:nth-of-type(1){
+  position: relative;
+  left: -1em;
+  padding: 0em;
+}
+
+.dbKwCard .dataTables_scroll th{
+  text-align: center;
+  padding: 1em;
+}
+
+.dbKwCard .dataTables_scroll td{
+  text-align: center;
+  background-color:rgba(228,241,254,0.5);
+}
+
+.dbKwCard .dataTables_scrollBody{
+  height: 300px;
+}
+
+.dataTables_info{
+  position: relative;
+  top: 1em;
+}
+
+.dataTables_paginate{
+  position: relative;
+  top: 1em;
+}
+
+.dbKwCard td {
+  background-color:rgba(228,241,254,0.5);
+}
+
+#newGraph{
+  font-size: 1.5em;
+  margin-top: 1em;
+  padding: 1em;
+  line-height: 2em;
+  background-color:rgba(228,241,254,0.5);
+}
+
+.dbKwCard button {
+  background-color:rgba(89,171,227,0.5);
+ /* -moz-box-shadow: 0px 3px 8px rgb(100,100,100);
+  -webkit-box-shadow: 0px 3px 8px rgb(100,100,100);
+  box-shadow: 0px 3px 8px rgb(100,100,100);*/
+  font-size: 1em;
+  border-radius: 5px;
+  border-color:rgba(89,171,227,0.5);
+  position:relative;
+  float: center;
+}
+
+.removeCard{
+  position:absolute;
+  right:-1.2em;
+  top:-1.3em;
+  font-size:0.6em;
+  color:white;
+}
+
+.dbKwCardMenu .glyphicon{
+  float:right;
+  position: relative;
+  top:-0.8em;
+  left:0.6em;
+  padding: 0.2em;
+  font-size: 2em;
+  padding: 0.4em;
+}
+
+.dbKwCardTitle{
+  position: relative;
+  top:-0.5em;
+  font-size: 3em;
+  text-align: center;
+}
+
+.dbKwCardMenu{
+  position: relative;
+  top: 1em;
+  padding: 1em;
+  height: 18em;
+  border-radius: 5px;
+  background-color:rgba(228,241,254,0.8);
+}
+
+.dbKwCardMenu label{
+  position: relative;
+  float: left;
+  top:-2em;
+  font-size: 1.5em;
+}
+
+.dbKwCardMenu .ui-selectmenu-menu{font-size: 1.5em;}
+.ui-selectmenu-button {background-color:rgba(228,241,254,0.8);}
+.dbKwCardMenu .dbKwCardMenugraphType {position:absolute;left:28em;top:4.5em;}
+.dbKwCardMenu .dbKwCardMenugraphType .ui-selectmenu-button {position:relative;left:-7em;top:-1em;font-size: 1.2em}
+.dbKwCardMenu #create{position:relative;left:18em;font-size: 2.5em;top:-3.5em;padding: 1em;}
+
+.dbKwCardMenu .selectable { margin:0.4em; list-style-type: none; padding: 0; margin:2em,0em,0em,0em; width: 25em; max-height: 16em; overflow-y: scroll; border-style:solid; border-width:0.4em; }
+.dbKwCardMenu .selectable .ui-selecting { background: #FECA40; }
+.dbKwCardMenu .selectable .ui-selected { background: #F39814; color: white; }
+.dbKwCardMenu .selectable li { font-size: 1.5em; text-align:center; line-height:1em; background-color:rgba(228,241,254,0.8); }
+
+.dbKwCardMenu select {
+  width:15em;
+}
+
+fieldset {
+  border: 0;
+}
+.overflow {
+  height: 200px;
+}
+
+/******  END KW Card **************/
+/*******  Chart Style *********/
+
+/* Axis Style */
+.axis path,
+
+.axis line {
+  fill:none;
+  stroke:black;
+  shape-rendering:crispEdges;
+}
+
+.axis text{
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+svg{
+  padding: 5px;
+}
+
+.dragAnchor{
+  position:absoulute;
+  width: 100px;
+  height: 100px;
+}
+
+
+body {
+  font: 10px sans-serif;
+}
+
+/*From Scatterplotwithlasso*/
+.attr {
+  padding: 5px 10px 2px 5px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.lasso path {
+  stroke: rgb(80,80,80);
+  stroke-width:2px;
+}
+
+.lasso .drawn {
+  fill-opacity:.05 ;
+}
+
+.lasso .loop_close {
+  fill:none;
+  stroke-dasharray: 4,4;
+}
+
+.lasso .origin {
+  fill:#3399FF;
+  fill-opacity:.5;
+}
+
+.not_possible {
+  fill:rgb(200,200,200);
+}
+
+.possible {
+  fill:#EC888C;
+}
+
+/*END From Scatterplotwithlasso*/
+
+/* Bar Chart */
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+/*End of Bar Chart*/
+
+/*lineChart*/
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+/*END of LineChart*/
+
+/* map */
+.subunit {
+  fill: none;
+  stroke: #777;
+}
+
+/*END of map */
+
+/******* END of  Chart Style *********/

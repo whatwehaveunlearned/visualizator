@@ -1,0 +1,18 @@
+{
+  "name": "d3test",
+  "version": "1.0.0",
+  "description": "data playground",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "http": "0.0.0",
+    "morgan": "^1.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
